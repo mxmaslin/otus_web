@@ -1,6 +1,6 @@
 The program fetches google search result urls, like so:
 
-```python
+```bash
 python fetcher.py --query question of life, the universe and everything --amount 5 --recursive 1
 ```
 
