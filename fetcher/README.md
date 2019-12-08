@@ -1,1 +1,0 @@
-otus_web
