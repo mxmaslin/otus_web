@@ -11,7 +11,7 @@ setuptools.setup(
     description="Fetches google search query result urls",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/mxmaslin/otus-web/google-search-fetcher",
+    url="https://github.com/mxmaslin/otus_web/tree/master/google-search-fetcher",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

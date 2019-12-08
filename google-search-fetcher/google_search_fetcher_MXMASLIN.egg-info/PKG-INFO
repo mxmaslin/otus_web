@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: google-search-fetcher-MXMASLIN
+Version: 0.0.1
+Summary: Fetches google search query result urls
+Home-page: https://github.com/mxmaslin/otus_web/tree/master/google-search-fetcher
+Author: Maxim Maslin
+Author-email: mxmaslin@gmail.com
+License: UNKNOWN
+Description: The program fetches google search result urls, like so:
+        
+        ```python
+        python fetcher.py --query question of life, the universe and everything --amount 5 --recursive 1
+        ```
+        
+        Keys:
+        
+        - `--query` The query to google
+        - `--amount` Desired amount of url in result
+        - `--recursive` When this key is true, each url will be inspected, and all links on its page will be printed
+        
+        Prior to use, please install requirements:
+        
+        `pip install -r requirements.txt` 
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown

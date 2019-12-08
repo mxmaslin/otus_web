@@ -1,0 +1,6 @@
+README.md
+setup.py
+google_search_fetcher_MXMASLIN.egg-info/PKG-INFO
+google_search_fetcher_MXMASLIN.egg-info/SOURCES.txt
+google_search_fetcher_MXMASLIN.egg-info/dependency_links.txt
+google_search_fetcher_MXMASLIN.egg-info/top_level.txt
