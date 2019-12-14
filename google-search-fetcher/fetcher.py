@@ -29,8 +29,7 @@ def fetch_hrefs_from_page(url):
 	response = requests.get(url)
 	soup = BeautifulSoup(response.text, 'html.parser')
 	a_tags = soup.find_all('a', href=True)
-	hrefs = [a['href'] for a in a_tags if validators.url(a['href'])]
-	return hrefs
+	return [a['href'] for a in a_tags if validators.url(a['href'])]
 	
 
 def main():
@@ -38,8 +37,6 @@ def main():
 	args = parser.parse_args()
 
 	recursive = args.recursive
-	if recursive in [0, False, '0', 'False', 'None']:
-		recursive = False 
 
 	query = ' '.join(args.query)
 	links_amount = args.amount
