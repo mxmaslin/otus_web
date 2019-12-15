@@ -12,4 +12,6 @@ Keys:
 
 Prior to use, please install requirements:
 
-`pip install -r requirements.txt` 
+`pip install -r requirements.txt`
+
+Программа выполнена в рамках обучающего курса [Web-разработчик на Python](https://otus.ru/lessons/webpython/).
