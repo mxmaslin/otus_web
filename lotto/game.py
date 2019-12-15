@@ -89,7 +89,7 @@ def get_num_players():
                     'Количество игроков должно быть от 2 до 6',
                     'Number value error'
                 )
-        except (ValueError, NumPlayersException) as e:
+        except (ValueError, NumPlayersException, UnicodeDecodeError) as e:
             print(e)
         else:
             return num_players
