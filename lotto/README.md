@@ -1,11 +1,11 @@
-# Русское лото
+# Russian lotto
 
-Эмулятор игры "Русское лото".
+"Russian lotto" game emulator.
 
-Для запуска выполните команду
+To start, execute 
 
 ```bash
 python game.py
 ```
 
-Программа выполнена в рамках обучающего курса [Web-разработчик на Python](https://otus.ru/lessons/webpython/).
+The program developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.

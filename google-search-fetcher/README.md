@@ -1,3 +1,5 @@
+# Google search fetcher
+
 The program fetches google search result urls, like so:
 
 ```bash
@@ -12,6 +14,8 @@ Keys:
 
 Prior to use, please install requirements:
 
-`pip install -r requirements.txt`
+```bash
+pip install -r requirements.txt
+```
 
-Программа выполнена в рамках обучающего курса [Web-разработчик на Python](https://otus.ru/lessons/webpython/).
+The program developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.
