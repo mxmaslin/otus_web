@@ -1,6 +1,6 @@
 # Test suite
 
-Test suite for [google fetcher](https://github.com/mxmaslin/otus_web/tree/master/google-search-fetcher) and [russian lotto](https://github.com/mxmaslin/otus_web/tree/master/lotto) projects.  
+Test suite for [google search fetcher](https://github.com/mxmaslin/otus_web/tree/master/google-search-fetcher) and [russian lotto](https://github.com/mxmaslin/otus_web/tree/master/lotto) projects.  
 
 Prior to start, install the requirements:
 
