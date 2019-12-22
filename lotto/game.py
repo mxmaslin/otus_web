@@ -263,12 +263,15 @@ def main():
                         print(f'{player} выиграл!')
                         return
                 else:
-                    print(f'{player} ошибся, у него есть такая цифра. Игрок выбывает из игры')
+                    print(f'{player} ошибся, у него нет такой цифры. Игрок выбывает из игры')
                     players.remove(player)
             else:
                 if digit_on_card:
-                    print(f'{player} ошибся, у него нет такой цифры. Игрок выбывает из игры')
+                    print(f'{player} ошибся, у него есть такая цифра. Игрок выбывает из игры')
                     players.remove(player)
+            if len(players) < 2:
+                print(f'{players[0]} выиграл!')
+                return
             print()
     else:
         print('Ничья')
