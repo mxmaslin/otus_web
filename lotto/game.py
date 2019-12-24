@@ -194,12 +194,9 @@ class Host:
 
     def pick_barrel(self):
         try:
-            return self.sack.barrels.pop(
-                random.randrange(len(self.sack.barrels))
-            )
+            return self.sack.barrels.pop()
         except IndexError:
             print('В мешочке больше нет бочонков')
-            return None
 
     def give_card(self):
         return self.generator.give_card()
