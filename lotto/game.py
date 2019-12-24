@@ -22,9 +22,9 @@ class Card:
         ])
 
     def update(self, barrel):
-        self.first_row = [None if x == barrel.digit else x for x in self.first_row]
-        self.second_row = [None if x == barrel.digit else x for x in self.second_row]
-        self.last_row = [None if x == barrel.digit else x for x in self.last_row]
+        for row in (self.first_row, self.second_row, self.last_row):
+            for i in range(len(row)):
+                row[i] = None if row[i] == barrel.digit else row[i]
 
     def __iter__(self):
         return (x for x in chain(self.first_row, self.second_row, self.last_row))
