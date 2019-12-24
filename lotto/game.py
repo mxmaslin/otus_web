@@ -135,34 +135,6 @@ class Barrel:
         return f'Бочонок с цифрой {self.digit}'
 
 
-def get_num_players():
-    while True:
-        try:
-            num_players = int(
-                input('Введите количество игроков (от 2 до 6): ')
-            )
-            if num_players < 2 or num_players > 6:
-                raise NumPlayersException(
-                    'Количество игроков должно быть от 2 до 6',
-                    'Number value error'
-                )
-        except (ValueError, NumPlayersException, UnicodeDecodeError) as e:
-            print(e)
-        else:
-            return num_players
-
-
-def generate_player(i, card):
-    while True:
-        try:
-            player_name = input(f'Введите имя игрока {i}: ')
-        except UnicodeDecodeError:
-            print('Ошибка распознавания ввода, повторие ввод')
-        else:
-            break
-    return Player(player_name, card)
-
-
 class Sack:
     num_barrels = 90
 
@@ -224,13 +196,44 @@ class Host:
                 return player_answer
 
 
+class Game:
+    @staticmethod
+    def get_num_players():
+        while True:
+            try:
+                num_players = int(
+                    input('Введите количество игроков (от 2 до 6): ')
+                )
+                if num_players < 2 or num_players > 6:
+                    raise NumPlayersException(
+                        'Количество игроков должно быть от 2 до 6',
+                        'Number value error'
+                    )
+            except (ValueError, NumPlayersException, UnicodeDecodeError) as e:
+                print(e)
+            else:
+                return num_players
+
+    @staticmethod
+    def generate_player(i, card):
+        while True:
+            try:
+                player_name = input(f'Введите имя игрока {i}: ')
+            except UnicodeDecodeError:
+                print('Ошибка распознавания ввода, повторие ввод')
+            else:
+                break
+        return Player(player_name, card)
+
+
 def main():
-    num_players = get_num_players()
+    game = Game()
+    num_players = game.get_num_players()
     sack = Sack()
     card_generator = CardGenerator()
     host = Host(sack, card_generator, num_players)
     players = [
-        generate_player(i, host.give_card()) for i in range(1, num_players + 1)
+        game.generate_player(i, host.give_card()) for i in range(1, num_players + 1)
     ]
     while host.sack.barrels:
         barrel = host.pick_barrel()
