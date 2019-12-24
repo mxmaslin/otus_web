@@ -1,6 +1,8 @@
 import random
 from itertools import chain
 
+from card_generator import generate_cards, give_card
+
 
 class NumPlayersException(Exception):
     def __init__(self, message, errors):
@@ -40,82 +42,6 @@ class Card:
             ' '.join(str(x) if x else 'X' for x in row)
             for row in (self.first_row, self.second_row, self.last_row)
         ])
-
-
-class CardGenerator:
-    _cards = []
-
-    @staticmethod
-    def _get_use_digit_in_first_column(probability=2/3):
-        return random.random() < probability
-
-    @staticmethod
-    def _generate_row_digits(
-            previous_rows, first_digit=None, last_card=False
-    ):
-        end_of_range = 90 if last_card else 89
-        digits = [first_digit] if first_digit else []
-        previous_rows = previous_rows or []
-        amount_of_digits_in_row = 5
-        while len(digits) < amount_of_digits_in_row:
-            digit = random.randint(10, end_of_range)
-            if digit not in digits and digit not in previous_rows:
-                digits.append(digit)
-        return digits
-
-    @classmethod
-    def _generate_row(cls, previous_rows, last=False):
-        row = []
-        use_digit_in_first_column = cls._get_use_digit_in_first_column()
-        if use_digit_in_first_column:
-            first_digit = random.randint(1, 9)
-            row_digits = cls._generate_row_digits(
-                previous_rows,
-                first_digit=first_digit,
-                last_card=last
-            )
-            row.extend(row_digits)
-        else:
-            row.extend(cls._generate_row_digits(previous_rows, last_card=last))
-        row = sorted(row)
-        nones = [None] * 4
-        row.extend(nones)
-        return row
-
-    @classmethod
-    def _generate_card(cls):
-        first_row = cls._generate_row(None)
-        second_row = cls._generate_row(first_row)
-        previous_rows = first_row + second_row
-        last_row = cls._generate_row(previous_rows, last=True)
-        return Card(first_row, second_row, last_row)
-
-    @classmethod
-    def generate_cards(cls, num_players):
-        while len(cls._cards) < num_players:
-            card = cls._generate_card()
-            if card not in cls._cards:
-                cls._cards.append(card)
-        return cls._cards
-
-    @staticmethod
-    def _shuffle_card_row(row):
-        if row[0] < 10:
-            return [row[0]] + random.sample(row[1:], len(row) - 1)
-        row.remove(None)
-        return [None] + random.sample(row, len(row))
-
-    @classmethod
-    def give_card(cls):
-        try:
-            card = cls._cards.pop()
-        except IndexError:
-            return None
-        else:
-            card.first_row = cls._shuffle_card_row(card.first_row)
-            card.second_row = cls._shuffle_card_row(card.second_row)
-            card.last_row = cls._shuffle_card_row(card.last_row)
-            return card
 
 
 class Player:
@@ -158,20 +84,15 @@ class Sack:
 
 
 class Host:
-    def __init__(self, sack, generator, num_cards=24):
+    def __init__(self, sack, num_cards=24):
         super().__init__()
         self.sack = sack
-        self.generator = generator
-        self.generator.generate_cards(num_cards)
 
     def pick_barrel(self):
         try:
             return self.sack.barrels.pop()
         except IndexError:
             print('В мешочке больше нет бочонков')
-
-    def give_card(self):
-        return self.generator.give_card()
 
     @staticmethod
     def check_card(player, barrel):
@@ -230,10 +151,10 @@ def main():
     game = Game()
     num_players = game.get_num_players()
     sack = Sack()
-    card_generator = CardGenerator()
-    host = Host(sack, card_generator, num_players)
+    host = Host(sack, num_players)
+    cards = generate_cards(num_players)
     players = [
-        game.generate_player(i, host.give_card()) for i in range(1, num_players + 1)
+        game.generate_player(i, give_card(cards)) for i in range(1, num_players + 1)
     ]
     while host.sack.barrels:
         barrel = host.pick_barrel()
