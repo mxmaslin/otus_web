@@ -8,20 +8,6 @@ class NumPlayersException(Exception):
         self.errors = errors
 
 
-class Singleton:
-    __instance = None
-
-    def __init__(self):
-        if Singleton.__instance:
-            print(f'Экземпляр уже создан: {self.get_instance()}')
-
-    @classmethod
-    def get_instance(cls):
-        if not cls.__instance:
-            cls.__instance = Singleton()
-        return cls.__instance
-
-
 class Card:
     def __init__(self, first_row, second_row, last_row):
         self.first_row = first_row
@@ -56,7 +42,7 @@ class Card:
         ])
 
 
-class CardGenerator(Singleton):
+class CardGenerator:
     _cards = []
 
     @staticmethod
@@ -177,7 +163,7 @@ def generate_player(i, card):
     return Player(player_name, card)
 
 
-class Sack(Singleton):
+class Sack:
     num_barrels = 90
 
     def __init__(self):
@@ -200,7 +186,7 @@ class Sack(Singleton):
         return f'Содержимое мешочка: {barrels_digits}'
 
 
-class Host(Singleton):
+class Host:
     def __init__(self, sack, generator, num_cards=24):
         super().__init__()
         self.sack = sack
