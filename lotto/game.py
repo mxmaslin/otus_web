@@ -170,9 +170,8 @@ class Sack:
         super().__init__()
         self.barrels = self._fill_with_barrels()
 
-    @classmethod
-    def _fill_with_barrels(cls):
-        barrels = [Barrel(i) for i in range(1, cls.num_barrels + 1)]
+    def _fill_with_barrels(self):
+        barrels = [Barrel(i) for i in range(1, self.num_barrels + 1)]
         random.shuffle(barrels)
         return barrels
 
