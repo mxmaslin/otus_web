@@ -118,6 +118,16 @@ class Host:
 
 
 class Game:
+    def __init__(self):
+        self.num_players = self.get_num_players()
+        self.sack = Sack()
+        self.host = Host(self.sack, self.num_players)
+        self.cards = generate_cards(self.num_players)
+        self.players = [
+            self.generate_player(i, give_card(self.cards))
+            for i in range(1, self.num_players + 1)
+        ]
+
     @staticmethod
     def get_num_players():
         while True:
@@ -146,41 +156,37 @@ class Game:
                 break
         return Player(player_name, card)
 
+    def play(self):
+        while self.host.sack.barrels:
+            barrel = self.host.pick_barrel()
+            for player in self.players[:]:
+                player_answer = self.host.ask_player(player, barrel)
+                digit_on_card = self.host.check_card(player, barrel)
+                if player_answer == 'да':
+                    if digit_on_card:
+                        print(f'{player}, обновляю вашу карточку')
+                        player.card.update(barrel)
+                        if player.card.is_complete:
+                            print(f'{player} выиграл!')
+                            return
+                    else:
+                        print(f'{player} ошибся, у него нет такой цифры. Игрок выбывает из игры')
+                        self.players.remove(player)
+                else:
+                    if digit_on_card:
+                        print(f'{player} ошибся, у него есть такая цифра. Игрок выбывает из игры')
+                        self.players.remove(player)
+                if len(self.players) < 2:
+                    print(f'{self.players[0]} выиграл!')
+                    return
+                print()
+        else:
+            print('Ничья')
+
 
 def main():
     game = Game()
-    num_players = game.get_num_players()
-    sack = Sack()
-    host = Host(sack, num_players)
-    cards = generate_cards(num_players)
-    players = [
-        game.generate_player(i, give_card(cards)) for i in range(1, num_players + 1)
-    ]
-    while host.sack.barrels:
-        barrel = host.pick_barrel()
-        for player in players[:]:
-            player_answer = host.ask_player(player, barrel)
-            digit_on_card = host.check_card(player, barrel)
-            if player_answer == 'да':
-                if digit_on_card:
-                    print(f'{player}, обновляю вашу карточку')
-                    player.card.update(barrel)
-                    if player.card.is_complete:
-                        print(f'{player} выиграл!')
-                        return
-                else:
-                    print(f'{player} ошибся, у него нет такой цифры. Игрок выбывает из игры')
-                    players.remove(player)
-            else:
-                if digit_on_card:
-                    print(f'{player} ошибся, у него есть такая цифра. Игрок выбывает из игры')
-                    players.remove(player)
-            if len(players) < 2:
-                print(f'{players[0]} выиграл!')
-                return
-            print()
-    else:
-        print('Ничья')
+    game.play()
 
 
 if __name__ == '__main__':
