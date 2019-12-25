@@ -1,9 +1,9 @@
-import os
-import sys
+import os, sys
 import pytest
-sys.path.append(os.path.abspath('../lotto'))
-# from lotto import game
-from .. import lotto
+sys.path.insert(0, os.path.abspath('..'))
+from lotto import card_generator
+from lotto.game import Card
+# import lotto
 # from . import lotto
 
 user_paths = sys.path
