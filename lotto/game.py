@@ -1,7 +1,9 @@
+import os
+import sys
 import random
 from itertools import chain
-
-from card_generator import generate_cards, give_card
+sys.path.insert(0, os.path.abspath('..'))
+from lotto.card_generator import generate_cards, give_card
 
 
 class NumPlayersException(Exception):
