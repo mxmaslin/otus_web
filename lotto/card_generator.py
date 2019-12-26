@@ -39,7 +39,7 @@ def generate_row(previous_rows, last=False):
 
 
 def generate_card():
-    from game import Card
+    from .game import Card
     first_row = generate_row(None)
     second_row = generate_row(first_row)
     previous_rows = first_row + second_row
