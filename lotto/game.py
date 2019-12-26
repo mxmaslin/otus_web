@@ -67,7 +67,6 @@ class Sack:
     num_barrels = 90
 
     def __init__(self):
-        super().__init__()
         self.barrels = self._fill_with_barrels()
 
     def _fill_with_barrels(self):
@@ -86,8 +85,7 @@ class Sack:
 
 
 class Host:
-    def __init__(self, sack, num_cards=24):
-        super().__init__()
+    def __init__(self, sack):
         self.sack = sack
 
     def pick_barrel(self):
