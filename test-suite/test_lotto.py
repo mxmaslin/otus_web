@@ -1,29 +1,24 @@
 import os, sys
 import pytest
 sys.path.insert(0, os.path.abspath('..'))
-from lotto import card_generator
+from lotto.card_generator import shuffle_card_row
 from lotto.game import Card
-# import lotto
-# from . import lotto
-
-user_paths = sys.path
-print(user_paths)
 
 
-# @pytest.fixture
-# def card_generator():
-#     return game.CardGenerator()
-#
-#
-# def test_generate_row_digits_first_row_first_digit(card_generator):
-#     first_row_first_digit = card_generator._generate_row_digits(
-#         first_digit=1
-#     )
-#     assert first_row_first_digit[0] == 1
-#
-#
-# def test_generate_row_digits_first_row_no_first_digit():
-#     pass
-#
-#
-#
+@pytest.fixture
+def first_row_with_one():
+    return [1, None, 20, None, 30, None, 40, None, 50]
+
+
+@pytest.fixture
+def similar_row():
+    return [1, None, 20, None, 30, None, 40, None, 50]
+
+
+def test_shuffle(first_row_with_one):
+    shuffled = shuffle_card_row(first_row_with_one)
+    assert first_row_with_one != shuffled
+    sorted_initial = sorted(first_row_with_one, key=lambda x: (x is None, x))
+    sorted_shuffled = sorted(shuffled, key=lambda x: (x is None, x))
+    assert sorted_initial == sorted_shuffled
+
