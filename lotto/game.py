@@ -35,8 +35,8 @@ class Card:
 
     @property
     def is_complete(self):
-        return any([
-            all(self.first_row), all(self.second_row), all(self.last_row)
+        return not any([
+            any(self.first_row), any(self.second_row), any(self.last_row)
         ])
 
     def __str__(self):
