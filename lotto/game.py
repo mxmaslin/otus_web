@@ -121,7 +121,7 @@ class Game:
     def __init__(self):
         self.num_players = self.get_num_players()
         self.sack = Sack()
-        self.host = Host(self.sack, self.num_players)
+        self.host = Host(self.sack)
         self.cards = generate_cards(self.num_players)
         self.players = [
             self.generate_player(i, give_card(self.cards))
