@@ -10,10 +10,17 @@ Prior to start, install the requirements:
 pip install -r requirements.txt
 ```
 
-Populate DB and select data:
+Then populate DB:
 
 ```bash
-python models.py
+python populate_db.py
 ```
+
+Get all posts of some user having 2 tags:
+
+```bash
+python fetch_instances.py
+```
+
 
 The program developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.
