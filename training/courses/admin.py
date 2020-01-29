@@ -6,7 +6,7 @@ from .models import Teacher, Student, Class, Lesson, LessonGrade, ClassGrade
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
     list_display = 'position', 'first_name', 'last_name'
-    list_filter = 'position',
+    list_filter = 'position', 'courses'
     list_display_links = 'position', 'first_name', 'last_name'
     search_fields = 'last_name',
 
