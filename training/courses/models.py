@@ -13,10 +13,10 @@ def max_value_current_year(value):
     return MaxValueValidator(current_year())(value)
 
 
-class Teacher(User):
-    POSTGRADUATE = 1
-    ASSOCIATE_PROFESSOR = 2
-    HEAD_OF_DEPARTMENT = 3
+class Teacher(models.Model):
+    POSTGRADUATE = 'PG'
+    ASSOCIATE_PROFESSOR = 'AP'
+    HEAD_OF_DEPARTMENT = 'HD'
     POSITIONS = (
         (POSTGRADUATE, 'Postgraduate'),
         (ASSOCIATE_PROFESSOR, 'Associate Professor'),
@@ -25,6 +25,8 @@ class Teacher(User):
     position = models.CharField(
         max_length=2, choices=POSITIONS, default=POSTGRADUATE
     )
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
     courses = models.ManyToManyField(
         'Class', related_name='teachers', blank=True
     )
@@ -36,17 +38,7 @@ class Teacher(User):
         ordering = 'position', 'last_name'
 
 
-class Student(User):
-    FRESHMAN = 1
-    SOPHOMORE = 2
-    JUNIOR = 3
-    SENIOR = 4
-    YEAR_IN_SCHOOL_CHOICES = (
-        (FRESHMAN, 'Freshman'),
-        (SOPHOMORE, 'Sophomore'),
-        (JUNIOR, 'Junior'),
-        (SENIOR, 'Senior'),
-    )
+class Student(models.Model):
     graduated = models.PositiveIntegerField(
         default=datetime.date.today().year,
         validators=[
@@ -54,18 +46,17 @@ class Student(User):
             max_value_current_year
         ]
     )
-    year_in_school = models.CharField(
-        max_length=2, choices=YEAR_IN_SCHOOL_CHOICES, default=FRESHMAN
-    )
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
     courses = models.ManyToManyField(
         'Class', related_name='students', blank=True
     )
 
     def __str__(self):
-        return f'{self.year_in_school} {self.first_name} {self.last_name}'
+        return f'{self.graduated} {self.first_name} {self.last_name}'
 
     class Meta:
-        ordering = '-graduated', 'year_in_school', 'last_name'
+        ordering = '-graduated', 'last_name'
 
 
 class Class(models.Model):
@@ -82,7 +73,8 @@ class Class(models.Model):
         return f'{self.name} {self.started}'
 
     class Meta:
-        ordering = ('name',)
+        ordering = 'name',
+        verbose_name_plural = 'classes'
 
 
 class Lesson(models.Model):
