@@ -1,7 +1,6 @@
 import datetime
 
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -32,7 +31,7 @@ class Teacher(models.Model):
     )
 
     def __str__(self):
-        return f'{self.position} {self.last_name}'
+        return f'{self.first_name} {self.last_name}'
 
     class Meta:
         ordering = 'position', 'last_name'
@@ -53,7 +52,7 @@ class Student(models.Model):
     )
 
     def __str__(self):
-        return f'{self.graduated} {self.first_name} {self.last_name}'
+        return f'{self.first_name} {self.last_name}'
 
     class Meta:
         ordering = '-graduated', 'last_name'
@@ -79,7 +78,7 @@ class Class(models.Model):
 
 class Lesson(models.Model):
     start_time = models.DateTimeField(null=True, blank=True)
-    duration = models.TimeField(null=True, blank=True)
+    duration = models.IntegerField(null=True, blank=True)
     location = models.CharField(max_length=80, null=True, blank=True)
     learning_class = models.ForeignKey(Class, on_delete=models.CASCADE)
 
@@ -128,7 +127,7 @@ class ClassGrade(models.Model):
     grade = models.CharField(max_length=1, choices=GRADES)
 
     def __str__(self):
-        return f'{self.student} {self.course} {self.grade}'
+        return f'{self.grade} {self.student} {self.course}'
 
     class Meta:
         ordering = 'student', 'course', 'grade'
