@@ -1,6 +1,8 @@
 import datetime
 
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.core.mail import send_mail
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -12,7 +14,16 @@ def max_value_current_year(value):
     return MaxValueValidator(current_year())(value)
 
 
-class Teacher(models.Model):
+class SendMailMixin:
+    def email_user(self, subject, message, from_email=None, **kwargs):
+        send_mail(subject, message, from_email, [self.user.email], **kwargs)
+
+
+class User(AbstractUser):
+    is_student = models.BooleanField(default=True)
+
+
+class Teacher(models.Model, SendMailMixin):
     POSTGRADUATE = 'PG'
     ASSOCIATE_PROFESSOR = 'AP'
     HEAD_OF_DEPARTMENT = 'HD'
@@ -20,6 +31,9 @@ class Teacher(models.Model):
         (POSTGRADUATE, 'Postgraduate'),
         (ASSOCIATE_PROFESSOR, 'Associate Professor'),
         (HEAD_OF_DEPARTMENT, 'Head of Departament'),
+    )
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, null=True, related_name='teacher'
     )
     position = models.CharField(
         max_length=2, choices=POSITIONS, default=POSTGRADUATE
@@ -37,13 +51,16 @@ class Teacher(models.Model):
         ordering = 'position', 'last_name'
 
 
-class Student(models.Model):
+class Student(models.Model, SendMailMixin):
     graduated = models.PositiveIntegerField(
         default=datetime.date.today().year,
         validators=[
             MinValueValidator(1970),
             max_value_current_year
         ]
+    )
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, null=True, related_name='student'
     )
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
