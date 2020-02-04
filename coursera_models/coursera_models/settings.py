@@ -29,7 +29,7 @@ class CommonSettings(Configuration):
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ]
-    ROOT_URLCONF = 'coursera.urls'
+    ROOT_URLCONF = 'coursera_models.urls'
     TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -45,7 +45,7 @@ class CommonSettings(Configuration):
             },
         },
     ]
-    WSGI_APPLICATION = 'coursera.wsgi.application'
+    WSGI_APPLICATION = 'coursera_models.wsgi.application'
     path = 'django.contrib.auth.password_validation'
     AUTH_PASSWORD_VALIDATORS = [
         {'NAME': f'{path}.UserAttributeSimilarityValidator'},
