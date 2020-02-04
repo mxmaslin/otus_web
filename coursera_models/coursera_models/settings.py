@@ -33,7 +33,7 @@ class CommonSettings(Configuration):
     TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': [],
+            'DIRS': [os.path.join(BASE_DIR, 'templates')],
             'APP_DIRS': True,
             'OPTIONS': {
                 'context_processors': [
@@ -60,6 +60,7 @@ class CommonSettings(Configuration):
     USE_TZ = True
     STATIC_URL = '/static/'
     AUTH_USER_MODEL = 'profiles.User'
+    LOGIN_REDIRECT_URL = '/'
 
 
 class Dev(CommonSettings):
