@@ -18,7 +18,7 @@ class TeacherAdmin(UserAdmin):
                 'username', 'password', 'first_name', 'last_name', 'position', 'courses'
             )
         }),
-        ('Permissions', {'fields': ('is_staff', 'is_active')}),
+        ('Permissions', {'fields': ('is_active', )}),
     )
     add_fieldsets = (
         (None, {
@@ -45,7 +45,7 @@ class StudentAdmin(UserAdmin):
                 'username', 'password', 'graduated', 'courses', 'first_name', 'last_name'
             )
         }),
-        ('Permissions', {'fields': ('is_staff', 'is_active')}),
+        ('Permissions', {'fields': ('is_active', )}),
     )
     add_fieldsets = (
         (None, {
