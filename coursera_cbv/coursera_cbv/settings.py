@@ -29,7 +29,7 @@ class CommonSettings(Configuration):
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ]
-    ROOT_URLCONF = 'coursera_models.urls'
+    ROOT_URLCONF = 'coursera_cbv.urls'
     TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -45,7 +45,7 @@ class CommonSettings(Configuration):
             },
         },
     ]
-    WSGI_APPLICATION = 'coursera_models.wsgi.application'
+    WSGI_APPLICATION = 'coursera_cbv.wsgi.application'
     path = 'django.contrib.auth.password_validation'
     AUTH_PASSWORD_VALIDATORS = [
         {'NAME': f'{path}.UserAttributeSimilarityValidator'},
@@ -59,8 +59,10 @@ class CommonSettings(Configuration):
     USE_L10N = True
     USE_TZ = True
     STATIC_URL = '/static/'
+    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
     AUTH_USER_MODEL = 'profiles.User'
     LOGIN_REDIRECT_URL = '/'
+    LOGOUT_REDIRECT_URL = '/'
 
 
 class Dev(CommonSettings):
