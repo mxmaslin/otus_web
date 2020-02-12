@@ -22,12 +22,23 @@ class CourseDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        is_student = user.is_active and user.is_student
+        context['enrolled'] = self.is_student_enrolled(user)
+        context['teaching'] = self.is_course_teacher(user)
+        return context
+
+    def is_student_enrolled(self, user):
         is_enrolled = False
+        is_student = user.is_active and user.is_student
         if is_student:
             is_enrolled = user.student.is_enrolled(self.object.id)
-        context['enrolled'] = is_enrolled
-        return context
+        return is_enrolled
+
+    def is_course_teacher(self, user):
+        is_teaching = False
+        is_teacher = user.is_active and user.is_teacher
+        if is_teacher:
+            is_teaching = user.teacher.is_course_teacher(self.object.id)
+        return is_teaching
 
 
 def enroll(request, pk):

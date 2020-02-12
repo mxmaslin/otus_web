@@ -19,7 +19,9 @@
       {% if user.student %}
         <p><a href="{% url 'courses:enroll' pk=course.pk %}">Запишитесь на курс</a>, чтобы просматривать уроки</p>
       {% elif user.teacher %}
-        <p><a href="{% url 'courses:edit' pk=course.pk %}">Отредактировать курс</a></p>
+        {% if teaching %}
+          <p><a href="{% url 'courses:edit' pk=course.pk %}">Отредактировать курс</a></p>
+        {% endif %}
       {% endif %}
     {% endif %}
   {% else %}
