@@ -36,7 +36,7 @@ class Teacher(User, SendMailMixin):
         'courses.Course', related_name='teachers', blank=True
     )
 
-    def is_teaching(self, course_id):
+    def is_course_teacher(self, course_id):
         return self.courses.filter(id=course_id).exists()
 
     def __str__(self):
