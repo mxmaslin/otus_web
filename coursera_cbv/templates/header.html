@@ -1,0 +1,26 @@
+<header class="jumbotron">
+  <div class="container">
+    <a class="glyphicon glyphicon-home" href="{% url 'courses:course-list' %}"></a>
+    {% if user.is_authenticated %}
+      {% if user.student %}
+        Привет, {{ user.username }}!
+        <a href="{% url 'courses:my-courses' %}">Твои курсы</a>
+        <a href="{% url 'logout' %}">Выйти</a>
+      {% elif user.teacher %}
+        Здравствуйте, {{ user.username }}
+          <a href="{% url 'courses:lecturing' %}">Ваши курсы</a>
+          <a href="{% url 'courses:create' %}">Создать курс</a>
+          <a href="{% url 'logout' %}">Выйти</a>
+      {% else %}
+        Здравствуйте, {{ user.username }}
+        <a href="{% url 'admin:index' %}">Админка</a>
+        <a href="{% url 'logout' %}">Выйти</a>
+      {% endif %}
+    {% else %}
+      Вы не авторизованы
+      <a href="{% url 'login' %}?next={{ request.path }}">Войти</a>
+      <a href="{% url 'profiles:student-signup' %}">Зарегистрироваться как учащийся</a>
+      <a href="{% url 'profiles:teacher-signup' %}">Зарегистрироваться как преподаватель</a>
+    {% endif %}
+  </div>
+</header>

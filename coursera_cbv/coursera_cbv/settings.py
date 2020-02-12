@@ -19,8 +19,10 @@ class CommonSettings(Configuration):
         'django.contrib.staticfiles',
         'courses.apps.CoursesConfig',
         'profiles.apps.ProfilesConfig',
+        'debug_toolbar',
     ]
     MIDDLEWARE = [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
@@ -61,6 +63,7 @@ class CommonSettings(Configuration):
     STATIC_URL = '/static/'
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
     AUTH_USER_MODEL = 'profiles.User'
+    INTERNAL_IPS = ['127.0.0.1']
     LOGIN_REDIRECT_URL = '/'
     LOGOUT_REDIRECT_URL = '/'
 

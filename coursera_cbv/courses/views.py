@@ -1,5 +1,83 @@
 from django.shortcuts import render
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+
+from .models import Course
 
 
-def index(request):
-    return render(request, 'courses/courses.html', {})
+class CourseListView(ListView):
+    model = Course
+    context_object_name = 'courses'
+    template_name = 'courses/course-list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = 'courses/course-detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        is_student = user.is_active and user.is_student
+        is_enrolled = False
+        if is_student:
+            is_enrolled = user.student.is_enrolled(self.object.id)
+        context['enrolled'] = is_enrolled
+        return context
+
+
+def enroll(request, pk):
+    course = Course.objects.get(pk=pk)
+    request.user.student.courses.add(course)
+    return render(request, 'courses/enroll.html', {'course': course})
+
+
+def leave(request, pk):
+    course = Course.objects.get(pk=pk)
+    request.user.student.courses.remove(course)
+    return render(request, 'courses/leave.html', {'course': course})
+
+
+class MyCourseListView(ListView):
+    model = Course
+    context_object_name = 'my_courses'
+    template_name = 'courses/my-courses.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        student = self.request.user.student
+        my_courses = student.courses.all()
+        context.update({'student': student, 'my_courses': my_courses})
+        return context
+
+
+class MyLecturingView(ListView):
+    model = Course
+    context_object_name = 'lecturing_courses'
+    template_name = 'courses/lecturing.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        teacher = self.request.user.teacher
+        my_courses = teacher.courses.all()
+        context.update({'teacher': teacher, 'my_courses': my_courses})
+        return context
+
+
+class CreateCourseView(ListView):
+    model = Course
+    template_name = 'courses/create-course.html'
+
+
+class EditCourseView(ListView):
+    model = Course
+    template_name = 'courses/edit.html'
+
+
+class LecturingCourseDetailView(DetailView):
+    model = Course
+    template_name = 'courses/'

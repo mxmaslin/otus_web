@@ -1,8 +1,15 @@
-from django.urls import path, re_path
+from django.urls import path
 from . import views
 
 app_name = 'courses'
 
 urlpatterns = [
-    path('', views.index, name='all'),
+    path('<int:pk>/', views.CourseDetailView.as_view(), name='course-detail'),
+    path('enroll/<int:pk>/', views.enroll, name='enroll'),
+    path('leave/<int:pk>/', views.leave, name='leave'),
+    path('my-courses/', views.MyCourseListView.as_view(), name='my-courses'),
+    path('lecturing/', views.MyLecturingView.as_view(), name='lecturing'),
+    path('create/', views.CreateCourseView.as_view(), name='create'),
+    path('edit/<int:pk>/', views.EditCourseView.as_view(), name='edit'),
+    path('', views.CourseListView.as_view(), name='course-list'),
 ]

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ teacher }}{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+<div class="container">
+    <p>Здравствуйте, {{ teacher }}</p>
+    {% if my_courses %}
+        <p>Сейчас вы подписаны на следующие курсы:</p>
+        <ul>
+            {% for course in my_courses %}
+                <li><a href="{% url 'courses:course-detail' pk=course.pk %}">{{ course }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Сейчас вы не подписаны ни на один курс</p>
+
+    {% endif %}
+</div>
+{% include 'footer.html' %}
+{% endblock %}

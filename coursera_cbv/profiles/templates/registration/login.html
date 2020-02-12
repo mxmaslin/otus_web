@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+{% include 'header.html' %}
+<div class="container">
   <h2>Login</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ next }}">
     <button type="submit">Login</button>
-  </form>
-
+    </form>
+</div>
 {% endblock %}

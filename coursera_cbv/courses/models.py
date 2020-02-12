@@ -32,8 +32,9 @@ class Course(models.Model):
 class Lesson(models.Model):
     start_time = models.DateTimeField(null=True, blank=True)
     duration = models.IntegerField(null=True, blank=True)
-    location = models.CharField(max_length=80, null=True, blank=True)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    location = models.CharField(max_length=80, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
+    content = models.TextField()
 
     def __str__(self):
         return f'{self.course} {self.start_time}'
