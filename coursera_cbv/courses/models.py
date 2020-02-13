@@ -13,13 +13,14 @@ def max_value_current_year(value):
 
 
 class Course(models.Model):
-    name = models.CharField(max_length=40)
+    name = models.CharField(max_length=40, verbose_name='Название')
     started = models.PositiveIntegerField(
         default=datetime.date.today().year,
         validators=[
             MinValueValidator(1970),
             max_value_current_year
-        ]
+        ],
+        verbose_name='Дата начала'
     )
 
     def __str__(self):

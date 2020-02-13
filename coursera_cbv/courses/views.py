@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.urls import reverse
+from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 
 from .models import Course
+from .forms import CourseForm, ColorForm, ColorFormSet
 
 
 class CourseListView(ListView):
@@ -79,9 +81,25 @@ class MyLecturingView(ListView):
         return context
 
 
-class CreateCourseView(ListView):
-    model = Course
-    template_name = 'courses/create-course.html'
+def create_course(request):
+    form = CourseForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect(reverse('courses:course-list'))
+    return render(request, 'courses/create-course.html', {'form': form})
+
+
+def create_course_formset(request):
+    if request.method == "POST":
+        formset = ColorFormSet(request.POST)
+        for form in formset.forms:
+            print(f"You've picked {form.cleaned_data['color']}")
+    else:
+        formset = ColorFormSet()
+    return render(request, 'courses/test_formset.html', {'formset': formset})
+
+
+
 
 
 class EditCourseView(ListView):

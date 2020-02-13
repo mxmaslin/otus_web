@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Создание курса{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+<div class="container">
+
+    <h1>Новый курс</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Сохранить</button>
+    </form>
+
+</div>
+{% include 'footer.html' %}
+{% endblock %}
