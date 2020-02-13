@@ -1,26 +1,38 @@
-import datetime
-
 from django import forms
 from django.forms import formset_factory
+from django.forms.models import modelformset_factory
 
 from .models import Course, Lesson
-
-
-# from django.core.validators import MinValueValidator, MaxValueValidator
-#
-#
-# def current_year():
-#     return datetime.date.today().year
-#
-#
-# def max_value_current_year(value):
-#     return MaxValueValidator(current_year())(value)
 
 
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
         fields = 'name', 'started'
+
+
+LessonFormSet = modelformset_factory(Lesson, fields=['name', 'content'])
+
+
+# class LessonForm(forms.ModelForm):
+#     class Meta:
+#         model = Lesson
+#         fields = 'start_time', 'duration', 'location', 'course'
+#
+#
+#     def __init__(self, n=5, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         for i in range(0, n):
+#             self.fields["field_name% d" % i] = forms.CharField()
+#
+#
+# CourseFormSet = formset_factory(form=CourseForm)
+
+
+# class CourseForm(forms.ModelForm):
+#     class Meta:
+#         model = Course
+#         fields = 'name', 'started'
     # name = forms.CharField(required=True)
     # started = forms.DateField(
     #     initial=datetime.date.today().year,
@@ -30,20 +42,20 @@ class CourseForm(forms.ModelForm):
     #     ]
     # )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        lessons = Lesson.objects.filter(course=self.instance)
-        for i in range(1, len(lessons) + 2):
-            self.fields[f'start_time_lesson_{i}'] = forms.DateTimeField(
-                input_formats=['%d/%m/%Y %H:%M'],
-                widget=forms.DateTimeInput()
-            )
-            self.fields[f'duration_lesson_{i}'] = forms.IntegerField(
-                required=False)
-            self.fields[f'location_lesson_{i}'] = forms.CharField(
-                required=False)
-            self.fields[f'content_lesson_{i}'] = forms.CharField(
-                widget=forms.Textarea)
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     lessons = Lesson.objects.filter(course=self.instance)
+    #     for i in range(1, len(lessons) + 2):
+    #         self.fields[f'start_time_lesson_{i}'] = forms.DateTimeField(
+    #             input_formats=['%d/%m/%Y %H:%M'],
+    #             widget=forms.DateTimeInput()
+    #         )
+    #         self.fields[f'duration_lesson_{i}'] = forms.IntegerField(
+    #             required=False)
+    #         self.fields[f'location_lesson_{i}'] = forms.CharField(
+    #             required=False)
+    #         self.fields[f'content_lesson_{i}'] = forms.CharField(
+    #             widget=forms.Textarea)
 
         # interests = ProfileInterest.objects.filter(
         #     profile=self.instance
@@ -85,14 +97,3 @@ class CourseForm(forms.ModelForm):
     #            interest=interest,
     #        )
 
-
-class ColorForm(forms.Form):
-    color = forms.ChoiceField(choices=(('blue', 'Blue'), ('red', 'Red')))
-
-    def __init__(self, n=5, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for i in range(0, n):
-            self.fields["field_name% d" % i] = forms.CharField()
-
-
-ColorFormSet = formset_factory(ColorForm, extra=0)

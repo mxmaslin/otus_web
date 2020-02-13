@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 
-from .models import Course
-from .forms import CourseForm, ColorForm, ColorFormSet
+from .models import Course, Lesson
+from .forms import CourseForm, LessonFormSet
 
 
 class CourseListView(ListView):
@@ -83,23 +83,30 @@ class MyLecturingView(ListView):
 
 def create_course(request):
     form = CourseForm(request.POST or None)
-    if form.is_valid():
+    formset = LessonFormSet(request.POST or None,
+                            queryset=Lesson.objects.none())
+    if form.is_valid() and formset.is_valid():
         form.save()
-        return redirect(reverse('courses:course-list'))
-    return render(request, 'courses/create-course.html', {'form': form})
+        for f_form in formset:
+            print('changed', f_form.has_changed())
+            print(f_form)
+            if f_form.is_valid() and f_form.has_changed():
+                print(f_form)
+                f_form.save()
+        request.session['course_name'] = form.cleaned_data['name']
+        return redirect(reverse('courses:create-success'))
+    return render(
+        request,
+        'courses/create-course.html',
+        {'form': form, 'formset': formset}
+    )
 
 
-def create_course_formset(request):
-    if request.method == "POST":
-        formset = ColorFormSet(request.POST)
-        for form in formset.forms:
-            print(f"You've picked {form.cleaned_data['color']}")
-    else:
-        formset = ColorFormSet()
-    return render(request, 'courses/test_formset.html', {'formset': formset})
-
-
-
+def create_success(request):
+    course_name = request.session['course_name']
+    return render(
+        request, 'courses/create-success.html', {'course_name': course_name}
+    )
 
 
 class EditCourseView(ListView):

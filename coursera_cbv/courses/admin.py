@@ -13,9 +13,9 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = 'course', 'start_time', 'location'
+    list_display = 'course', 'name'
     list_filter = 'course',
-    list_display_links = 'course', 'start_time', 'location'
+    list_display_links = 'course', 'name'
 
 
 @admin.register(LessonGrade)
