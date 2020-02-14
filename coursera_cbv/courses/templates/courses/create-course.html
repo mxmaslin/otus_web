@@ -11,13 +11,22 @@
         {% csrf_token %}
         {{ form.as_p }}
         {{ formset.management_form }}
-        <div style="display:none;" id="form_template">
-            {{ formset.empty_form.as_p }}
-        </div>
-        <div id="forms"></div>
 
+        <div id="add_lesson_formset">
+            {% for f in formset.forms %}
+                <table class='no_error'>
+                    {{ f.as_table }}
+                </table>
+            {% endfor %}
+        </div>
+        <div id="empty_form" style="display:none">
+            <table class='no_error'>
+                {{ formset.empty_form.as_table }}
+            </table>
+        </div>
     </form>
-    <button type="submit" id="generate_forms" class="save btn btn-default">Добавить урок</button>
+
+    <button type="submit" id="add_lesson" class="save btn btn-default">Добавить урок</button>
     <button type="submit" form="create_course" class="save btn btn-default">Сохранить курс</button>
 
 </div>

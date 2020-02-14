@@ -11,7 +11,13 @@ class CourseForm(forms.ModelForm):
         fields = 'name', 'started'
 
 
-LessonFormSet = modelformset_factory(Lesson, fields=['name', 'content'])
+class LessonForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        fields = 'name', 'content'
+
+
+LessonFormSet = modelformset_factory(Lesson, form=LessonForm)
 
 
 # class LessonForm(forms.ModelForm):

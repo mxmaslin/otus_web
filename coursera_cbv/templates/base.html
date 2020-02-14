@@ -4,8 +4,6 @@
       <link rel="stylesheet" href="{% static 'vendors/bootstrap/css/bootstrap.min.css' %}">
       <script src="{% static 'vendors/jquery/jquery-3.4.1.min.js' %}"></script>
       <script src="{% static 'vendors/bootstrap/js/bootstrap.min.js' %}"></script>
-
-      <script src="{% static 'scripts.js' %}"></script>
       <title>
         {% block title %}
         {% endblock %}
@@ -14,5 +12,6 @@
     <body>
       {% block content %}
       {% endblock %}
+      <script src="{% static 'my_scripts/add-lesson.js' %}"></script>
     </body>
 </html>

@@ -88,13 +88,13 @@ def create_course(request):
         queryset=Lesson.objects.none()
     )
     if form.is_valid() and formset.is_valid():
-        form.save()
+        # form.save()
         for f_form in formset:
             print('changed', f_form.has_changed())
-            print(f_form)
             print('yay', f_form.cleaned_data)
             if f_form.is_valid() and f_form.has_changed():
-                f_form.save()
+                pass
+                # f_form.save()
         request.session['course_name'] = form.cleaned_data['name']
         return redirect(reverse('courses:create-success'))
     return render(
