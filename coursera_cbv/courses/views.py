@@ -83,15 +83,17 @@ class MyLecturingView(ListView):
 
 def create_course(request):
     form = CourseForm(request.POST or None)
-    formset = LessonFormSet(request.POST or None,
-                            queryset=Lesson.objects.none())
+    formset = LessonFormSet(
+        request.POST or None,
+        queryset=Lesson.objects.none()
+    )
     if form.is_valid() and formset.is_valid():
         form.save()
         for f_form in formset:
             print('changed', f_form.has_changed())
             print(f_form)
+            print('yay', f_form.cleaned_data)
             if f_form.is_valid() and f_form.has_changed():
-                print(f_form)
                 f_form.save()
         request.session['course_name'] = form.cleaned_data['name']
         return redirect(reverse('courses:create-success'))
