@@ -14,7 +14,14 @@
 
         {% for lesson in formset %}
             <div class="lesson-formset">
-                {{ lesson }}
+                <div class="lesson">
+                    <div class="lesson-element">
+                        <label for="id_form-{{ forloop.counter0 }}-name">Название урока:</label>{{ lesson.name }}
+                    </div>
+                    <div class="lesson-element">
+                        <label for="id_form-{{ forloop.counter0 }}-content">Название урока:</label>{{ lesson.content }}
+                    </div>
+                </div>
             </div>
         {% endfor %}
     </form>
@@ -25,7 +32,7 @@
         });
     </script>
 
-    <button type="submit" form="create_course" class="save btn btn-default">Сохранить курс</button>
+    <button type="submit" form="create_course" class="save btn btn-default" id="save-course-button">Сохранить курс</button>
 </div>
 {% include 'footer.html' %}
 {% endblock %}
