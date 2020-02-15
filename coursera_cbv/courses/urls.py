@@ -12,6 +12,5 @@ urlpatterns = [
     path('create/', views.create_course, name='create'),
     path('create-success/', views.create_success, name='create-success'),
     path('edit/<int:pk>/', views.EditCourseView.as_view(), name='edit'),
-    # path('formset/', views.create_course_formset),
     path('', views.CourseListView.as_view(), name='course-list'),
 ]
