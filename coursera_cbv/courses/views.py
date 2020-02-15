@@ -87,20 +87,25 @@ def create_course(request):
         request.POST or None,
         queryset=Lesson.objects.none()
     )
+    teacher = Teacher.objects.filter(id=request.user.id)
     if form.is_valid() and formset.is_valid():
-        # form.save()
+        course = form.save()
+        teacher.first().courses.add(course)
+        lessons = []
         for f_form in formset:
-            print('changed', f_form.has_changed())
-            print('yay', f_form.cleaned_data)
             if f_form.is_valid() and f_form.has_changed():
-                pass
-                # f_form.save()
+                lesson_name = f_form.cleaned_data['name']
+                lesson_content = f_form.cleaned_data['content']
+                lessons.append(
+                    Lesson(name=lesson_name, content=lesson_content, course=course)
+                )
+        Lesson.objects.bulk_create(lessons)
         request.session['course_name'] = form.cleaned_data['name']
         return redirect(reverse('courses:create-success'))
     return render(
         request,
         'courses/create-course.html',
-        {'form': form, 'formset': formset}
+        {'teacher': teacher, 'form': form, 'formset': formset}
     )
 
 

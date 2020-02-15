@@ -5,7 +5,7 @@
 {% block content %}
 {% include 'header.html' %}
 <div class="container">
-    {% if teacher.first %}
+    {% if teacher %}
         <p>Здравствуйте, {{ teacher.first }}</p>
             {% if teacher.first.courses.all %}
                 <p>Вы ведёте следующие курсы:</p>
