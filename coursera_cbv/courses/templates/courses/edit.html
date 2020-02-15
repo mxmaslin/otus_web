@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактирование курса{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<div class="container">
+  {% if teacher %}
+    {% if course %}
+      <h1>{{ course.first }}</h1>
+      <form method="post" id="create_course">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ formset.management_form }}
+        {% for lesson in formset %}
+          <div class="lesson-formset">
+            <div class="lesson">
+              <div class="lesson-element">
+                <label for="id_form-{{ forloop.counter0 }}-name">Название урока:</label>{{ lesson.name }}
+              </div>
+              <div class="lesson-element">
+                <label for="id_form-{{ forloop.counter0 }}-content">Название урока:</label>{{ lesson.content }}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </form>
+      <script>
+        $('.lesson-formset').formset({
+          addText: 'Добавить урок',
+          deleteText: 'Удалить урок'
+        });
+      </script>
+      <button type="submit" form="create_course" class="save btn btn-default" id="save-course-button">Сохранить курс</button>
+    {% else %}
+      <p>Курс не найден</p>
+    {% endif %}
+  {% else %}
+    <p>Отредактировать курс может только преподаватель, который его создал.</p>
+  {% endif %}
+</div>
+{% include 'footer.html' %}
+{% endblock %}

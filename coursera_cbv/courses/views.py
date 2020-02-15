@@ -109,16 +109,40 @@ def create_course(request):
     )
 
 
+def edit_course(request, pk):
+    course = Course.objects.filter(pk=pk)
+    form = CourseForm(request.POST or None, instance=course.first())
+    formset = LessonFormSet(
+        request.POST or None,
+        queryset=Lesson.objects.filter(course=course.first())
+    )
+    teacher = Teacher.objects.filter(id=request.user.id)
+    if form.is_valid() and formset.is_valid():
+        course = form.save()
+        teacher.first().courses.add(course)
+        lessons = []
+        for f_form in formset:
+            if f_form.is_valid() and f_form.has_changed():
+                lesson_name = f_form.cleaned_data['name']
+                lesson_content = f_form.cleaned_data['content']
+                lessons.append(
+                    Lesson(name=lesson_name, content=lesson_content, course=course)
+                )
+        Lesson.objects.bulk_create(lessons)
+        request.session['course_name'] = form.cleaned_data['name']
+        return redirect(reverse('courses:create-success'))
+    return render(
+        request,
+        'courses/edit.html',
+        {'teacher': teacher, 'course': course, 'form': form, 'formset': formset}
+    )
+
+
 def create_success(request):
     course_name = request.session['course_name']
     return render(
         request, 'courses/create-success.html', {'course_name': course_name}
     )
-
-
-class EditCourseView(ListView):
-    model = Course
-    template_name = 'courses/edit.html'
 
 
 class LecturingCourseDetailView(DetailView):

@@ -10,7 +10,7 @@ urlpatterns = [
     path('my-courses/', views.MyCourseListView.as_view(), name='my-courses'),
     path('lecturing/', views.MyLecturingView.as_view(), name='lecturing'),
     path('create/', views.create_course, name='create'),
+    path('edit/<int:pk>/', views.edit_course, name='edit'),
     path('create-success/', views.create_success, name='create-success'),
-    path('edit/<int:pk>/', views.EditCourseView.as_view(), name='edit'),
     path('', views.CourseListView.as_view(), name='course-list'),
 ]
