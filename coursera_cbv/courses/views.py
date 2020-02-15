@@ -5,6 +5,7 @@ from django.views.generic.detail import DetailView
 
 from .models import Course, Lesson
 from .forms import CourseForm, LessonFormSet
+from profiles.models import Teacher
 
 
 class CourseListView(ListView):
@@ -75,9 +76,8 @@ class MyLecturingView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        teacher = self.request.user.teacher
-        my_courses = teacher.courses.all()
-        context.update({'teacher': teacher, 'my_courses': my_courses})
+        teacher = Teacher.objects.filter(id=self.request.user.id)
+        context.update({'teacher': teacher})
         return context
 
 
