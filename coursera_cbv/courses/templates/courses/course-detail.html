@@ -11,7 +11,10 @@
     {% if enrolled %}
       <ol>
         {% for lesson in course.lessons.all %}
-          <li>{{ lesson.content }}</li>
+          <li>
+            <p>{{ lesson.name }}</p>
+            <p>{{ lesson.content }}</p>
+          </li>
         {% endfor %}
       </ol>
       <p><a href="{% url 'courses:leave' pk=course.pk %}">Покинуть курс</a></p>
