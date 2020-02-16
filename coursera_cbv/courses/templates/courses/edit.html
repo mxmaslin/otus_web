@@ -14,6 +14,9 @@
         {{ form.as_p }}
         {{ formset.management_form }}
         {% for lesson in formset %}
+          {% for hidden in lesson.hidden_fields %}
+            {{ hidden }}
+          {% endfor %}
           <div class="lesson-formset">
             <div class="lesson">
               <div class="lesson-element">

@@ -2,6 +2,7 @@ from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.forms.models import modelformset_factory
 
 from .models import Course, Lesson
 from .forms import CourseForm, LessonFormSet
@@ -109,28 +110,41 @@ def create_course(request):
     )
 
 
+def create_success(request):
+    course_name = request.session['course_name']
+    return render(
+        request, 'courses/create-success.html', {'course_name': course_name}
+    )
+
+
 def edit_course(request, pk):
     course = Course.objects.filter(pk=pk)
     form = CourseForm(request.POST or None, instance=course.first())
-    formset = LessonFormSet(
+    extras = 1
+    if len(course.first().lessons.all()) > 0:
+        extras = 0
+    lesson_model_fs_factory = modelformset_factory(
+        Lesson, fields=['name', 'content'], extra=extras
+    )
+    formset = lesson_model_fs_factory(
         request.POST or None,
-        queryset=Lesson.objects.filter(course=course.first())
+        queryset=Lesson.objects.filter(course=course.first()),
     )
     teacher = Teacher.objects.filter(id=request.user.id)
     if form.is_valid() and formset.is_valid():
-        course = form.save()
-        teacher.first().courses.add(course)
         lessons = []
         for f_form in formset:
-            if f_form.is_valid() and f_form.has_changed():
+            if f_form.is_valid():
                 lesson_name = f_form.cleaned_data['name']
                 lesson_content = f_form.cleaned_data['content']
                 lessons.append(
-                    Lesson(name=lesson_name, content=lesson_content, course=course)
+                    Lesson(name=lesson_name, content=lesson_content, course=course.first())
                 )
-        Lesson.objects.bulk_create(lessons)
+        course.first().lessons.all().delete()
+        l = Lesson.objects.bulk_create(lessons)
+        print(l)
         request.session['course_name'] = form.cleaned_data['name']
-        return redirect(reverse('courses:create-success'))
+        return redirect(reverse('courses:edit-success'))
     return render(
         request,
         'courses/edit.html',
@@ -138,10 +152,10 @@ def edit_course(request, pk):
     )
 
 
-def create_success(request):
+def edit_success(request):
     course_name = request.session['course_name']
     return render(
-        request, 'courses/create-success.html', {'course_name': course_name}
+        request, 'courses/edit-success.html', {'course_name': course_name}
     )
 
 
