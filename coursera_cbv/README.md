@@ -15,7 +15,7 @@ The task was to make an educational site with the following features:
   * Edit own course.
   * Delete own course.
 
-Prior to playing with the project, install the requirements:
+Prior to exploring the project, install the requirements:
 
     pip install -r requirements.txt 
     
