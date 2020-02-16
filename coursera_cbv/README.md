@@ -1,6 +1,6 @@
 # Educational site
 
-The task is to make an educational site with the following features:
+The task was to make an educational site with the following features:
 
 * Signing up as a student/teacher.
 * As a student, the user can:
@@ -18,3 +18,5 @@ The task is to make an educational site with the following features:
 Prior to playing with the project, install the requirements:
 
     pip install -r requirements.txt 
+    
+The application developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.

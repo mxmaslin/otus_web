@@ -18,4 +18,4 @@ Prior to use, please install requirements:
 pip install -r requirements.txt
 ```
 
-The program developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.
+The application developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.

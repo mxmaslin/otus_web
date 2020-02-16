@@ -29,4 +29,4 @@ pytest test_lotto.py
 ```
 
 
-The program developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.
+The application developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.
