@@ -13,5 +13,6 @@ urlpatterns = [
     path('create-success/', views.create_success, name='create-success'),
     path('edit/<int:pk>/', views.edit_course, name='edit'),
     path('edit-success/', views.edit_success, name='edit-success'),
+    path('delete/<int:pk>/', views.delete, name='delete'),
     path('', views.CourseListView.as_view(), name='course-list'),
 ]

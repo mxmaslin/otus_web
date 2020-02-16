@@ -24,6 +24,7 @@
       {% elif user.teacher %}
         {% if teaching %}
           <p><a href="{% url 'courses:edit' pk=course.pk %}">Отредактировать курс</a></p>
+          <p><a href="{% url 'courses:delete' pk=course.pk %}">Удалить курс</a></p>
         {% endif %}
       {% endif %}
     {% endif %}

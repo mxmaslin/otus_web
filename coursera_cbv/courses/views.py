@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.forms.models import modelformset_factory
@@ -141,8 +141,7 @@ def edit_course(request, pk):
                     Lesson(name=lesson_name, content=lesson_content, course=course.first())
                 )
         course.first().lessons.all().delete()
-        l = Lesson.objects.bulk_create(lessons)
-        print(l)
+        Lesson.objects.bulk_create(lessons)
         request.session['course_name'] = form.cleaned_data['name']
         return redirect(reverse('courses:edit-success'))
     return render(
@@ -157,6 +156,14 @@ def edit_success(request):
     return render(
         request, 'courses/edit-success.html', {'course_name': course_name}
     )
+
+
+def delete(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    course.lessons.all().delete()
+    course_name = str(course)
+    course.delete()
+    return render(request, 'courses/delete.html', {'course_name': course_name})
 
 
 class LecturingCourseDetailView(DetailView):
