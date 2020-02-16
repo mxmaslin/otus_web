@@ -1,9 +1,20 @@
 # Educational site
 
-The task is to make a data models for educational site. The site has a list of courses, each course is led by teacher, the student can enroll the course. The course has several scheduled tasks.
+The task is to make an educational site with the following features:
 
-The models are in [courses/models.py](courses/models.py) and [profiles/models.py](profiles/models.py)
+* Signing up as a student/teacher.
+* As a student, the user can:
+  * View list of all courses.
+  * Enroll to specific course.
+  * View list of courses they enrolled to.
+  * View enrolled course details.  
+* As a teacher, the user can:
+  * View list of all courses.
+  * Create own course.
+  * View own courses.
+  * Edit own course.
+  * Delete own course.
 
-Prior to creating the stuff via admin, install the requirements:
+Prior to playing with the project, install the requirements:
 
     pip install -r requirements.txt 
