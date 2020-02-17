@@ -14,10 +14,6 @@ class CourseListView(ListView):
     context_object_name = 'courses'
     template_name = 'courses/course-list.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
 
 class CourseDetailView(DetailView):
     model = Course
