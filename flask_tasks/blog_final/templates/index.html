@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+
+{% block content %}
+
+{% include 'includes/header.html' %}
+
+<div class="container-fluid">
+  <div class="row">
+    <a href="{{ url_for('register') }}">Регистрация</a>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <h2>Последние записи</h2>
+      <article class="row entry container">
+        <h3>Котик</h3>
+        <img src="../static/img/kotik1.jpg" alt="Симпатичный котик">
+        <div class="pub-date">
+          <span>Дата публикации: 20-12-2019</span>
+          <a href="post.html" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-heart"></span> Подробнее</a>
+        </div>
+      </article>
+      <article class="row entry container">
+        <h3>Кот</h3>
+        <img src="../static/img/kot.jpg" alt="Приятный кот">
+        <div class="pub-date">
+          <span>Дата публикации: 20-12-2019</span>
+          <a href="post.html" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-heart"></span> Подробнее</a>
+        </div>
+      </article>
+      <article class="row entry container">
+        <h3>Котик</h3>
+        <img src="../static/img/kotik2.jpg" alt="Ещё один милый котик">
+        <div class="pub-date">
+          <span>Дата публикации: 20-12-2019</span>
+          <a href="post.html" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-heart"></span> Подробнее</a>
+        </div>
+      </article>
+      <article class="row entry container">
+        <h3>Кошак</h3>
+        <img src="../static/img/koshak.jpg" alt="Матёрый кошак">
+        <div class="pub-date">
+          <span>Дата публикации: 20-12-2019</span>
+          <a href="post.html" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-heart"></span> Подробнее</a>
+        </div>
+      </article>
+      <article class="row entry container">
+        <h3>Киска</h3>
+        <img src="../static/img/kiska.jpg" alt="Милая киска">
+        <div class="pub-date">
+          <span>Дата публикации: 20-12-2019</span>
+          <a href="post.html" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-heart"></span> Подробнее</a>
+        </div>
+      </article>
+    </div>
+    <div class="col-sm-6">
+      <h2>Теги</h2>
+      <a href="#" class="tag">Котики</a>
+      <a href="#" class="tag">Коты</a>
+      <a href="#" class="tag">Кошаки</a>
+      <a href="#" class="tag">Киски</a>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+</div>
+
+{% include 'includes/footer.html' %}
+
+{% endblock %}
+
