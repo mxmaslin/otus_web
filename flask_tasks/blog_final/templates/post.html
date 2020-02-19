@@ -1,20 +1,10 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <title>Мой блог</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../static/vendors/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../static/css/styles.css">
-  <script src="../static/vendors/jquery/jquery.min.js"></script>
-  <script src="../static/vendors/bootstrap/js/bootstrap.min.js"></script>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Пост{% endblock %}
+{% block content %}
+{% include 'includes/header.html' %}
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-2"></div>
-    <div class="col-sm-8">
       <h1>Мой блог</h1>
       <h2>Последние записи</h2>
       <article class="row entry container">
@@ -26,10 +16,8 @@
           <a href="index.html" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-home"></span> На главную</a>
         </div>
       </article>
-    </div>
-    <div class="col-sm-2"></div>
   </div>
 </div>
-</body>
-</html>
 
+{% include 'includes/footer.html' %}
+{% endblock %}

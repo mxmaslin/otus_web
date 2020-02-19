@@ -24,6 +24,7 @@ class User(Model):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     name = Column(String(80), nullable=False)
+    password = Column(String(40), nullable=False)
 
     def __repr__(self):
         return f'{self.name}'
@@ -52,11 +53,12 @@ class Tag(Model):
         return f'{self.name}'
 
 
-# engine = create_engine('sqlite:///db.sqlite')
-# Model.metadata.create_all(engine)
-# Session = sessionmaker(bind=engine)
-# session = Session()
-#
+engine = create_engine('sqlite:///db.sqlite')
+Model.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
+
+
 # vasya = User(name='Вася')
 # petya = User(name='Петя')
 # lena = User(name='Лена')
