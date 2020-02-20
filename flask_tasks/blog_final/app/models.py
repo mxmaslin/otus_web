@@ -1,6 +1,20 @@
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, Table
+import datetime
+
+from sqlalchemy import create_engine, Column, Integer, DateTime, String, \
+    Text, ForeignKey, Table
 from sqlalchemy.orm import sessionmaker, backref, relationship
 from sqlalchemy.ext.declarative import declarative_base
+
+from flask_login import UserMixin, LoginManager
+
+from app import app
+
+login_manager = LoginManager(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 
 Model = declarative_base(name='Model')
@@ -20,7 +34,7 @@ class Link(Model):
     )
 
 
-class User(Model):
+class User(UserMixin, Model):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     name = Column(String(80), nullable=False)
@@ -36,6 +50,7 @@ class Post(Model):
     user_id = Column(Integer, ForeignKey(User.id))
     title = Column(String(120), unique=True, nullable=False)
     body = Column(Text(120), nullable=False)
+    created = Column(DateTime, default=datetime.datetime.now())
     user = relationship('User', foreign_keys='Post.user_id')
     tags = relationship('Tag', secondary='link')
 
