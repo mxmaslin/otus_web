@@ -55,9 +55,10 @@ def logout():
 def user(username):
     user = User.query.filter_by(name=username).first_or_404()
     posts = [
-        {'author': user, 'title': 'Эх рок-говнорок',
-         'body': 'фендер стратокастер', 'created': 'today', 'tags': []},
-        {'author': user, 'title': 'Пушкинист', 'body': 'Говнищер',
+        {'author': user, 'title': 'Заголовок первого поста',
+         'body': 'Контент первого поста', 'created': 'today', 'tags': []},
+        {'author': user, 'title': 'Заголовок второго поста', 'body':
+            'Контент второго поста',
          'created': 'today', 'tags': []}
     ]
     return render_template('user.html', user=user, posts=posts)

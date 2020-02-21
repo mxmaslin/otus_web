@@ -5,3 +5,8 @@
 footer {
     margin-top: 30px;
 }
+
+.centered {
+ float: none;
+ margin: 0 auto;
+}

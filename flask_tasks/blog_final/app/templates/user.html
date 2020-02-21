@@ -4,15 +4,14 @@
 {% include 'includes/header.html' %}
 
 <div class="container-fluid">
-  <div class="row">
+  <div class="row centered">
       <h1>Посты {{current_user.name}}</h1>
       {% for post in posts %}
           <article class="row entry container">
-              <h3>Котик</h3>
-              <img src="../static/img/kotik1.jpg" alt="Милый котик">
-              <p class="post">Очень хороший и милый котик</p>
+              <h3>{{ post.title }}</h3>
+              <p class="post">{{ post.body }}</p>
               <div class="pub-date">
-                  <span>Дата публикации: 20-12-2019</span>
+                  <span>{{ post.created }}</span>
                   <a href="{{ url_for('index') }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-home"></span> На главную</a
               </div>
           </article>
