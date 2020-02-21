@@ -3,24 +3,20 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 
 
-from .models import session, User
-
-
-def unique_required(form, field):
-    users = session.query(User).filter(User.name == field.data).all()
-    if len(users) > 0:
-        raise ValidationError('Пользователь с таким именем уже существует')
+from .models import User
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField(
-        'Имя пользователя', [DataRequired(), unique_required]
-    )
-    password = PasswordField('Пароль', [DataRequired(), EqualTo(
-        'confirm', message='Пароли не совпадают')
-    ])
-    confirm = PasswordField('Повторите пароль')
-    submit = SubmitField('Зарегистироваться')
+    username = StringField('Имя пользователя', validators=[DataRequired()])
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Повторите пароль', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Регистрация')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(name=username.data).first()
+        if user is not None:
+            raise ValidationError('Пожалуйста введите другое имя пользователя')
 
 
 class LoginForm(FlaskForm):

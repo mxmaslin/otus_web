@@ -3,7 +3,16 @@
     <h1>Блог о Félis silvéstris cátus</h1>
   </div>
     <div class="row">
-    <a href="{{ url_for('register') }}">Регистрация</a>
-    </div>
+      <a href="{{ url_for('index') }}"><i class="glyphicon glyphicon-home"></i></a>
+      {% if current_user.is_anonymous %}
+        <a href="{{ url_for('register') }}">Регистрация</a>
+        <a href="{{ url_for('login') }}">Вход</a>
+      {% else %}
+        <span>Привет, {{ current_user.name }}</span>
+        <a href="{{ url_for('user, name=current_user.name') }}">Твои посты</a>
+        <a href="#">Новый пост</a>
+        <a href="{{ url_for('logout') }}">Выход</a>
+      {% endif %}
+      </div>
   </div>
 </header>
