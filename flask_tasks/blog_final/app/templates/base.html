@@ -5,10 +5,10 @@
         <title>{% block title %}{% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../static/vendors/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../static/css/styles.css">
-        <script src="../static/vendors/jquery/jquery.min.js"></script>
-        <script src="../static/vendors/bootstrap/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='vendors/bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='static/css/styles.css') }}">
+        <script src="{{ url_for('static', filename='vendors/jquery/jquery.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='vendors/bootstrap/js/bootstrap.min.js')}}"></script>
     {% endblock %}
 </head>
 <body>

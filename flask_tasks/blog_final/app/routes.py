@@ -69,7 +69,9 @@ def user(username):
 def create():
     form = PostForm()
     if form.validate_on_submit():
-        # user = User.query.filter_by(name=current_user.name)
-        # print(user)
+        user = User.query.filter_by(name=current_user.name).first()
+        title = form.title.data
+        body = form.body.data
+        tags = form.tags.data
         return redirect(url_for('user', username=current_user.name))
     return render_template('create-post.html', form=form)

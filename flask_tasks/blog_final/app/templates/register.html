@@ -4,33 +4,35 @@
 {% include 'includes/header.html' %}
 
 <div class="container-fluid">
-  <div class="row centered">
-    <h1>Регистрация</h1>
-    <form action="" method="post">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <h1>Регистрация</h1>
+      <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}<br>
-            {% for error in form.username.errors %}
-              <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+          {{ form.username.label }}<br>
+          {{ form.username(size=32) }}<br>
+          {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
         </p>
         <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}<br>
-            {% for error in form.password.errors %}
-              <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+          {{ form.password.label }}<br>
+          {{ form.password(size=32) }}<br>
+          {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
         </p>
         <p>
-            {{ form.password2.label }}<br>
-            {{ form.password2(size=32) }}<br>
-            {% for error in form.submit.errors %}
-              <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+          {{ form.password2.label }}<br>
+          {{ form.password2(size=32) }}<br>
+          {% for error in form.submit.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
         </p>
         <p>{{ form.submit() }}</p>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
 
