@@ -4,7 +4,7 @@ from flask import render_template, flash, request, redirect, url_for,\
     session
 from flask_login import current_user, login_user, logout_user, login_required
 
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, PostForm
 from .models import Link, User, Post, Tag
 
 
@@ -44,13 +44,13 @@ def login():
     return render_template('login.html', form=form)
 
 
-@app.route('/logout')
+@app.route('/logout/')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
 
-@app.route('/user/<username>')
+@app.route('/user/<username>/')
 @login_required
 def user(username):
     user = User.query.filter_by(name=username).first_or_404()
@@ -64,4 +64,12 @@ def user(username):
     return render_template('user.html', user=user, posts=posts)
 
 
-
+@app.route('/create/', methods=['GET', 'POST'])
+@login_required
+def create():
+    form = PostForm()
+    if form.validate_on_submit():
+        # user = User.query.filter_by(name=current_user.name)
+        # print(user)
+        return redirect(url_for('user', username=current_user.name))
+    return render_template('create-post.html', form=form)
