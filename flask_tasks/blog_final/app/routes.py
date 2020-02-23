@@ -5,7 +5,7 @@ from flask import render_template, flash, request, redirect, url_for,\
 from flask_login import current_user, login_user, logout_user, login_required
 
 from .forms import RegistrationForm, LoginForm, PostForm
-from .models import Link, User, Post, Tag
+from .models import User, Post, Tag
 
 
 @app.route('/')
@@ -61,7 +61,7 @@ def user(username):
             'Контент второго поста',
          'created': 'today', 'tags': []}
     ]
-    return render_template('user.html', user=user, posts=posts)
+    return render_template('user-posts.html', user=user, posts=posts)
 
 
 @app.route('/create/', methods=['GET', 'POST'])
@@ -73,5 +73,27 @@ def create():
         title = form.title.data
         body = form.body.data
         tags = form.tags.data
+        post = Post(title=title, body=body, user=user)
+        for tag in tags:
+            new_tag = Tag(name=tag)
+            # db.session.add(new_tag)
+            # post.tags.append(new_tag)
+        db.session.add(post)
+        db.session.commit()
         return redirect(url_for('user', username=current_user.name))
     return render_template('create-post.html', form=form)
+
+
+@app.route('/<pk>/edit/', methods=['GET', 'POST'])
+def edit(pk):
+    post = Post.query.filter(Post.id == pk).first_or_404()
+    if request.method == 'POST':
+        form = PostForm(request.form, obj=post)
+        if form.validate():
+            entry = form.save_entry(post)
+            db.session.add(entry)
+            db.session.commit()
+            return redirect(url_for('entries.detail', pk=post.id))
+    else:
+        form = PostForm(obj=post)
+    return render_template('edit-post.html', post=post, form=form)

@@ -12,17 +12,11 @@ def load_user(id):
     return User.query.get(int(id))
 
 
-class Link(db.Model):
-    post_id = db.Column(
-        db.Integer,
-        db.ForeignKey('post.id'),
-        primary_key=True
-    )
-    tag_id = db.Column(
-        db.Integer,
-        db.ForeignKey('tag.id'),
-        primary_key=True
-    )
+tag_identifier = db.Table(
+    'tag_identifier',
+    db.Column('post_id', db.Integer, db.ForeignKey('posts.id')),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'))
+)
 
 
 class User(UserMixin, db.Model):
@@ -42,22 +36,23 @@ class User(UserMixin, db.Model):
 
 
 class Post(db.Model):
+    __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     title = db.Column(db.String(120), unique=True, nullable=False)
     body = db.Column(db.Text(120), nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.now())
     user = db.relationship('User', foreign_keys='Post.user_id')
-    tags = db.relationship('Tag', secondary='link')
+    tags = db.relationship('Tag', secondary=tag_identifier)
 
     def __repr__(self):
         return f'{self.title}'
 
 
 class Tag(db.Model):
+    __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
-    posts = db.relationship('Post', secondary='link')
 
     def __repr__(self):
         return f'{self.name}'
