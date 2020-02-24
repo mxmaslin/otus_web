@@ -2,7 +2,7 @@
 
 - Create blog application
 
-The created blog application allows creating blogs for different users,
+The blog application allows creating blogs for different users,
 create/update posts, add tags, view posts of certain blogger, view posts marked by tag, 
 view post details. 
 
