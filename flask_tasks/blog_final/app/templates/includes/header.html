@@ -13,7 +13,7 @@
           <a href="{{ url_for('login') }}">Вход</a>
         {% else %}
           <span>Привет, {{ current_user.name }}</span>
-          <a href="{{ url_for('user', username=current_user.name) }}">Твои посты</a>
+          <a href="{{ url_for('user_posts', username=current_user.name) }}">Твои посты</a>
           <a href="{{ url_for('create') }}">Новый пост</a>
           <a href="{{ url_for('logout') }}">Выход</a>
         {% endif %}

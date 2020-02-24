@@ -1,21 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Посты {{current_user.name}}{% endblock %}
+{% block title %}Посты {{ username }}{% endblock %}
 {% block content %}
 {% include 'includes/header.html' %}
 
 <div class="container-fluid">
   <div class="row">
       <div class="col-md-8 col-md-offset-2">
-        <h1>Посты {{current_user.name}}</h1>
+        <h1>Посты {{username}}</h1>
         {% for post in posts %}
-          <article class="row entry container">
-              <h3>{{ post.title }}</h3>
-              <p class="post">{{ post.body }}</p>
-              <div class="pub-date">
-                  <span>{{ post.created }}</span>
-                  <a href="{{ url_for('index') }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-home"></span> На главную</a
-              </div>
-          </article>
+          {% include 'includes/post.html' %}
         {% endfor %}
       </div>
   </div>

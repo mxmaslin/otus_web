@@ -1,16 +1,20 @@
 from app import app, db
 
-from flask import render_template, flash, request, redirect, url_for,\
-    session
+from flask import render_template, flash, request, redirect, url_for, session
 from flask_login import current_user, login_user, logout_user, login_required
 
 from .forms import RegistrationForm, LoginForm, PostForm
 from .models import User, Post, Tag
+from .filters import format_datetime
+
+app.jinja_env.filters['formatdatetime'] = format_datetime
 
 
 @app.route('/')
+@app.route('/index/')
 def index():
-    return render_template('index.html')
+    posts = Post.query.order_by(Post.created.desc()).all()
+    return render_template('index.html', posts=posts)
 
 
 @app.route('/register/', methods=['GET', 'POST'])
@@ -31,7 +35,7 @@ def register():
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect('index.html')
+        return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(name=form.username.data).first()
@@ -45,23 +49,23 @@ def login():
 
 
 @app.route('/logout/')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
 
 @app.route('/user/<username>/')
-@login_required
-def user(username):
+def user_posts(username):
     user = User.query.filter_by(name=username).first_or_404()
-    posts = [
-        {'author': user, 'title': 'Заголовок первого поста',
-         'body': 'Контент первого поста', 'created': 'today', 'tags': []},
-        {'author': user, 'title': 'Заголовок второго поста', 'body':
-            'Контент второго поста',
-         'created': 'today', 'tags': []}
-    ]
-    return render_template('user-posts.html', user=user, posts=posts)
+    posts = Post.query.filter_by(user=user).all()
+    same_user = user.name == current_user.name
+    return render_template(
+        'user-posts.html',
+        username=username,
+        same_user=same_user,
+        posts=posts
+    )
 
 
 @app.route('/create/', methods=['GET', 'POST'])
@@ -75,25 +79,40 @@ def create():
         tags = form.tags.data
         post = Post(title=title, body=body, user=user)
         for tag in tags:
-            new_tag = Tag(name=tag)
-            # db.session.add(new_tag)
-            # post.tags.append(new_tag)
+            db.session.add(tag)
+            post.tags.append(tag)
         db.session.add(post)
         db.session.commit()
-        return redirect(url_for('user', username=current_user.name))
+        return redirect(url_for('user_posts', username=current_user.name))
     return render_template('create-post.html', form=form)
 
 
-@app.route('/<pk>/edit/', methods=['GET', 'POST'])
+@app.route('/edit/<pk>/', methods=['GET', 'POST'])
+@login_required
 def edit(pk):
     post = Post.query.filter(Post.id == pk).first_or_404()
     if request.method == 'POST':
         form = PostForm(request.form, obj=post)
         if form.validate():
-            entry = form.save_entry(post)
-            db.session.add(entry)
+            form.populate_obj(post)
+            db.session.add(post)
             db.session.commit()
-            return redirect(url_for('entries.detail', pk=post.id))
+            return redirect(url_for('detail', pk=post.id))
     else:
         form = PostForm(obj=post)
     return render_template('edit-post.html', post=post, form=form)
+
+
+@app.route('/detail/<pk>/')
+def detail(pk):
+    post = Post.query.filter_by(id=pk).first()
+    author = post.user.name
+    same_author = author == current_user.name
+    return render_template('post.html', post=post, author=author, same_author=same_author)
+
+
+@app.route('/tag/<pk>/')
+def tag(pk):
+    posts = Post.query.join(Tag).filter(Post.tags.any(Tag.id == pk))
+    print(posts)
+    return render_template('tag.html', posts=posts)

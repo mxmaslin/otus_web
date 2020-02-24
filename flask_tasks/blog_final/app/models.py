@@ -39,7 +39,7 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
-    title = db.Column(db.String(120), unique=True, nullable=False)
+    title = db.Column(db.String(120), nullable=False)
     body = db.Column(db.Text(120), nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.now())
     user = db.relationship('User', foreign_keys='Post.user_id')

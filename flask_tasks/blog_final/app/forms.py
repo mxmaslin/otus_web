@@ -50,4 +50,4 @@ class PostForm(FlaskForm):
     title = StringField('Заголовок', validators=[DataRequired()])
     body = StringField('Текст поста', validators=[DataRequired()])
     tags = TagField('Теги', description='Разделитель - запятая')
-    submit = SubmitField('Опубликовать')
+    submit = SubmitField('Сохранить')
