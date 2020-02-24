@@ -14,7 +14,8 @@ app.jinja_env.filters['formatdatetime'] = format_datetime
 @app.route('/index/')
 def index():
     posts = Post.query.order_by(Post.created.desc()).all()
-    return render_template('index.html', posts=posts)
+    detailed = True
+    return render_template('index.html', posts=posts, detailed=detailed)
 
 
 @app.route('/register/', methods=['GET', 'POST'])
@@ -60,11 +61,13 @@ def user_posts(username):
     user = User.query.filter_by(name=username).first_or_404()
     posts = Post.query.filter_by(user=user).all()
     same_user = user.name == current_user.name
+    detailed = True
     return render_template(
         'user-posts.html',
         username=username,
         same_user=same_user,
-        posts=posts
+        posts=posts,
+        detailed=detailed
     )
 
 
@@ -113,6 +116,6 @@ def detail(pk):
 
 @app.route('/tag/<pk>/')
 def tag(pk):
-    posts = Post.query.join(Tag).filter(Post.tags.any(Tag.id == pk))
-    print(posts)
-    return render_template('tag.html', posts=posts)
+    posts = Post.query.join(Post.tags).filter(Post.tags.any(Tag.id == pk))
+    detailed = True
+    return render_template('tag.html', posts=posts, detailed=detailed)

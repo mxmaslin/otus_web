@@ -12,5 +12,8 @@
       {% if current_user.name == post.user.name %}
         <a href="{{ url_for('edit', pk=post.id) }}">Редактировать</a>
       {% endif %}
+      {% if detailed %}
+        <a href="{{ url_for('detail', pk=post.id) }}">Подробнее</a>
+      {% endif %}
     </div>
 </article>
