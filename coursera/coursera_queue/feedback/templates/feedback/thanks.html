@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Спасибо{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<div class="container">
+
+        <h1>Спасибо за отклик!</h1>
+        <a href="{% url 'courses:course-list' %}">К списку курсов</a>
+</div>
+{% include 'footer.html' %}
+{% endblock %}

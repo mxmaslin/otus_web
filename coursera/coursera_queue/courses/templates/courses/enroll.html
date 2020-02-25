@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Запись на курс{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+<div class="container">
+    <p>Поздравляем, вы записались на {{ course }}!</p>
+    <p><a href="{% url 'courses:course-detail' pk=course.pk %}">Учиться</a></p>
+
+</div>
+{% include 'footer.html' %}
+{% endblock %}
