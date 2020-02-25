@@ -4,3 +4,4 @@
 *.sqlite3
 *.sqlite
 .env
+*.db
