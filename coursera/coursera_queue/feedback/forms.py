@@ -1,5 +1,6 @@
 from django import forms
-from django.core import mail
+
+from .tasks import send_email_task
 
 
 class FeedbackForm(forms.Form):
@@ -10,13 +11,4 @@ class FeedbackForm(forms.Form):
     cc_myself = forms.BooleanField(label='Отправить копию себе', required=False)
 
     def send_email(self):
-        recipient = self.cleaned_data['recipient']
-        subject = self.cleaned_data['subject']
-        message = self.cleaned_data['message']
-        sender = self.cleaned_data['sender']
-        cc_myself = self.cleaned_data['cc_myself']
-        recipients = [recipient, sender] if cc_myself else [recipient]
-        with mail.get_connection() as connection:
-            mail.EmailMessage(
-                subject, message, sender, recipients, connection=connection,
-            ).send()
+        send_email_task(self.cleaned_data)

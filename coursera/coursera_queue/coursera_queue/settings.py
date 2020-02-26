@@ -67,8 +67,15 @@ class CommonSettings(Configuration):
     INTERNAL_IPS = ['127.0.0.1']
     LOGIN_REDIRECT_URL = '/'
     LOGOUT_REDIRECT_URL = '/'
+
     EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
     EMAIL_FILE_PATH = f'{BASE_DIR}/tmp/feedback'
+
+    REDIS_HOST = 'localhost'
+    REDIS_PORT = '6379'
+    BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+    BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+    CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 
 
 class Dev(CommonSettings):
