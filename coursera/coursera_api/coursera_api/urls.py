@@ -8,6 +8,9 @@ urlpatterns = [
     path('auth/', include('django.contrib.auth.urls')),
     path('profiles/', include('profiles.urls', namespace='profiles')),
     path('feedback/', include('feedback.urls', namespace='feedback')),
+
+    path('api/', include('courses.urls', namespace='courses-api')),
+
     path('', include('courses.urls', namespace='courses')),
 ]
 

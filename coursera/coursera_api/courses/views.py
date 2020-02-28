@@ -4,8 +4,12 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.forms.models import modelformset_factory
 
+from rest_framework import generics
+
 from .models import Course, Lesson
 from .forms import CourseForm, LessonFormSet
+from .serialilzers import CourseListSerializer
+
 from profiles.models import Teacher
 
 
@@ -13,6 +17,15 @@ class CourseListView(ListView):
     model = Course
     context_object_name = 'courses'
     template_name = 'courses/course-list.html'
+
+
+class CourseListApiView(generics.ListAPIView):
+    serializer_class = CourseListSerializer
+    model = serializer_class.Meta.model
+    queryset = model.objects.all()
+
+
+
 
 
 class CourseDetailView(DetailView):

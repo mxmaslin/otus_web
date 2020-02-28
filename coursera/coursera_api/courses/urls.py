@@ -14,5 +14,8 @@ urlpatterns = [
     path('edit/<int:pk>/', views.edit_course, name='edit'),
     path('edit-success/', views.edit_success, name='edit-success'),
     path('delete/<int:pk>/', views.delete, name='delete'),
+
+    path('courses/', views.CourseListApiView.as_view(), name='course-list-api'),
+
     path('', views.CourseListView.as_view(), name='course-list'),
 ]

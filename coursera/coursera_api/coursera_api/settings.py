@@ -21,6 +21,7 @@ class CommonSettings(Configuration):
         'profiles.apps.ProfilesConfig',
         'feedback.apps.FeedbackConfig',
         'debug_toolbar',
+        'rest_framework',
     ]
     MIDDLEWARE = [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -76,6 +77,12 @@ class CommonSettings(Configuration):
     BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
     BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
     CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+
+    REST_FRAMEWORK = {
+        'DEFAULT_PERMISSION_CLASSES': [
+            'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        ]
+    }
 
 
 class Dev(CommonSettings):
