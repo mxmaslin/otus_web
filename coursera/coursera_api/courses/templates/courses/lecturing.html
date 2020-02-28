@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои курсы{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+<div class="container">
+    {% if teacher %}
+        <p>Здравствуйте, {{ teacher.first }}</p>
+            {% if teacher.first.courses.all %}
+                <p>Вы ведёте следующие курсы:</p>
+                    <ul>
+                        {% for course in teacher.first.courses.all %}
+                            <li><a href="{% url 'courses:course-detail' pk=course.pk %}">{{ course }}</a></li>
+                        {% endfor %}
+                    </ul>
+            {% else %}
+                <p>Вы не ведёте ни один курс</p>
+            {% endif %}
+    {% else %}
+        <p>Вы не являетесь преподавателем.</p>
+    {% endif %}
+</div>
+{% include 'footer.html' %}
+{% endblock %}
