@@ -28,12 +28,12 @@ class StudentChangeForm(UserChangeForm):
 
 
 class StudentSignUpForm(UserCreationForm):
-   class Meta:
-      model = Student
-      fields = 'username', 'first_name', 'last_name', 'password1', 'password2'
+    class Meta:
+        model = Student
+        fields = 'username', 'first_name', 'last_name', 'password1', 'password2'
 
 
 class TeacherSignUpForm(UserCreationForm):
-   class Meta:
-      model = Teacher
-      fields = 'username', 'first_name', 'last_name', 'password1', 'password2'
+    class Meta:
+        model = Teacher
+        fields = 'username', 'first_name', 'last_name', 'password1', 'password2'
