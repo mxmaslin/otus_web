@@ -35,7 +35,7 @@ class CourseDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        context['enrolled'] = self.is_student_enrolled(user)
+        context['authorized'] = self.is_student_enrolled(user) or user.is_teacher
         context['teaching'] = self.is_course_teacher(user)
         return context
 
