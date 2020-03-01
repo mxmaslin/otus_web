@@ -15,17 +15,12 @@ urlpatterns = [
     path('edit-success/', views.edit_success, name='edit-success'),
     path('delete/<int:pk>/', views.delete, name='delete'),
 
-    path('v1/course/<int:pk>/', views.CourseListApiView.as_view(),
-         name='course-detail-api'),
-    path('v1/enroll/<int:pk>/', views.enroll, name='enroll'),
+    path('v1/courses/', views.CourseList.as_view(), name='course-list-api'),
+    path('v1/course/<int:pk>/', views.CourseDetail.as_view(), name='course-detail-api'),
 
-
-
-    path('v1/courses/', views.CourseListApiView.as_view(), name='course-list-api'),
-
-
-
-
+    # path('v1/enroll/<int:pk>/', views.enroll_api, name='enroll-api'),
+    # path('v1/leave/<int:pk>/', views.leave_api, name='leave-api'),
+    # path('v1/my-courses/', views.my_courses, name='my-courses-api'),
 
     path('', views.CourseListView.as_view(), name='course-list'),
 ]

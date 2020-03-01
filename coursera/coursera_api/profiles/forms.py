@@ -6,13 +6,13 @@ from .models import Teacher, Student
 class TeacherCreationForm(UserCreationForm):
     class Meta(UserCreationForm):
         model = Teacher
-        fields = 'courses',
+        fields = 'username', 'first_name', 'last_name', 'password'
 
 
 class TeacherChangeForm(UserChangeForm):
     class Meta:
         model = Teacher
-        fields = 'courses',
+        fields = 'username', 'first_name', 'last_name', 'password'
 
 
 class StudentCreationForm(UserCreationForm):

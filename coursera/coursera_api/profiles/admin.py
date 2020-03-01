@@ -11,11 +11,10 @@ class TeacherAdmin(UserAdmin):
     form = TeacherChangeForm
     model = Teacher
     list_display = 'first_name', 'last_name'
-    list_filter = 'courses',
     fieldsets = (
         (None, {
             'fields': (
-                'username', 'password', 'first_name', 'last_name', 'courses'
+                'username', 'password', 'first_name', 'last_name'
             )
         }),
         ('Permissions', {'fields': ('is_active', )}),
@@ -23,7 +22,7 @@ class TeacherAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'first_name', 'last_name', 'courses')
+            'fields': ('username', 'password1', 'password2', 'first_name', 'last_name',)
         }),
     )
     list_display_links = 'first_name', 'last_name'

@@ -21,6 +21,9 @@ class Course(models.Model):
             MaxValueValidator(timezone.now)
         ]
     )
+    teacher = models.ForeignKey(
+        'profiles.Teacher', verbose_name='Преподаватель', on_delete=models.PROTECT
+    )
 
     def __str__(self):
         return f'{self.name} {self.started}'

@@ -7,13 +7,13 @@
 <div class="container">
     {% if teacher %}
         <p>Здравствуйте, {{ teacher.first }}</p>
-            {% if teacher.first.courses.all %}
+            {% if lecturing_courses %}
                 <p>Вы ведёте следующие курсы:</p>
-                    <ul>
-                        {% for course in teacher.first.courses.all %}
-                            <li><a href="{% url 'courses:course-detail' pk=course.pk %}">{{ course }}</a></li>
-                        {% endfor %}
-                    </ul>
+                <ul>
+                    {% for course in lecturing_courses %}
+                        <li><a href="{% url 'courses:course-detail' pk=course.pk %}">{{ course }}</a></li>
+                    {% endfor %}
+                </ul>
             {% else %}
                 <p>Вы не ведёте ни один курс</p>
             {% endif %}

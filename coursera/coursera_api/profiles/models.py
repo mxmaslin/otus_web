@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 from .mixins import SendMailMixin
+from courses.models import Course
 
 
 def current_year():
@@ -32,12 +33,8 @@ class User(AbstractUser):
 
 
 class Teacher(User, SendMailMixin):
-    courses = models.ManyToManyField(
-        'courses.Course', related_name='teachers', blank=True
-    )
-
     def is_course_teacher(self, course_id):
-        return self.courses.filter(id=course_id).exists()
+        return Course.objects.get(id=course_id).teacher == self
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'

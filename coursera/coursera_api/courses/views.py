@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.list import ListView
@@ -5,10 +6,14 @@ from django.views.generic.detail import DetailView
 from django.forms.models import modelformset_factory
 
 from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
 from .models import Course, Lesson
 from .forms import CourseForm, LessonFormSet
-from .serialilzers import CourseListSerializer
+from .serialilzers import CourseListSerializer, CourseDetailSerializer
 
 from profiles.models import Teacher
 
@@ -19,15 +24,6 @@ class CourseListView(ListView):
     template_name = 'courses/course-list.html'
 
 
-class CourseListApiView(generics.ListAPIView):
-    serializer_class = CourseListSerializer
-    model = serializer_class.Meta.model
-    queryset = model.objects.all()
-
-
-
-
-
 class CourseDetailView(DetailView):
     model = Course
     template_name = 'courses/course-detail.html'
@@ -35,7 +31,7 @@ class CourseDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        context['authorized'] = self.is_student_enrolled(user) or user.is_teacher
+        context['is_enrolled'] = self.is_student_enrolled(user)
         context['teaching'] = self.is_course_teacher(user)
         return context
 
@@ -84,11 +80,19 @@ class MyLecturingView(ListView):
     context_object_name = 'lecturing_courses'
     template_name = 'courses/lecturing.html'
 
+    def get_teacher(self):
+        return Teacher.objects.filter(id=self.request.user.id)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        teacher = Teacher.objects.filter(id=self.request.user.id)
-        context.update({'teacher': teacher})
+        context.update({'teacher': self.get_teacher()})
         return context
+
+    def get_queryset(self):
+        teacher = self.get_teacher()
+        if teacher:
+            return Course.objects.filter(teacher=teacher.first())
+        return Course.objects.none()
 
 
 def create_course(request):
@@ -99,8 +103,9 @@ def create_course(request):
     )
     teacher = Teacher.objects.filter(id=request.user.id)
     if form.is_valid() and formset.is_valid():
-        course = form.save()
-        teacher.first().courses.add(course)
+        course = form.save(commit=False)
+        course.teacher = teacher.first()
+        course.save()
         lessons = []
         for f_form in formset:
             if f_form.is_valid() and f_form.has_changed():
@@ -141,15 +146,16 @@ def edit_course(request, pk):
     )
     teacher = Teacher.objects.filter(id=request.user.id)
     if form.is_valid() and formset.is_valid():
+        course = form.save()
         lessons = []
         for f_form in formset:
             if f_form.is_valid():
                 lesson_name = f_form.cleaned_data['name']
                 lesson_content = f_form.cleaned_data['content']
                 lessons.append(
-                    Lesson(name=lesson_name, content=lesson_content, course=course.first())
+                    Lesson(name=lesson_name, content=lesson_content, course=course)
                 )
-        course.first().lessons.all().delete()
+        course.lessons.all().delete()
         Lesson.objects.bulk_create(lessons)
         request.session['course_name'] = form.cleaned_data['name']
         return redirect(reverse('courses:edit-success'))
@@ -178,3 +184,72 @@ def delete(request, pk):
 class LecturingCourseDetailView(DetailView):
     model = Course
     template_name = 'courses/'
+
+
+class CourseListApiView(generics.ListAPIView):
+    serializer_class = CourseListSerializer
+    model = serializer_class.Meta.model
+    queryset = model.objects.all()
+
+
+################################################################################
+
+
+class CourseList(APIView):
+    def get(self, request, format=None):
+        courses = Course.objects.all()
+        serializer = CourseListSerializer(courses, many=True)
+        return Response(serializer.data)
+
+#     def post(self, request, format=None):
+#         serializer = CourseSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CourseDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Course.objects.get(pk=pk)
+        except Course.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        course = self.get_object(pk)
+        serializer = CourseDetailSerializer(course)
+        return Response(serializer.data)
+
+#     def put(self, request, pk, format=None):
+#         course = self.get_object(pk)
+#         serializer = CourseSerializer(course, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#
+#     def delete(self, request, pk, format=None):
+#         course = self.get_object(pk)
+#         course.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+#
+#
+# @api_view(['GET'])
+# def enroll_api(request):
+#     pass
+#
+#
+# @api_view(['GET'])
+# def leave_api(request):
+#     pass
+#
+#
+# @api_view(['GET'])
+# def my_courses(request):
+#     pass
+#
+#
+# @api_view(['GET'])
+# def lecturing(request):
+#     pass

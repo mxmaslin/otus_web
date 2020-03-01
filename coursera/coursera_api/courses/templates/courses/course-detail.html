@@ -8,8 +8,7 @@
   <p>Имя курса: {{ course.name }}</p>
   <p>Начало курса: {{ course.started }}</p>
   {% if user.is_authenticated %}
-    {% if authorized %}
-      asdfasdf
+    {% if is_enrolled %}
       <ol>
         {% for lesson in course.lessons.all %}
           <li>
