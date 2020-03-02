@@ -7,10 +7,15 @@ class CourseListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = 'id', 'name', 'started', 'url'
+
+
+class CoursePublicDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
         fields = 'id', 'name', 'started'
 
 
-class CourseDetailSerializer(serializers.ModelSerializer):
+class CourseStudentDetailSerializer(serializers.ModelSerializer):
     teacher = serializers.ReadOnlyField(source='teacher.username')
 
     class Meta:
