@@ -6,6 +6,7 @@ from .models import Course, Lesson
 class CourseListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
+        fields = 'id', 'name', 'started', 'url'
         fields = 'id', 'name', 'started'
 
 

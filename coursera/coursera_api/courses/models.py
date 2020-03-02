@@ -1,5 +1,6 @@
 import datetime
 
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.timezone import make_aware
 
@@ -27,6 +28,10 @@ class Course(models.Model):
 
     def __str__(self):
         return f'{self.name} {self.started}'
+
+    @property
+    def url(self):
+        return reverse('courses:course-detail-api', args=[str(self.id)])
 
     class Meta:
         ordering = 'name',
