@@ -10,11 +10,11 @@ class CourseListSerializer(serializers.ModelSerializer):
 
 
 class CourseDetailSerializer(serializers.ModelSerializer):
-    teachers = serializers.RelatedField( read_only=True)
+    teacher = serializers.ReadOnlyField(source='teacher.username')
 
     class Meta:
         model = Course
-        fields = 'id', 'name', 'started', 'teachers'
+        fields = 'id', 'name', 'started', 'teacher'
 
 
 
