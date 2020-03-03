@@ -37,6 +37,10 @@ class CourseDetailView(DetailView):
         user = self.request.user
         context['is_enrolled'] = user.is_course_student(self.object.id)
         context['teaching'] = user.is_course_teacher(self.object.id)
+        context['is_authorized'] = (
+                user.is_course_student(self.object.id) or
+                user.is_teacher
+        )
         return context
 
 

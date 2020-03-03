@@ -33,7 +33,7 @@ class User(AbstractUser):
 
     def is_course_teacher(self, course_id):
         if self.is_teacher:
-            return Course.objects.get(id=course_id).teacher == self
+            return Course.objects.get(id=course_id).teacher.id == self.id
         return False
 
     def is_course_student(self, course_id):
