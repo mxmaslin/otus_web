@@ -31,11 +31,19 @@ class User(AbstractUser):
             return Student.objects.get(id=self.id)
         return None
 
+    def is_course_teacher(self, course_id):
+        if self.is_teacher:
+            return Course.objects.get(id=course_id).teacher == self
+        return False
+
+    def is_course_student(self, course_id):
+        if self.is_student:
+            return Course.objects.get(
+                id=course_id).students.filter(id=self.id).exists()
+        return False
+
 
 class Teacher(User, SendMailMixin):
-    def is_course_teacher(self, course_id):
-        return Course.objects.get(id=course_id).teacher == self
-
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
@@ -54,9 +62,6 @@ class Student(User, SendMailMixin):
     courses = models.ManyToManyField(
         'courses.Course', related_name='students', blank=True
     )
-
-    def is_enrolled(self, course_id):
-        return self.courses.filter(id=course_id).exists()
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
