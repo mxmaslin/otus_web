@@ -15,16 +15,16 @@ class CoursePublicDetailSerializer(serializers.ModelSerializer):
         fields = 'id', 'name', 'started'
 
 
-class CourseStudentDetailSerializer(serializers.ModelSerializer):
-    teacher = serializers.ReadOnlyField(source='teacher.username')
-
-    class Meta:
-        model = Course
-        fields = 'id', 'name', 'started', 'teacher'
-
-
-
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
-        fields = 'id', 'course', 'name'
+        fields = 'id', 'course', 'name', 'content'
+
+
+class CourseStudentDetailSerializer(serializers.ModelSerializer):
+    teacher = serializers.ReadOnlyField(source='teacher.username')
+    lessons = LessonSerializer(many=True)
+
+    class Meta:
+        model = Course
+        fields = 'id', 'name', 'started', 'teacher', 'lessons'

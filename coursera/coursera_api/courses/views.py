@@ -14,8 +14,9 @@ from rest_framework import status
 from .models import Course, Lesson
 from .forms import CourseForm, LessonFormSet
 from .serialilzers import (
-    CourseListSerializer, CoursePublicDetailSerializer,
-    CoursePublicDetailSerializer
+    CourseListSerializer,
+    CoursePublicDetailSerializer,
+    CourseStudentDetailSerializer
 )
 
 from profiles.models import Teacher
@@ -207,8 +208,9 @@ class CourseDetail(APIView):
 
     def get(self, request, pk, format=None):
         course = self.get_object(pk)
-        print(request.user.is_course_student(pk))
         serializer = CoursePublicDetailSerializer(course)
+        if request.user.is_course_student(pk):
+            serializer = CourseStudentDetailSerializer(course)
         return Response(serializer.data)
 
 #     def put(self, request, pk, format=None):
