@@ -22,6 +22,8 @@ class CommonSettings(Configuration):
         'feedback.apps.FeedbackConfig',
         'debug_toolbar',
         'rest_framework',
+        'rest_framework.authtoken',
+        'token_auth_api.apps.TokenAuthApiConfig',
     ]
     MIDDLEWARE = [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -79,11 +81,11 @@ class CommonSettings(Configuration):
     CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 
     REST_FRAMEWORK = {
-        'DEFAULT_PERMISSION_CLASSES': [
-
-        # 'rest_framework.permissions.IsAuthenticated',
-            # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-        ]
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework.authentication.BasicAuthentication',
+            'rest_framework.authentication.SessionAuthentication',
+            'rest_framework.authentication.TokenAuthentication',
+        )
     }
 
 

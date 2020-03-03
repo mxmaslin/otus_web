@@ -10,6 +10,9 @@ urlpatterns = [
     path('feedback/', include('feedback.urls', namespace='feedback')),
 
     path('api/', include('courses.urls', namespace='courses-api')),
+    path('token-auth-api/',
+         include('token_auth_api.urls', namespace='token-auth-api')
+         ),
 
     path('', include('courses.urls', namespace='courses')),
 ]
