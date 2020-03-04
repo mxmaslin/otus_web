@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 from django.forms.models import modelformset_factory
 
 from rest_framework import generics
+from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -19,6 +20,7 @@ from .serialilzers import (
     CourseStudentDetailSerializer,
     CourseTeacherSerializer
 )
+from .permissions import IsTeacherOrReadOnly, IsCourseTeacherOrReadOnly
 
 from profiles.models import Teacher
 
@@ -191,6 +193,8 @@ class CourseListApiView(generics.ListAPIView):
 
 
 class CourseList(APIView):
+    permission_classes = [IsTeacherOrReadOnly]
+
     def get(self, request, format=None):
         courses = Course.objects.all()
         serializer = CourseListSerializer(courses, many=True)
@@ -205,6 +209,8 @@ class CourseList(APIView):
 
 
 class CourseDetail(APIView):
+    permission_classes = [IsCourseTeacherOrReadOnly]
+
     def get_object(self, pk):
         try:
             return Course.objects.get(pk=pk)
@@ -223,6 +229,7 @@ class CourseDetail(APIView):
 
     def put(self, request, pk, format=None):
         course = self.get_object(pk)
+        self.check_object_permissions(self.request, course)
         serializer = CourseTeacherSerializer(course, data=request.data)
         if serializer.is_valid():
             serializer.save()
