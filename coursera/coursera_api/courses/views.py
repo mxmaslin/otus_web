@@ -213,8 +213,11 @@ class CourseDetail(APIView):
     def get(self, request, pk, format=None):
         course = self.get_object(pk)
         serializer = CoursePublicDetailSerializer(course)
-        if request.user.is_course_student(pk):
-            serializer = CourseStudentDetailSerializer(course)
+        if request.user.is_authenticated:
+            enrolled = request.user.is_course_student(pk)
+            teacher = request.user.is_teacher
+            if enrolled or teacher:
+                serializer = CourseStudentDetailSerializer(course)
         return Response(serializer.data)
 
 #     def put(self, request, pk, format=None):
