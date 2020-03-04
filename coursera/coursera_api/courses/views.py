@@ -16,7 +16,8 @@ from .forms import CourseForm, LessonFormSet
 from .serialilzers import (
     CourseListSerializer,
     CoursePublicDetailSerializer,
-    CourseStudentDetailSerializer
+    CourseStudentDetailSerializer,
+    CourseTeacherSerializer
 )
 
 from profiles.models import Teacher
@@ -195,12 +196,12 @@ class CourseList(APIView):
         serializer = CourseListSerializer(courses, many=True)
         return Response(serializer.data)
 
-#     def post(self, request, format=None):
-#         serializer = CourseSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, format=None):
+        serializer = CourseTeacherSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CourseDetail(APIView):
@@ -220,20 +221,20 @@ class CourseDetail(APIView):
                 serializer = CourseStudentDetailSerializer(course)
         return Response(serializer.data)
 
-#     def put(self, request, pk, format=None):
-#         course = self.get_object(pk)
-#         serializer = CourseSerializer(course, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#     def delete(self, request, pk, format=None):
-#         course = self.get_object(pk)
-#         course.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-#
-#
+    def put(self, request, pk, format=None):
+        course = self.get_object(pk)
+        serializer = CourseTeacherSerializer(course, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        course = self.get_object(pk)
+        course.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 # @api_view(['GET'])
 # def enroll_api(request):
 #     pass
