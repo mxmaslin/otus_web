@@ -31,6 +31,12 @@ class User(AbstractUser):
             return Student.objects.get(id=self.id)
         return None
 
+    @property
+    def teacher(self):
+        if self.is_teacher:
+            return Teacher.objects.get(id=self.id)
+        return None
+
     def is_course_teacher(self, course_id):
         if self.is_teacher:
             return Course.objects.get(id=course_id).teacher.id == self.id
