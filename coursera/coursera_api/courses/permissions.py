@@ -19,3 +19,14 @@ class IsCourseTeacherOrReadOnly(permissions.BasePermission):
                 request.user.is_teacher and
                 obj.teacher == request.user.teacher
                 )
+
+
+class IsStudent(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_student
+
+
+class IsCourseStudent(permissions.BasePermission):
+    def has_permission(self, request, view):
+        course_id = request.data['course_id']
+        return request.user.is_course_student(course_id)

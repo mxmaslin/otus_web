@@ -13,6 +13,7 @@ urlpatterns = [
     path('token-auth-api/',
          include('token_auth_api.urls', namespace='token-auth-api')
          ),
+    path('profiles-api/', include('profiles.urls', namespace='profiles-api')),
 
     path('', include('courses.urls', namespace='courses')),
 ]

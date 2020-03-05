@@ -1,11 +1,11 @@
 from django.http import Http404
 
 from rest_framework import serializers
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
 
 from .models import Course
 from .serialilzers import (
@@ -14,9 +14,12 @@ from .serialilzers import (
     CourseStudentDetailSerializer,
     CourseTeacherSerializer
 )
-from .permissions import IsTeacherOrReadOnly, IsCourseTeacherOrReadOnly
+from .permissions import (
+    IsTeacherOrReadOnly, IsCourseTeacherOrReadOnly, IsStudent, IsCourseStudent
+)
 
-from profiles.models import User
+from profiles.models import User, Student
+
 
 class CourseList(APIView):
     permission_classes = [IsTeacherOrReadOnly]
@@ -39,7 +42,9 @@ class CourseDetail(APIView):
 
     def get_object(self, pk):
         try:
-            return Course.objects.get(pk=pk)
+            course = Course.objects.get(pk=pk)
+            self.check_object_permissions(self.request, course)
+            return course
         except Course.DoesNotExist:
             raise Http404
 
@@ -55,7 +60,6 @@ class CourseDetail(APIView):
 
     def put(self, request, pk, format=None):
         course = self.get_object(pk)
-        self.check_object_permissions(self.request, course)
         serializer = CourseTeacherSerializer(course, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -64,7 +68,6 @@ class CourseDetail(APIView):
 
     def delete(self, request, pk, format=None):
         course = self.get_object(pk)
-        self.check_object_permissions(self.request, course)
         course.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -95,23 +98,25 @@ def lecturing(request):
     return Response(serializer.data)
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsStudent])
+def enroll(request):
+    try:
+        course = Course.objects.get(id=request.data['course_id'])
+        student = Student.objects.get(username=request.data[
+            'student_username'])
+        student.courses.add(course)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except (Course.DoesNotExist, Student.DoesNotExist):
+        content = {'error': 'incorrect request parameters'}
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
-def register_student(request):
-    pass
-
-
-@api_view(['POST'])
-def register_teacher(request):
-    pass
-
-
-@api_view(['GET'])
-def enroll_api(request):
-    pass
-
-
-@api_view(['GET'])
-def leave_api(request):
-    pass
-
+@permission_classes([IsAuthenticated, IsStudent, IsCourseStudent])
+def leave(request):
+    course = Course.objects.get(id=request.data['course_id'])
+    student = Student.objects.get(username=request.data[
+        'student_username'])
+    student.courses.remove(course)
+    return Response(status=status.HTTP_204_NO_CONTENT)

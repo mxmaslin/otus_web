@@ -22,14 +22,8 @@ urlpatterns = [
     path('v1/my-courses/', api_views.my_courses, name='my-courses-api'),
     path('v1/lecturing/', api_views.lecturing, name='lecturing-api'),
 
-    path('v1/register-student/', api_views.register_student,
-         name='register-student-api'),
-    path('v1/register-teacher/', api_views.register_teacher,
-         name='register-teacher-api'),
-
-    # path('v1/enroll/<int:pk>/', api_views.enroll_api, name='enroll-api'),
-    # path('v1/leave/<int:pk>/', api_views.leave_api, name='leave-api'),
-
+    path('v1/enroll/', api_views.enroll, name='enroll-api'),
+    path('v1/leave/', api_views.leave, name='leave-api'),
 
     path('', views.CourseListView.as_view(), name='course-list'),
 ]
