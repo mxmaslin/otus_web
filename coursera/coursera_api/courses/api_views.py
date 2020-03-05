@@ -15,7 +15,7 @@ from .serialilzers import (
     CourseTeacherSerializer
 )
 from .permissions import (
-    IsTeacherOrReadOnly, IsCourseTeacherOrReadOnly, IsStudent, IsCourseStudent
+    IsTeacherOrReadOnly, IsCourseTeacherOrReadOnly, IsStudent
 )
 
 from profiles.models import User, Student
@@ -113,10 +113,15 @@ def enroll(request):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsStudent, IsCourseStudent])
+@permission_classes([IsAuthenticated, IsStudent])
 def leave(request):
-    course = Course.objects.get(id=request.data['course_id'])
-    student = Student.objects.get(username=request.data[
-        'student_username'])
-    student.courses.remove(course)
-    return Response(status=status.HTTP_204_NO_CONTENT)
+    course_id = request.data['course_id']
+    if request.user.is_course_student(course_id):
+        course = Course.objects.get(id=course_id)
+        student = Student.objects.get(
+            username=request.data['student_username']
+        )
+        student.courses.remove(course)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    content = {'error': 'incorrect request parameters'}
+    return Response(content, status=status.HTTP_400_BAD_REQUEST)
