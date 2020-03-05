@@ -17,6 +17,7 @@ class CommonSettings(Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'rest_framework_swagger',
         'courses.apps.CoursesConfig',
         'profiles.apps.ProfilesConfig',
         'feedback.apps.FeedbackConfig',
@@ -85,7 +86,8 @@ class CommonSettings(Configuration):
             'rest_framework.authentication.BasicAuthentication',
             'rest_framework.authentication.SessionAuthentication',
             'rest_framework.authentication.TokenAuthentication',
-        )
+        ),
+        'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
     }
 
 
