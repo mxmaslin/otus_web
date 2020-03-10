@@ -6,13 +6,16 @@ from django.urls import reverse
 
 from rest_framework import status
 from rest_framework.test import (
-    APITestCase, APIRequestFactory, APITransactionTestCase, APISimpleTestCase
+    force_authenticate, APITestCase, APIRequestFactory, APITransactionTestCase,
+    APISimpleTestCase
 )
 
 from rest_framework.authtoken.models import Token
 
-from profiles.models import Teacher, Student
 from .factories import CourseFactory, LessonFactory
+from .api_views import CourseDetail, leave
+
+from profiles.models import Teacher, Student
 
 
 class SetupMixin(unittest.TestCase):
@@ -84,25 +87,38 @@ class TestCaseForCourseAPITransaction(SetupMixin, APITransactionTestCase):
 
     def test_course_details_enrolled(self):
         self.student1.courses.add(self.course1)
-        courses_url = reverse('courses:course-detail-api', args=[self.course1.id])
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.student1token.key)
-        response = self.client.get(courses_url)
-        self.assertTrue('lessons' in response.json())
+        factory = APIRequestFactory()
+        course = self.course1
+        view = CourseDetail.as_view()
+        request = factory.get('/v1/course/')
+        force_authenticate(request, user=self.student1, token=self.student1token)
+        response = view(request, pk=course.id)
+        self.assertTrue('lessons' in response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_my_enrolled(self):
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.student1token.key)
         self.student1.courses.add(self.course1)
-        courses_url = reverse('courses:my-courses-api')
-        response = self.client.get(courses_url, format='json')
-        self.assertTrue(response.json()[0]['name'] == 'Курс1')
+        factory = APIRequestFactory()
+        course = self.course1
+        view = CourseDetail.as_view()
+        request = factory.get('/v1/course/')
+        force_authenticate(request, user=self.student1, token=self.student1token)
+        response = view(request, pk=course.id)
+        self.assertTrue(response.data['name'] == 'Курс1')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_leave_course_student(self):
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.student1token.key)
         self.student1.courses.add(self.course1)
-        courses_url = reverse('courses:leave-api')
-        payload = {'course_id': self.course1.id, 'student_username': self.student1.username}
-        response = self.client.post(courses_url, payload, format='json')
+        factory = APIRequestFactory()
+        course = self.course1
+        view = leave
+        payload = {
+            'course_id': course.id,
+            'student_username': self.student1.username
+        }
+        request = factory.post('/v1/leave/', payload)
+        force_authenticate(request, user=self.student1, token=self.student1token)
+        response = view(request)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
