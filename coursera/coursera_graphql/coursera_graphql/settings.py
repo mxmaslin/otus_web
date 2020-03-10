@@ -18,6 +18,7 @@ class CommonSettings(Configuration):
         'django.contrib.messages',
         'django.contrib.staticfiles',
         'rest_framework_swagger',
+        'graphene_django',
         'courses.apps.CoursesConfig',
         'profiles.apps.ProfilesConfig',
         'feedback.apps.FeedbackConfig',

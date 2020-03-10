@@ -1,7 +1,7 @@
 import os
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coursera_graphql.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coursera_api_tested.settings')
 os.environ.setdefault('DJANGO_CONFIGURATION', 'Dev')
 
 from configurations.wsgi import get_wsgi_application

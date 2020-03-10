@@ -38,6 +38,8 @@ class TestCaseForCourse(APITestCase):
             content='Содержание урока2',
             course=self.course2
         )
+
+    def setUpTestData(self):
         self.course_post_payload = {
             'name': 'Тестовый курс',
             'started': '2017-05-01T15:12:04+03:00',

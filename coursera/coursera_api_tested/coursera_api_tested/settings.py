@@ -36,7 +36,7 @@ class CommonSettings(Configuration):
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ]
-    ROOT_URLCONF = 'coursera_graphql.urls'
+    ROOT_URLCONF = 'coursera_api_tested.urls'
     TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -52,7 +52,7 @@ class CommonSettings(Configuration):
             },
         },
     ]
-    WSGI_APPLICATION = 'coursera_graphql.wsgi.application'
+    WSGI_APPLICATION = 'coursera_api_tested.wsgi.application'
     path = 'django.contrib.auth.password_validation'
     AUTH_PASSWORD_VALIDATORS = [
         {'NAME': f'{path}.UserAttributeSimilarityValidator'},
