@@ -78,7 +78,32 @@ class SetupMixin(unittest.TestCase):
 
 
 class TestCaseForCourseAPITransaction(SetupMixin, APITransactionTestCase):
-    pass
+    def setUp(self):
+        super().setUpTestData()
+        super().setUp()
+
+    def test_course_details_enrolled(self):
+        self.student1.courses.add(self.course1)
+        courses_url = reverse('courses:course-detail-api', args=[self.course1.id])
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.student1token.key)
+        response = self.client.get(courses_url)
+        self.assertTrue('lessons' in response.json())
+
+    def test_my_enrolled(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.student1token.key)
+        self.student1.courses.add(self.course1)
+        courses_url = reverse('courses:my-courses-api')
+        response = self.client.get(courses_url, format='json')
+        self.assertTrue(response.json()[0]['name'] == 'Курс1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_leave_course_student(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.student1token.key)
+        self.student1.courses.add(self.course1)
+        courses_url = reverse('courses:leave-api')
+        payload = {'course_id': self.course1.id, 'student_username': self.student1.username}
+        response = self.client.post(courses_url, payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
 class TestCaseForCourseAPISimple(SetupMixin, APISimpleTestCase):
@@ -123,15 +148,7 @@ class TestCaseForCourseAPI(SetupMixin, APITestCase):
         self.assertEqual(len(response.json()), 2)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_course_details_enrolled(self):
-        self.student1.courses.add(self.course1)
-        courses_url = reverse('courses:course-detail-api', args=[self.course1.id])
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.student1token.key)
-        response = self.client.get(courses_url)
-        self.assertTrue('lessons' in response.json())
-
     def test_course_details_teacher(self):
-        self.course1.teacher = self.teacher1
         courses_url = reverse('courses:course-detail-api', args=[self.course1.id])
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.teacher1token.key)
         response = self.client.get(courses_url)
@@ -165,14 +182,6 @@ class TestCaseForCourseAPI(SetupMixin, APITestCase):
         response = self.client.put(courses_url, self.course_put_payload, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_my_enrolled(self):
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.student1token.key)
-        self.student1.courses.add(self.course1)
-        courses_url = reverse('courses:my-courses-api')
-        response = self.client.get(courses_url, format='json')
-        self.assertTrue(response.json()[0]['name'] == 'Курс1')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
     def test_my_lecturing(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.teacher1token.key)
         courses_url = reverse('courses:lecturing-api')
@@ -185,12 +194,4 @@ class TestCaseForCourseAPI(SetupMixin, APITestCase):
         courses_url = reverse('courses:lecturing-api')
         response = self.client.get(courses_url, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_leave_course_student(self):
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.student1token.key)
-        self.student1.courses.add(self.course1)
-        courses_url = reverse('courses:leave-api')
-        payload = {'course_id': self.course1.id, 'student_username': self.student1.username}
-        response = self.client.post(courses_url, payload, format='json')
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
