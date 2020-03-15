@@ -3,6 +3,7 @@ import logging
 import unittest
 import pytest
 
+from django.test import TestCase
 from django.urls import reverse
 
 from rest_framework import status
@@ -13,11 +14,11 @@ from rest_framework.test import (
 from rest_framework.authtoken.models import Token
 from graphene.test import Client as GrapheneClient
 
-from .factories import CourseFactory, LessonFactory
+from .factories import CourseFactory, LessonFactory, TeacherFactory
 from .api_views import CourseDetail, leave
 from profiles.models import Teacher, Student
 
-from coursera_graphql import schema
+from coursera_graphql.schema import schema
 
 
 class SetupMixin(unittest.TestCase):
@@ -214,19 +215,112 @@ class TestCaseForCourseAPI(SetupMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
+class GraphQLTestCase(TestCase):
+    def setUp(self):
+        self.teacher = TeacherFactory(
+            username='teacher',
+            password='123'
+        )
+        self.course = CourseFactory(
+            name='Курс 1',
+            started='2017-05-01T15:12:04+03:00',
+            teacher=self.teacher,
+        )
+        self.client = GrapheneClient(schema)
 
-#
-# @pytest.fixture
-# def get_course():
-#
-#     return
-#
-#
-# def test_hey():
-#     client = GrapheneClient(my_schema)
-#     executed = client.execute('''{ hey }''')
-#     assert executed == {
-#         'data': {
-#             'hey': 'hello!'
-#         }
-#     }
+    def test_get_course(self):
+        executed = self.client.execute(
+            '''query{
+                courses{
+                    name
+                    teacher{
+                        username
+                    }
+                    students{
+                        username
+                    }
+                }
+            }'''
+        )
+        self.assertEqual(executed, {
+            "data": {
+                "courses": [
+                    {
+                        "name": "Курс 1",
+                        "teacher": {
+                            "username": "teacher"
+                        },
+                        "students": []
+                    }
+                ]
+            }
+        })
+
+    def test_create_course(self):
+        executed = self.client.execute(
+            '''mutation{
+                createCourse(courseData: {
+                    name: "Курс 2",
+                    started: "2019-05-01T15:12:04+03:00",
+                    teacher: "teacher"
+                })
+                {
+                    course
+                    {
+                        name
+                        started
+                        teacher
+                        {
+                            username
+                        }
+                    }
+                }
+            }
+        ''')
+        self.assertEqual(executed, {
+            "data": {
+                "createCourse": {
+                    "course": {
+                        "name": "Курс 2",
+                        "started": "2019-05-01T15:12:04+03:00",
+                        "teacher": {
+                            "username": "teacher"
+                        }
+                    }
+                }
+            }
+        })
+
+    def test_update_course(self):
+        executed = self.client.execute(
+            """mutation {
+                updateCourse(courseData:{
+            """ + f'id: {self.course.id}' +
+            """
+                name: "Новое название курса",
+                started: "2019-05-01T15:12:04+03:00", 
+                teacher: "teacher"
+            })
+            {
+                course{
+                    name
+                    started
+                    teacher {
+                        username
+                    }
+                } 
+            }
+        }""")
+        self.assertEqual(executed, {
+          "data": {
+              "updateCourse": {
+                  "course": {
+                      "name": "Новое название курса",
+                      "started": "2019-05-01T15:12:04+03:00",
+                      "teacher": {
+                          "username": "teacher"
+                      }
+                  }
+              }
+          }
+        })

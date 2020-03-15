@@ -77,5 +77,9 @@ mutation {
   }
 }
 ```
+
+To start the tests:
+
+    ./manage.py tests courses
     
 The application developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.

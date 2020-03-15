@@ -109,10 +109,11 @@ class CreateCourse(graphene.Mutation):
 
 
 class UpdateCourse(graphene.Mutation):
-    course = graphene.Field(CourseType)
-
     class Arguments:
         course_data = CourseInput(required=True)
+
+    course = graphene.Field(CourseType)
+    ok = graphene.Boolean()
 
     def mutate(self, info, course_data):
         course = Course.objects.get(pk=course_data.id)
@@ -127,7 +128,7 @@ class UpdateCourse(graphene.Mutation):
         course.started = started
         course.teacher = teacher_obj
         course.save()
-        return UpdateCourse(course=course)
+        return UpdateCourse(course=course, ok=True)
 
 
 class Mutation(ObjectType):

@@ -93,6 +93,7 @@ class CommonSettings(Configuration):
     GRAPHENE = {
         'SCHEMA': 'coursera_graphql.schema.schema'
     }
+    TEST_RUNNER = 'coursera_graphql.runner.PytestTestRunner'
 
 
 class Dev(CommonSettings):
