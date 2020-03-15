@@ -1,6 +1,7 @@
 import sys
 import logging
 import unittest
+import pytest
 
 from django.urls import reverse
 
@@ -9,13 +10,14 @@ from rest_framework.test import (
     force_authenticate, APITestCase, APIRequestFactory, APITransactionTestCase,
     APISimpleTestCase
 )
-
 from rest_framework.authtoken.models import Token
+from graphene.test import Client as GrapheneClient
 
 from .factories import CourseFactory, LessonFactory
 from .api_views import CourseDetail, leave
-
 from profiles.models import Teacher, Student
+
+from coursera_graphql import schema
 
 
 class SetupMixin(unittest.TestCase):
@@ -210,3 +212,21 @@ class TestCaseForCourseAPI(SetupMixin, APITestCase):
         courses_url = reverse('courses:lecturing-api')
         response = self.client.get(courses_url, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+
+#
+# @pytest.fixture
+# def get_course():
+#
+#     return
+#
+#
+# def test_hey():
+#     client = GrapheneClient(my_schema)
+#     executed = client.execute('''{ hey }''')
+#     assert executed == {
+#         'data': {
+#             'hey': 'hello!'
+#         }
+#     }
