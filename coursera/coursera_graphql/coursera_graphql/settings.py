@@ -90,6 +90,9 @@ class CommonSettings(Configuration):
         ),
         'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
     }
+    GRAPHENE = {
+        'SCHEMA': 'coursera_graphql.schema.schema'
+    }
 
 
 class Dev(CommonSettings):
