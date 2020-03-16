@@ -42,25 +42,37 @@ class Query(ObjectType):
     def resolve_course(self, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
-            return Course.objects.get(pk=id)
+            try:
+                return Course.objects.get(pk=id)
+            except Course.DoesNotExist:
+                raise GraphQLError(f'Course with {id} not found')
         return None
 
     def resolve_lesson(self, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
-            return Lesson.objects.get(pk=id)
+            try:
+                return Lesson.objects.get(pk=id)
+            except Lesson.DoesNotExist:
+                raise GraphQLError(f'Lesson with {id} not found')
         return None
 
     def resolve_teacher(self, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
-            return Teacher.objects.get(pk=id)
+            try:
+                return Teacher.objects.get(pk=id)
+            except Lesson.DoesNotExist:
+                raise GraphQLError(f'Teacher with {id} not found')
         return None
 
     def resolve_student(self, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
-            return Student.objects.get(pk=id)
+            try:
+                return Student.objects.get(pk=id)
+            except Student.DoesNotExist:
+                raise GraphQLError(f'Student with {id} not found')
         return None
 
     def resolve_courses(self, info, **kwargs):
