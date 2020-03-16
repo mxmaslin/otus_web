@@ -128,7 +128,10 @@ class UpdateCourse(graphene.Mutation):
     ok = graphene.Boolean()
 
     def mutate(self, info, course_data):
-        course = Course.objects.get(pk=course_data.id)
+        try:
+            course = Course.objects.get(pk=course_data.id)
+        except Course.DoesNotExist:
+            raise GraphQLError(f'Course with {course_data.id} not found')
         name = course_data.name
         started = course_data.started
         teacher_obj = Teacher.objects.filter(
