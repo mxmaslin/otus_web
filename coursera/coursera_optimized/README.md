@@ -1,85 +1,27 @@
 # Educational site
 
-There are two tasks:
+The task is to optimize interaction with DB.
 
-* make the GraphQL scheme that allows to get courses, teachers and all students enrolled to each course.
-* add Query for three models in the project. Add a mutation for one of the models. Write tests to ensure availability of all Queries.
+The discussed optimization techniques are
 
-Prior to exploring the project, install the requirements:
+- @cached_property
+- F-expression
+- Q-expression
+- Aggregate, annotate
+- select_related, prefetch_related
+- exists()
+- Subqueries
 
-    pip install -r requirements.txt
-    
-To start evaluating GraphQL stuff, run server
-    
-    ./manage.py runserver
-    
-Then open http://127.0.0.1:8000/graphql and enter:
+So the report is following:
 
-```
-query{
-  courses{
-    id
-    name
-    teacher{
-      id
-      username
-    }
-    students{
-      id
-      username
-    }
-  }
-}
-```
-That is the solution for the first part of homework.
+At `courses/course-detail.html` and `api/v1/course/<int: pk>/` there were 9 duplicates. As result of [implementing](https://github.com/mxmaslin/otus_web/commit/10840a491b88cd8c8ef28fa09ad99202e6bc0d81) `@cached_property`
+the number of duplicates decreased to 5.
 
-The second part:
+Prior the optimization techniques lecture I was aware regarding all the listed techniques except `@cached_property`, and used
+part of them (`select_related`, `prefetch_related`, `exists`) for this project.
 
-* to create a course, use
+I didn't find reasons to use the `F`/`Q-expressions`, `aggregate`, `annotate` and `subqueries`.
 
-```
-mutation {
-  createCourse(courseData:{
-      name: "Course name",
-    	started: "2019-05-01T15:12:04+03:00", 
-    	teacher: "Existing teacher"
-  })
-  {
-   course{
-      name
-    	started
-    	teacher{
-        username
-      }
-    } 
-  }
-}
-```
-
-* to update the course, use
-
-```
-mutation {
-  updateCourse(courseData:{
-    id: 1,
-    name: "Новое название курса",
-    started: "2019-05-01T15:12:04+03:00", 
-    teacher: "Преподаватель"
-  })
-  {
-   course{
-      name
-    	started
-    	teacher{
-        username
-      }
-    } 
-  }
-}
-```
-
-To start the tests:
-
-    ./manage.py tests courses
+That's all.
     
 The application developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.
