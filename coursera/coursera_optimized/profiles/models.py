@@ -18,17 +18,21 @@ def max_value_current_year(value):
 
 
 class User(AbstractUser):
+    @cached_property
     def is_student(self):
         return Student.objects.filter(id=self.id).exists()
 
+    @cached_property
     def is_teacher(self):
         return Teacher.objects.filter(id=self.id).exists()
 
+    @cached_property
     def student(self):
         if self.is_student:
             return Student.objects.get(id=self.id)
         return None
 
+    @cached_property
     def teacher(self):
         if self.is_teacher:
             return Teacher.objects.get(id=self.id)
