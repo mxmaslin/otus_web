@@ -1,0 +1,12 @@
+Django==2.2.9
+django-configurations==2.2
+django-environ==0.4.5
+python-dotenv==0.10.5
+django_debug_toolbar==2.2
+Celery==4.4.0
+redis==3.4.1
+djangorestframework==3.11.0
+django-rest-swagger==2.2.0
+factory-boy==2.12.0
+graphene-django==2.8.2
+pytest-django==3.8.0

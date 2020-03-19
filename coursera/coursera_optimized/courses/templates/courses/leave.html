@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Покинуть курс{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+<div class="container">
+    <p>Вы покинули курс {{ course }}</p>
+    <p><a href="{% url 'courses:course-list' %}">К списку курсов</a></p>
+
+</div>
+{% include 'footer.html' %}
+{% endblock %}
