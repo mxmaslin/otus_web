@@ -21,9 +21,10 @@ class CommonSettings(Configuration):
         'debug_toolbar',
         'rest_framework',
         'rest_framework.authtoken',
-        'profiles.apps.ProfileConfig',
-        'trips.apps.TripConfig',
-        'Communications.apps.CommunicationConfig',
+        'phonenumber_field',
+        'profiles.apps.ProfilesConfig',
+        'trips.apps.TripsConfig',
+        'communications.apps.CommunicationsConfig',
     ]
     MIDDLEWARE = [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -77,6 +78,9 @@ class CommonSettings(Configuration):
 
     # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
     # EMAIL_FILE_PATH = f'{BASE_DIR}/tmp/feedback'
+
+    PHONENUMBER_DB_FORMAT = 'NATIONAL'
+    PHONENUMBER_DEFAULT_REGION = 'RU'
 
     REDIS_HOST = 'localhost'
     REDIS_PORT = '6379'
