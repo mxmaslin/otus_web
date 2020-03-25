@@ -1,0 +1,24 @@
+{
+  "name": "coursera_webpack",
+  "version": "1.0.0",
+  "description": "The task is to optimize interaction with DB.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mxmaslin/otus_web.git"
+  },
+  "keywords": [
+    "otus",
+    "python",
+    "webpack"
+  ],
+  "author": "mxmaslin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mxmaslin/otus_web/issues"
+  },
+  "homepage": "https://github.com/mxmaslin/otus_web#readme"
+}
