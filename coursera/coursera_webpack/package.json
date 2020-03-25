@@ -20,5 +20,11 @@
   "bugs": {
     "url": "https://github.com/mxmaslin/otus_web/issues"
   },
-  "homepage": "https://github.com/mxmaslin/otus_web#readme"
+  "homepage": "https://github.com/mxmaslin/otus_web#readme",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-loader": "^8.1.0",
+    "webpack": "^4.42.1",
+    "webpack-bundle-tracker": "^0.4.3"
+  }
 }
