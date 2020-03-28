@@ -1,42 +1,25 @@
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
-  entry: {
-    'student-signup': __dirname + "/assets/entries/student-signup.html",
-    'teacher-signup': __dirname + "/assets/entries/teacher-signup.html"
-  },
+  entry: './src/index.js',
   output: {
-    path: __dirname + '/assets/bundles',
-//    filename: '[name]-[hash].js',
-//    publicPath: '/' // public URL of the output directory when referenced in a browser
+    filename: 'main.js',
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
       rules: [
         {
-            include: __dirname + '/assets/'
-        }
+            test: /\.css$/i,
+            use: [MiniCssExtractPlugin.loader, 'css-loader']
+         }
       ],
   },
   plugins: [
-      new HtmlWebpackPlugin({
-          chunks: ['student-signup'],
-          template: __dirname + "/profiles/templates/student-signup.html",
-//          filename: 'student-signup-[hash].html',
-          filename: 'student-signup.html'
-
-//          inject: 'body'
-      }),
-      new HtmlWebpackPlugin({
-          chunks: ['teacher-signup'],
-          template: __dirname + "/profiles/templates/teacher-signup.html",
-//          filename: 'teacher-signup-[hash].html',
-          filename: 'teacher-signup.html'
-
-//          inject: 'body'
-      }),
-      new BundleTracker({filename: './webpack-stats.json'})
+      new BundleTracker({filename: './webpack-stats.json'}),
+      new MiniCssExtractPlugin()
   ],
 //  devServer: {  // configuration for webpack-dev-server
 //      contentBase: './src/public',  //source of static assets

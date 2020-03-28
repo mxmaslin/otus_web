@@ -70,7 +70,7 @@ class CommonSettings(Configuration):
     STATIC_URL = '/static/'
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR, 'static'),
-        os.path.join(BASE_DIR, 'assets'),
+        os.path.join(BASE_DIR, 'src'),
     )
     AUTH_USER_MODEL = 'profiles.User'
     INTERNAL_IPS = ['127.0.0.1']
@@ -103,7 +103,7 @@ class CommonSettings(Configuration):
     WEBPACK_LOADER = {
         'DEFAULT': {
             'CACHE': not DEBUG,
-            'BUNDLE_DIR_NAME': 'bundles/',
+            'BUNDLE_DIR_NAME': 'dist/',
             'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
             'POLL_INTERVAL': 0.1,
             'TIMEOUT': None,
