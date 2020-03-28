@@ -12,7 +12,7 @@ module.exports = {
 //    filename: '[name]-[hash].js',
 //    publicPath: '/' // public URL of the output directory when referenced in a browser
   },
-  module: {  // where we defined file patterns and their loaders
+  module: {
       rules: [
         {
             include: __dirname + '/assets/'
