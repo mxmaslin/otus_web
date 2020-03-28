@@ -4,8 +4,8 @@ const BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
   entry: {
-    'student_signup': __dirname + "/assets/entries/student-signup.html",
-    'teacher_signup': __dirname + "/assets/entries/teacher-signup.html"
+    'student-signup': __dirname + "/assets/entries/student-signup.html",
+    'teacher-signup': __dirname + "/assets/entries/teacher-signup.html"
   },
   output: {
     path: __dirname + '/assets/bundles',
@@ -21,15 +21,19 @@ module.exports = {
   },
   plugins: [
       new HtmlWebpackPlugin({
-          chunks: ['student_signup'],
+          chunks: ['student-signup'],
           template: __dirname + "/profiles/templates/student-signup.html",
-          filename: 'student-signup-[hash].html'
+//          filename: 'student-signup-[hash].html',
+          filename: 'student-signup.html'
+
 //          inject: 'body'
       }),
       new HtmlWebpackPlugin({
-          chunks: ['teacher_signup'],
+          chunks: ['teacher-signup'],
           template: __dirname + "/profiles/templates/teacher-signup.html",
-          filename: 'teacher-signup-[hash].html'
+//          filename: 'teacher-signup-[hash].html',
+          filename: 'teacher-signup.html'
+
 //          inject: 'body'
       }),
       new BundleTracker({filename: './webpack-stats.json'})
