@@ -1,14 +1,16 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin'); // Require  html-webpack-plugin plugin
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin'); // Require  html-webpack-plugin plugin
 const BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
-  entry: __dirname + "/src/app/index.js", // webpack entry point. Module to start building dependency graph
+  entry: {
+    'student_signup': __dirname + "/src/app/student-signup.js", // webpack entry point. Module to start building dependency graph
+    'teacher_signup': __dirname + "/src/app/teacher-signup.js"
+  },
   output: {
     path: __dirname + '/dist', // Folder to store generated bundle
-    filename: 'bundle.js',  // Name of generated bundle after build
-    publicPath: '/' // public URL of the output directory when referenced in a browser
+    filename: '[name].js',  // Name of generated bundle after build
+//    publicPath: '/' // public URL of the output directory when referenced in a browser
   },
   module: {  // where we defined file patterns and their loaders
       rules: [
@@ -16,13 +18,21 @@ module.exports = {
   },
   plugins: [  // Array of plugins to apply to build chunk
       new HtmlWebpackPlugin({
-          template: __dirname + "/src/public/index.html",
-          inject: 'body'
+          chunks: ['student_signup'],
+          template: __dirname + "/profiles/templates/student-signup.html",
+          filename: 'student-signup.html'
+//          inject: 'body'
       }),
-      new BundleTracker({filename: './webpack-stats.json'}),
+      new HtmlWebpackPlugin({
+          chunks: ['teacher_signup'],
+          template: __dirname + "/profiles/templates/teacher-signup.html",
+          filename: 'teacher-signup.html'
+//          inject: 'body'
+      }),
+      new BundleTracker({filename: './webpack-stats.json'})
   ],
-  devServer: {  // configuration for webpack-dev-server
-      contentBase: './src/public',  //source of static assets
-      port: 7700, // port to run dev-server
-  }
+//  devServer: {  // configuration for webpack-dev-server
+//      contentBase: './src/public',  //source of static assets
+//      port: 7700 // port to run dev-server
+//  }
 };
