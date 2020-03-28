@@ -1,27 +1,16 @@
 # Educational site
 
-The task is to optimize interaction with DB.
+The task is to get acquainted with webpack.
 
-The discussed optimization techniques are
+On login/registration pages, the UI must be built using webpack.
 
-- @cached_property
-- F-expression
-- Q-expression
-- Aggregate, annotate
-- select_related, prefetch_related
-- exists()
-- Subqueries
+Instructions:
 
-So the report is following:
+1. Make sure that you have node.js installed.
+2. In the project folder, execute `npm install --save-dev`.
+3. In the project folder, execute `./node_modules/.bin/webpack-cli --config webpack.config.js
+`
+4. Install python requirements.
+5. On the `/login`, `/student-signup`, `/teacher-signup` pages, the styles are served using [django-webpack-loader](https://github.com/owais/django-webpack-loader). The styles live in the [`/dist`](https://github.com/mxmaslin/otus_web/tree/master/coursera/coursera_webpack/dist) folder.
 
-At `courses/course-detail.html` and `api/v1/course/<int: pk>/` there were 9 duplicates. As result of [implementing](https://github.com/mxmaslin/otus_web/commit/10840a491b88cd8c8ef28fa09ad99202e6bc0d81) `@cached_property`
-the number of duplicates decreased to 5.
-
-Prior the optimization techniques lecture I was aware regarding all the listed techniques except `@cached_property`, and used
-part of them (`select_related`, `prefetch_related`, `exists`) for this project.
-
-I didn't find reasons to use the `F`/`Q-expressions`, `aggregate`, `annotate` and `subqueries`.
-
-That's all.
-    
 The application developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.
