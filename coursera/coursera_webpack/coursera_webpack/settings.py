@@ -26,6 +26,7 @@ class CommonSettings(Configuration):
         'rest_framework',
         'rest_framework.authtoken',
         'token_auth_api.apps.TokenAuthApiConfig',
+        'webpack_loader',
     ]
     MIDDLEWARE = [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -67,7 +68,10 @@ class CommonSettings(Configuration):
     USE_TZ = True
     TIME_ZONE = 'Europe/Moscow'
     STATIC_URL = '/static/'
-    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'static'),
+        os.path.join(BASE_DIR, 'assets'),
+    )
     AUTH_USER_MODEL = 'profiles.User'
     INTERNAL_IPS = ['127.0.0.1']
     LOGIN_REDIRECT_URL = '/'
@@ -94,10 +98,22 @@ class CommonSettings(Configuration):
         'SCHEMA': 'coursera_webpack.schema.schema'
     }
     TEST_RUNNER = 'coursera_webpack.runner.PytestTestRunner'
+    DEBUG = True
+
+    WEBPACK_LOADER = {
+        'DEFAULT': {
+            'CACHE': not DEBUG,
+            'BUNDLE_DIR_NAME': 'bundles/',
+            'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+            'POLL_INTERVAL': 0.1,
+            'TIMEOUT': None,
+            'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
+            'LOADER_CLASS': 'webpack_loader.loader.WebpackLoader',
+        }
+    }
 
 
 class Dev(CommonSettings):
-    DEBUG = True
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
