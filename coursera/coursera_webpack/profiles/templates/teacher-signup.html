@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
 
 {% block title %}Регистрация преподавателя{% endblock %}
 
 {% block content %}
+{% render_bundle 'main' 'css' %}
 {% include 'header.html' %}
 <div class="container">
   <h2>Регистрация преподавателя</h2>
