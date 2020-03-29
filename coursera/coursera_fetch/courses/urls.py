@@ -26,5 +26,6 @@ urlpatterns = [
     path('v1/enroll/', api_views.enroll, name='enroll-api'),
     path('v1/leave/', api_views.leave, name='leave-api'),
 
+    path('fetched/', views.fetched_courses, name='course-list-fetched'),
     path('', views.CourseListView.as_view(), name='course-list'),
 ]

@@ -166,3 +166,7 @@ def delete(request, pk):
 class LecturingCourseDetailView(DetailView):
     model = Course
     template_name = 'courses/'
+
+
+def fetched_courses(request):
+    return render(request, 'courses/course-list-fetched.html', {})
