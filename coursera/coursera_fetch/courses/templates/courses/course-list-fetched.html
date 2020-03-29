@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Все курсы{% endblock %}
 
 {% block content %}
 {% include 'header.html' %}
+<script src="{% static 'js/fetch.js' %}"></script>
 <div class="container">
   <h2>Список курсов</h2>
   <ul>
   {% for course in courses %}
     <li><a href="{% url 'courses:course-detail' pk=course.pk %}">{{ course }}</a></li>
   {% endfor %}
+  </ul>
+
+  <ul class="courses">
+
   </ul>
 </div>
 {% include 'footer.html' %}
