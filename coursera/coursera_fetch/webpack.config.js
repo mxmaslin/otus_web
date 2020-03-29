@@ -4,9 +4,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    task_styles: './src/task_styles/index.js',
+    task_fetch: './src/task_fetch/index.js'
+  },
   output: {
-    filename: 'main.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
   },
   module: {
@@ -21,6 +24,7 @@ module.exports = {
       new BundleTracker({filename: './webpack-stats.json'}),
       new MiniCssExtractPlugin()
   ],
+
 //  devServer: {  // configuration for webpack-dev-server
 //      contentBase: './src/public',  //source of static assets
 //      port: 7700 // port to run dev-server

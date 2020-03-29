@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load render_bundle from webpack_loader %}
 
 {% block title %}Все курсы{% endblock %}
 
 {% block content %}
+{% render_bundle 'task_fetch' 'js' %}
 {% include 'header.html' %}
-<script src="{% static 'js/fetch.js' %}"></script>
 <div class="container">
   <h2>Список курсов</h2>
   <ul>
