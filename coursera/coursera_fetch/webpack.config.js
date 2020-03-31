@@ -22,7 +22,11 @@ module.exports = {
   },
   plugins: [
       new BundleTracker({filename: './webpack-stats.json'}),
-      new MiniCssExtractPlugin()
+      new MiniCssExtractPlugin(),
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery'
+      })
   ],
 
 //  devServer: {  // configuration for webpack-dev-server
