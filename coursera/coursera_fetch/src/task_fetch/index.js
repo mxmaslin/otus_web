@@ -1,11 +1,5 @@
 const axios = require('axios');
 
-//<li><a href="{% url 'courses:course-detail' pk=course.pk %}">{{ course }}</a></li>
-//  {% endfor %}
-//  </ul>
-
-
-
 axios.get('/api/v1/courses')
     .then(function(response){
         let courses = response.data;
