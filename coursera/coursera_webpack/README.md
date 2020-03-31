@@ -7,7 +7,7 @@ On login/registration pages, the UI must be built using webpack.
 Instructions:
 
 1. Make sure that you have node.js installed.
-2. In the project folder, execute `npm install --save-dev`.
+2. In the project folder, execute `npm install`.
 3. In the project folder, execute `./node_modules/.bin/webpack-cli --config webpack.config.js
 `
 4. Install python requirements.
