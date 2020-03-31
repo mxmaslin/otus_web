@@ -1,17 +1,14 @@
 const axios = require('axios');
+import {api_url} from './config.js'
 
-axios.get('/api/v1/courses')
+axios.get(api_url)
     .then(function(response){
         let courses = response.data;
         let ul = $('ul.courses-fetched');
         let result = courses.map(
             course => {
-            let course_id = JSON.stringify(course.id);
-            let course_name = JSON.stringify(course.name).replace(/"/g, "");
-            let course_started = JSON.stringify(course.started).replace(/"/g, "");;
-         return `<li><a href='/${course_id}/'>${course_name} ${course_started}</a></li>`
+             return `<li><a href='/${course.id}/'>${course.name} ${course.started}</a></li>`
         })
         result = result.join('');
         ul.append(result);
-        console.log(result);
     })
