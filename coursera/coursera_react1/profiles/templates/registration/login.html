@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load render_bundle from webpack_loader %}
+
+{% block content %}
+{% render_bundle 'main' 'css' %}
+{% include 'header.html' %}
+<div class="container">
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit">Login</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course.name }}{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+<div class="container">
+  <p>Имя курса: {{ course.name }}</p>
+  <p>Начало курса: {{ course.started }}</p>
+  {% if user.is_authenticated %}
+    {% if is_authorized %}
+      <ol>
+        {% for lesson in course.lessons.all %}
+          <li>
+            <p>{{ lesson.name }}</p>
+            <p>{{ lesson.content }}</p>
+          </li>
+        {% endfor %}
+      </ol>
+      {% if user.student %}
+         <p><a href="{% url 'courses:leave' pk=course.pk %}">Покинуть курс</a></p>
+      {% endif %}
+      {% if teaching %}
+        <p><a href="{% url 'courses:edit' pk=course.pk %}">Отредактировать курс</a></p>
+        <p><a href="{% url 'courses:delete' pk=course.pk %}">Удалить курс</a></p>
+      {% endif %}
+    {% else %}
+      <p><a href="{% url 'courses:enroll' pk=course.pk %}">Запишитесь на курс</a>, чтобы просматривать уроки</p>
+    {% endif %}
+  {% else %}
+    <p><a href="{% url 'login' %}?next={{ request.path }}">Войдите</a>, чтобы просматривать данные курса</p>
+  {% endif %}
+</div>
+{% include 'footer.html' %}
+{% endblock %}
