@@ -24,11 +24,13 @@ class CommonSettings(Configuration):
         'feedback.apps.FeedbackConfig',
         'debug_toolbar',
         'rest_framework',
+        'corsheaders',
         'rest_framework.authtoken',
         'token_auth_api.apps.TokenAuthApiConfig',
         'webpack_loader',
     ]
     MIDDLEWARE = [
+        'corsheaders.middleware.CorsMiddleware',
         'debug_toolbar.middleware.DebugToolbarMiddleware',
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
@@ -111,6 +113,18 @@ class CommonSettings(Configuration):
             'LOADER_CLASS': 'webpack_loader.loader.WebpackLoader',
         }
     }
+    CORS_ORIGIN_ALLOW_ALL = False
+    CORS_ALLOW_CREDENTIALS = True
+    CORS_ORIGIN_WHITELIST = [
+        'http://localhost:3000',
+        'http://127.0.0.1:8000'
+    ]
+
+    # CORS_ALLOW_HEADERS = (
+    #     'Access-Control-Allow-Origin',
+    #     'Access-Control-Allow-Headers',
+    #     'Access-Control-Allow-Credentials',
+    # )
 
 
 class Dev(CommonSettings):
