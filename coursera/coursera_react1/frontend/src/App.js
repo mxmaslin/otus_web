@@ -1,4 +1,5 @@
 import React from 'react';
+import cookie from 'react-cookies';
 
 import './static/css/styles.css';
 import './static/vendors/bootstrap/css/bootstrap.min.css';
@@ -11,6 +12,7 @@ import axios from 'axios';
 
 
 //axios.defaults.baseURL = 'http://127.0.0.1:8000/api/v1/';
+axios.defaults.withCredentials = true;
 const header = {
     headers: {
         "Accept": "application/json",
@@ -18,48 +20,66 @@ const header = {
 	}
 }
 
-axios.get(
-    'http://127.0.0.1:8000/api/v1/courses/', {}, header
-).then(function(response){
-    const courses = response.data;
-    console.log(courses);
-}).catch((err) => {console.log(err)})
+//axios.get(
+//    'http://127.0.0.1:8000/api/v1/courses/', {}, header
+//).then(function(response){
+//    const courses = response.data;
+//    const authToken = cookie.load('authToken');
+//}).catch((err) => {console.log(err)})
+
+
+//const authToken = cookie.load('authToken');
 
 
 
-
-
-//function Header() {
-//    return (
-//        <Jumbotron>
-//            <Container>
-//                <a class="glyphicon glyphicon-home" href="{% url 'courses:course-list' %}"></a>
-//                {% if user.is_authenticated %}
-//                    {% if user.student %}
-//                        Привет, {{ user.username }}!
-//                        <a href="{% url 'courses:my-courses' %}">Твои курсы</a>
-//                        <a href="{% url 'feedback:feedback' %}">Оставить отзыв</a>
-//                        <a href="{% url 'logout' %}">Выйти</a>
-//                    {% elif user.teacher %}
-//                        Здравствуйте, {{ user.username }}
-//                        <a href="{% url 'courses:lecturing' %}">Ваши курсы</a>
-//                        <a href="{% url 'courses:create' %}">Создать курс</a>
-//                        <a href="{% url 'logout' %}">Выйти</a>
+//                    <a class="glyphicon glyphicon-home" href="{% url 'courses:course-list' %}"></a>
+//                    {% if user.is_authenticated %}
+//                        {% if user.student %}
+//                            Привет, {{ user.username }}!
+//                            <a href="{% url 'courses:my-courses' %}">Твои курсы</a>
+//                            <a href="{% url 'feedback:feedback' %}">Оставить отзыв</a>
+//                            <a href="{% url 'logout' %}">Выйти</a>
+//                        {% elif user.teacher %}
+//                            Здравствуйте, {{ user.username }}
+//                            <a href="{% url 'courses:lecturing' %}">Ваши курсы</a>
+//                            <a href="{% url 'courses:create' %}">Создать курс</a>
+//                            <a href="{% url 'logout' %}">Выйти</a>
+//                        {% else %}
+//                            Здравствуйте, {{ user.username }}
+//                            <a href="{% url 'admin:index' %}">Админка</a>
+//                            <a href="{% url 'logout' %}">Выйти</a>
+//                        {% endif %}
 //                    {% else %}
-//                        Здравствуйте, {{ user.username }}
-//                        <a href="{% url 'admin:index' %}">Админка</a>
-//                        <a href="{% url 'logout' %}">Выйти</a>
+//                        Вы не авторизованы
+//                        <a href="{% url 'login' %}?next={{ request.path }}">Войти</a>
+//                        <a href="{% url 'profiles:student-signup' %}">Зарегистрироваться как учащийся</a>
+//                        <a href="{% url 'profiles:teacher-signup' %}">Зарегистрироваться как преподаватель</a>
 //                    {% endif %}
-//                {% else %}
-//                    Вы не авторизованы
-//                    <a href="{% url 'login' %}?next={{ request.path }}">Войти</a>
-//                    <a href="{% url 'profiles:student-signup' %}">Зарегистрироваться как учащийся</a>
-//                    <a href="{% url 'profiles:teacher-signup' %}">Зарегистрироваться как преподаватель</a>
-//                {% endif %}
-//            </Container>
-//        </Jumbotron>
-//    );
-//}
+
+
+class Header extends React.Component {
+    state = { token: '' }
+    componentDidMount() {
+        axios.get(
+            'http://192.168.1.2:8000/api/v1/courses/', null, {header: header}
+        ).then(response => {
+            const token = response.headers['kuka'];
+            console.log(cookie.load('kuka'));
+            console.log(response.data);
+            this.setState({ token });
+        })
+    }
+    render() {
+        return (
+            <Jumbotron>
+                <Container>
+                    yay
+                    { this.state.token }
+                </Container>
+            </Jumbotron>
+        );
+    }
+}
 
 function Footer() {
     return (
@@ -72,6 +92,7 @@ function Footer() {
 function App() {
     return (
         <div>
+            <Header />
             <Footer />
         </div>
     );
