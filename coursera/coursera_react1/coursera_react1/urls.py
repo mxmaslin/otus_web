@@ -18,9 +18,7 @@ urlpatterns = [
     path('feedback/', include('feedback.urls', namespace='feedback')),
 
     path('api/', include('courses.urls', namespace='courses-api')),
-    path('token-auth-api/',
-         include('token_auth_api.urls', namespace='token-auth-api')
-         ),
+    path('api/auth/', include('knox.urls')),
     path('profiles-api/', include('profiles.urls', namespace='profiles-api')),
 
     path('swagger/', schema_view),

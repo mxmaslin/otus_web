@@ -24,9 +24,9 @@ class CommonSettings(Configuration):
         'feedback.apps.FeedbackConfig',
         'debug_toolbar',
         'rest_framework',
+        'knox',
         'corsheaders',
         'rest_framework.authtoken',
-        'token_auth_api.apps.TokenAuthApiConfig',
         'webpack_loader',
     ]
     MIDDLEWARE = [
@@ -89,12 +89,7 @@ class CommonSettings(Configuration):
     CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 
     REST_FRAMEWORK = {
-        'DEFAULT_AUTHENTICATION_CLASSES': (
-            'rest_framework.authentication.BasicAuthentication',
-            'rest_framework.authentication.SessionAuthentication',
-            'rest_framework.authentication.TokenAuthentication',
-        ),
-        'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+        'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
     }
     GRAPHENE = {
         'SCHEMA': 'coursera_react1.schema.schema'
