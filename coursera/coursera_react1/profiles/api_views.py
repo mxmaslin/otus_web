@@ -1,12 +1,15 @@
 from rest_framework import status, permissions, generics
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from knox.models import AuthToken
 
+from .models import Student, Teacher
 from .serializers import (
     StudentSerializer,
     TeacherSerializer,
+    UserSerializer,
     CreateStudentSerializer,
     CreateTeacherSerializer,
     LoginSerializer
@@ -47,12 +50,11 @@ class CreateStudentView(generics.GenericAPIView):
         })
 
 
-class StudentView(generics.RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated, ]
-    serializer_class = StudentSerializer
-
-    def get_object(self):
-        return self.request.user
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
+def get_user(request):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
 
 
 class CreateTeacherView(generics.GenericAPIView):
@@ -71,14 +73,6 @@ class CreateTeacherView(generics.GenericAPIView):
         })
 
 
-class TeacherView(generics.RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated, ]
-    serializer_class = TeacherSerializer
-
-    def get_object(self):
-        return self.request.user
-
-
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
 
@@ -93,3 +87,19 @@ class LoginView(generics.GenericAPIView):
             ).data,
             "token": token
         })
+
+
+class StudentView(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = StudentSerializer
+
+    def get_object(self):
+        return self.request.user
+
+
+class TeacherView(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = TeacherSerializer
+
+    def get_object(self):
+        return self.request.user

@@ -60,3 +60,12 @@ class LoginSerializer(serializers.Serializer):
         raise serializers.ValidationError(
             'Unable to log in with provided credentials'
         )
+
+
+class UserSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    is_student = serializers.BooleanField()
+    is_teacher = serializers.BooleanField()

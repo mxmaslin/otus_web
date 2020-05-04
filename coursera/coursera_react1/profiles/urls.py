@@ -20,6 +20,7 @@ urlpatterns = [
 
     path('v2/login/', api_views.LoginView.as_view()),
     path('v2/logout/', LogoutView.as_view(), name='knox_logout'),
+    path('v2/user/', api_views.get_user),
 
     path('v2/student/', api_views.StudentView.as_view()),
     path('v2/teacher/', api_views.TeacherView.as_view()),
