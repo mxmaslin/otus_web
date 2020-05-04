@@ -5,7 +5,6 @@ from rest_framework.response import Response
 
 from knox.models import AuthToken
 
-from .models import Student, Teacher
 from .serializers import (
     StudentSerializer,
     TeacherSerializer,
