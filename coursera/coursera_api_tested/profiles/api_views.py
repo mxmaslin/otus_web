@@ -16,7 +16,7 @@ def register_student(request):
 
 @api_view(['POST'])
 def register_teacher(request):
-    serializer = StudentSerializer(data=request.data)
+    serializer = TeacherSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
