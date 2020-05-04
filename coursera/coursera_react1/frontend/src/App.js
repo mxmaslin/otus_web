@@ -1,72 +1,112 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 //import cookie from 'react-cookies';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Container from 'react-bootstrap/Container';
 
-import { userUrl, loginUrl, studentSignupUrl, teacherSignupUrl } from './config.js';
+import {
+    bootstrapCss,
+    userUrl,
+    loginUrl,
+    studentSignupUrl,
+    teacherSignupUrl,
+    logoutUrl,
+    adminUrl,
+    feedbackUrl,
+    myCoursesUrl,
+    lecturingUrl,
+    createUrl
+} from './config.js';
 
 axios.defaults.withCredentials = true;
 const headers = {
     "Content-Type": "application/json",
-	"Authorization": "Token 4b10a22363a4cfb53ac096e0244eeeac29ebdd25c00731ea4067a98004027a1d"
+	"Authorization": "Token 2d559776f31c979095476aecca145783d24fb6950079dd8b433b7405b9f43870"
 }
-
-//<a class="glyphicon glyphicon-home" href="{% url 'courses:course-list' %}"></a>
-//{% if user.is_authenticated %}
-//    {% if user.student %}
-//        Привет, {{ user.username }}!
-//        <a href="{% url 'courses:my-courses' %}">Твои курсы</a>
-//        <a href="{% url 'feedback:feedback' %}">Оставить отзыв</a>
-//        <a href="{% url 'logout' %}">Выйти</a>
-//    {% elif user.teacher %}
-//        Здравствуйте, {{ user.username }}
-//        <a href="{% url 'courses:lecturing' %}">Ваши курсы</a>
-//        <a href="{% url 'courses:create' %}">Создать курс</a>
-//        <a href="{% url 'logout' %}">Выйти</a>
-//    {% else %}
-//        Здравствуйте, {{ user.username }}
-//        <a href="{% url 'admin:index' %}">Админка</a>
-//        <a href="{% url 'logout' %}">Выйти</a>
-//    {% endif %}
-//{% else %}
-//    Вы не авторизованы
-//    <a href="{% url 'login' %}?next={{ request.path }}">Войти</a>
-//    <a href="{% url 'profiles:student-signup' %}">Зарегистрироваться как учащийся</a>
-//    <a href="{% url 'profiles:teacher-signup' %}">Зарегистрироваться как преподаватель</a>
-//{% endif %}
-
 
 function NoAuthHeader() {
     return (
-        <div>
+        <>
             Вы не авторизованы
             <a href={loginUrl}>Войти</a>
             <a href={studentSignupUrl}>Зарегистрироваться как учащийся</a>
             <a href={teacherSignupUrl}>Зарегистрироваться как преподаватель</a>
-        </div>
+        </>
     );
 }
 
-function AuthedHeader() {
-    return (
-        <div>
-            Вы авторизованы
-
-        </div>
-    );
+class AuthedHeader extends React.Component {
+    render() {
+        let message = '';
+        if (this.props.user) {
+            if (this.props.user.student) {
+                message = <span>
+                    Привет, { this.props.user.username }!
+                    <a href={myCoursesUrl}>Твои курсы</a>
+                    <a href={feedbackUrl}>Оставить отзыв</a>
+                </span>
+            }
+            else if (this.props.user.teacher) {
+                message = <span>
+                    Здравствуйте, { this.props.user.first_name }.
+                    <a href={lecturingUrl}>Ваши курсы</a>
+                    <a href={createUrl}>Создать курс</a>
+                </span>
+            }
+            else {
+                message = <span>
+                    Здравствуйте, { this.props.user.username }.
+                    <a href={adminUrl}>Админка</a>
+                </span>
+            }
+        }
+        return (
+            <>
+                {message}
+                <a href={logoutUrl}>Выйти</a>
+            </>
+        );
+    }
 }
 
-class Header extends React.Component {
+
+class Courses extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { authorized: false };
+        this.state = { authorized: false, user: null};
     }
     componentDidMount() {
         axios.get(
             userUrl, {params: {}, headers: headers}
         ).then(response => {
-            this.setState({ authorized: true })
+            this.setState({ authorized: true });
+            this.setState({ user: response.data })
+        }).catch((error) => this.setState({ authorized: false }))
+    }
+    render() {
+        return (
+            <>
+                {
+                    this.state.authorized ?
+                    <AuthedHeader user={this.state.user}></AuthedHeader> :
+                    <NoAuthHeader></NoAuthHeader>
+                }
+            </>
+        );
+    }
+}
+
+class Header extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { authorized: false, user: null};
+    }
+    componentDidMount() {
+        axios.get(
+            userUrl, {params: {}, headers: headers}
+        ).then(response => {
+            this.setState({ authorized: true });
+            this.setState({ user: response.data })
         }).catch((error) => this.setState({ authorized: false }))
     }
     render() {
@@ -75,7 +115,7 @@ class Header extends React.Component {
                 <Container>
                     {
                         this.state.authorized ?
-                        <AuthedHeader></AuthedHeader> :
+                        <AuthedHeader user={this.state.user}></AuthedHeader> :
                         <NoAuthHeader></NoAuthHeader>
                     }
                 </Container>
@@ -97,6 +137,7 @@ function App() {
     return (
         <div>
             <Header />
+            <Courses />
             <Footer />
         </div>
     );
