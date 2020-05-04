@@ -69,3 +69,5 @@ class UserSerializer(serializers.Serializer):
     last_name = serializers.CharField()
     is_student = serializers.BooleanField()
     is_teacher = serializers.BooleanField()
+    student = StudentSerializer()
+    teacher = TeacherSerializer()
