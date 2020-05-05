@@ -1,16 +1,15 @@
 # Educational site
 
-The task is to get acquainted with webpack.
-
-On login/registration pages, the UI must be built using webpack.
+The task is to implement the main page in React. The code lives at https://github.com/mxmaslin/otus_web/blob/master/coursera/coursera_react1/frontend/src/App.js
 
 Instructions:
 
 1. Make sure that you have node.js installed.
 2. In the project folder, execute `npm install`.
-3. In the project folder, execute `./node_modules/.bin/webpack-cli --config webpack.config.js
-`
+3. In the project folder, execute `npm run build`
 4. Install python requirements.
-5. On the `/login`, `/student-signup`, `/teacher-signup` pages, the styles are served using [django-webpack-loader](https://github.com/owais/django-webpack-loader). The styles live in the [`/dist`](https://github.com/mxmaslin/otus_web/tree/master/coursera/coursera_react1/dist) folder.
-
+5. Run `./manage runserver`.
+6. Run `npm build`
+6. Open `http://127.0.0.1:3000`. Voila. 
+ 
 The application developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.

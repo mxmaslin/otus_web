@@ -11,6 +11,7 @@ function Header(props) {
     return (
         <Jumbotron>
             <Container>
+                <a class="glyphicon glyphicon-home" href="/"></a>
                 {
                     props.authorized ? <AuthedHeader user={props.user}></AuthedHeader> : <NoAuthHeader></NoAuthHeader>
                 }
