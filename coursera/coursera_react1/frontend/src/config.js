@@ -2,8 +2,6 @@ const path = require('path');
 const url = require('url');
 const staticPath = './static';
 
-const bootstrapCss = path.join(staticPath, 'vendors/bootstrap/css/bootstrap.min.css');
-const bootstrapJs = path.join(staticPath, 'vendors/bootstrap/js/bootstrap.min.js');
 const myStyles = path.join(staticPath, 'css/styles.css');
 const jquery = path.join(staticPath, 'vendors/jquery/jquery-3.4.1.min.js');
 
@@ -19,11 +17,9 @@ const feedbackUrl = url.resolve(baseUrl, 'feedback/');
 const myCoursesUrl = url.resolve(baseUrl, 'my-courses/');
 const lecturingUrl = url.resolve(baseUrl, 'lecturing/');
 const createUrl = url.resolve(baseUrl, 'create/');
-
+const coursesUrl = url.resolve(baseUrl, 'api/v1/courses/');
 
 module.exports = {
-    bootstrapCss,
-    bootstrapJs,
     myStyles,
     jquery,
     userUrl,
@@ -35,5 +31,6 @@ module.exports = {
     feedbackUrl,
     myCoursesUrl,
     lecturingUrl,
-    createUrl
+    createUrl,
+    coursesUrl
 };
