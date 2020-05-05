@@ -20,6 +20,7 @@ const createUrl = url.resolve(baseUrl, 'create/');
 const coursesUrl = url.resolve(baseUrl, 'api/v1/courses/');
 
 module.exports = {
+    baseUrl,
     myStyles,
     jquery,
     userUrl,
