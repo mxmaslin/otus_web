@@ -43,11 +43,13 @@ class App extends React.Component {
     }
     async componentDidMount() {
         await axios.get(userUrl, {params: {}, headers: headers})
-        .then(response => this.setState({authorized: true, user: response.data, authFetching: false}))
+        .then(response => response.data)
+        .then(data => this.setState({authorized: true, user: data, authFetching: false}))
         .catch((error) => this.setState({ authorized: false, authFetching: false}))
 
         await axios.get(coursesUrl)
-        .then(response => {this.setState({courses: response.data, coursesFetching: false})})
+        .then(response => response.data)
+        .then(data => {this.setState({courses: data, coursesFetching: false})})
         .catch((error) => this.setState({coursesFetching: false}))
 
     }
