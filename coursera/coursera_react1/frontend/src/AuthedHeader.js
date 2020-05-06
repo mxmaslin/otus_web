@@ -13,12 +13,12 @@ import {
 
 
 class AuthedHeader extends React.Component {
-    render() {
+    message = () => {
         let message = '';
         if (this.props.user) {
             if (this.props.user.student) {
                 message = <span>
-                    &nbsp;Привет, { this.props.user.username }!&nbsp;
+                    Привет, { this.props.user.username }!&nbsp;
                     <a href={myCoursesUrl}>Твои курсы</a>&nbsp;
                     <a href={feedbackUrl}>Оставить отзыв</a>
                 </span>
@@ -37,9 +37,13 @@ class AuthedHeader extends React.Component {
                 </span>
             }
         }
+        return message;
+    }
+
+    render() {
         return (
             <>
-                {message}&nbsp;
+                {this.message()}&nbsp;
                 <a href={logoutUrl}>Выйти</a>
             </>
         );

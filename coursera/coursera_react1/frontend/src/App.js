@@ -15,7 +15,7 @@ const url = require('url');
 axios.defaults.withCredentials = true;
 const headers = {
     "Content-Type": "application/json",
-	"Authorization": "Token 0a7234bc3850e79db90633c4dcbd77e092e6fe67dc8efdd7186e436738a4e766"
+	"Authorization": "Token 5e2fb99e4a7b8be11e8101afeef3f89664a438f1bb9fff154d8d275b20ca0a61"
 }
 
 
@@ -23,7 +23,7 @@ function Courses(props) {
     return (
         <ul>
             {props.courses.map(
-                course => <li><a href={url.resolve(baseUrl, course.url)}>{course.name} {course.started}</a></li>
+                course => <li key={course.id}><a href={url.resolve(baseUrl, course.url)}>{course.name} {course.started}</a></li>
             )}
         </ul>
     );
@@ -54,7 +54,6 @@ class App extends React.Component {
     render() {
         const { authorized, user, authFetching, coursesFetching, courses } = this.state;
         if (authFetching && coursesFetching) return <div>...Loading</div>;
-        console.log(this.state.courses);
         return (
             <>
                 <Header authorized={this.state.authorized} user={this.state.user} />
