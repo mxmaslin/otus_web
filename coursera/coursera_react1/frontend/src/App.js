@@ -3,30 +3,18 @@ import axios from 'axios';
 
 import './static/vendors/bootstrap/css/bootstrap.min.css';
 import Header from './Header.js';
+import Courses from './Courses.js';
 import Footer from './Footer.js';
 
 import {
-    baseUrl,
     userUrl,
     coursesUrl
 } from './config.js';
 
-const url = require('url');
 axios.defaults.withCredentials = true;
 const headers = {
     "Content-Type": "application/json",
 	"Authorization": "Token 5e2fb99e4a7b8be11e8101afeef3f89664a438f1bb9fff154d8d275b20ca0a61"
-}
-
-
-function Courses(props) {
-    return (
-        <ul>
-            {props.courses.map(
-                course => <li key={course.id}><a href={url.resolve(baseUrl, course.url)}>{course.name} {course.started}</a></li>
-            )}
-        </ul>
-    );
 }
 
 
@@ -58,8 +46,8 @@ class App extends React.Component {
         if (authFetching && coursesFetching) return <div>...Loading</div>;
         return (
             <>
-                <Header authorized={this.state.authorized} user={this.state.user} />
-                <Courses courses={this.state.courses} />
+                <Header authorized={authorized} user={user} />
+                <Courses courses={courses} />
                 <Footer />
             </>
         );
