@@ -1,0 +1,15 @@
+{
+  "status":"done",
+  "chunks":{
+    "main":[
+      {
+        "name":"main.css",
+        "path":"static/dist/main.css"
+      },
+      {
+        "name":"main.js",
+        "path":"static/dist/main.js"
+      }
+    ]
+  }
+}

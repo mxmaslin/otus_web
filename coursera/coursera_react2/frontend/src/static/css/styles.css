@@ -1,0 +1,20 @@
+.lesson {
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.lesson-element label {
+    margin-bottom: 15px;
+}
+
+.lesson-element label::after {
+    content: "\00a0"
+}
+
+#save-course-button {
+    margin-bottom: 20px;
+}
+
+.red {
+    color: red;
+}

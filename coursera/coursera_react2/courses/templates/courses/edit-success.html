@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Успех{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+<div class="container">
+
+    <h1>Поздравляем</h1>
+    <p>Курс {{ course_name }} успешно изменён. К <a href="{% url 'courses:lecturing' %}">списку ваших курсов</a></p>
+
+</div>
+{% include 'footer.html' %}
+{% endblock %}
