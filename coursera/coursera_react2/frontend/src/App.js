@@ -18,7 +18,7 @@ const headers = {
 }
 
 
-class App extends React.Component {
+export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,6 +30,7 @@ class App extends React.Component {
         };
     }
     async componentDidMount() {
+
         await axios.get(userUrl, {params: {}, headers: headers})
         .then(response => response.data)
         .then(data => this.setState({authorized: true, user: data, authFetching: false}))
@@ -53,5 +54,3 @@ class App extends React.Component {
         );
     }
 }
-
-export default App;
