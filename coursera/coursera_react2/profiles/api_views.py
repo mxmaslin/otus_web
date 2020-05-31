@@ -77,15 +77,24 @@ class LoginView(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            return Response(
+                {'user': False, 'status': status.HTTP_400_BAD_REQUEST}
+            )
         user = serializer.validated_data
+        user_data = StudentSerializer(user).data
         _, token = AuthToken.objects.create(user)
-        return Response({
-            "student": StudentSerializer(
-                user, context=self.get_serializer_context()
-            ).data,
-            "token": token
-        })
+        # print(StudentSerializer(user, context=self.get_serializer_context()))
+
+        return Response(
+            {
+                'user': True,
+                **user_data,
+                "token": token
+            }
+        )
 
 
 class StudentView(generics.RetrieveAPIView):
