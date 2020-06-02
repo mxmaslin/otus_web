@@ -14,6 +14,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.yandex',
     'core'
 ]
 
@@ -27,7 +34,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
-ROOT_URLCONF = 'demo.urls'
+ROOT_URLCONF = 'ecommerce.urls'
 
 TEMPLATES = [
     {
@@ -45,8 +52,16 @@ TEMPLATES = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
+
+SITE_ID = 1
+
+
+LANGUAGE_CODE = 'ru-ru'
+TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
