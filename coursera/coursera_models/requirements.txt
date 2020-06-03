@@ -1,4 +1,4 @@
-Django==2.2.9
+Django==2.2.10
 django-configurations==2.2
 django-environ==0.4.5
 python-dotenv==0.10.5
