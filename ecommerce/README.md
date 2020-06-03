@@ -2,8 +2,6 @@
 
 This repository is a boilerplate Django project for quickly getting started.
 
-[![alt text](https://github.com/justdjango/django_project_boilerplate/blob/master/thumbnail.png "Logo")](https://www.youtube.com/watch?v=GEogao-tUec)
-
 ## Getting started
 
 Steps:
