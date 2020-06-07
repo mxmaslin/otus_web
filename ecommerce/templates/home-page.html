@@ -61,28 +61,36 @@
           {% for item in object_list %}
           <div class="col-lg-3 col-md-6 mb-4">
             <div class="card">
-              <div class="view overlay">
-                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" alt="">
-                <a>
+              <a href="{{ item.get_absolute_url }}">
+                <div class="view overlay">
+                  <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" alt="">
                   <div class="mask rgba-white-slight"></div>
-                </a>
-              </div>
-
-              <div class="card-body text-center">
-                <a href="" class="grey-text">
-                  <h5>{{ item.get_category_display }}</h5>
-                </a>
-                <h5>
-                  <strong>
-                    <a href="" class="dark-grey-text">{{ item.title }}
-                      <span class="badge badge-pill {{ item.get_label_display }}-color">NEW</span>
-                    </a>
-                  </strong>
-                </h5>
-                <h4 class="font-weight-bold blue-text">
-                  <strong>${{ item.price }}</strong>
-                </h4>
-              </div>
+                </div>
+                <div class="card-body text-center">
+                  <span class="grey-text">
+                    <h5>{{ item.get_category_display }}</h5>
+                  </span>
+                  <h5>
+                    <strong>
+                      <span class="dark-grey-text">{{ item.title }}
+                        <span class="badge badge-pill {{ item.get_label_display }}-color">NEW</span>
+                      </span>
+                    </strong>
+                  </h5>
+                  <h4 class="font-weight-bold blue-text">
+                    <strong>
+                      {% if item.discount_price %}
+                        <span class="mr-1">
+                          <del>${{ item.price }}</del>
+                        </span>
+                        <span>${{ item.discount_price }}</span>
+                      {% else %}
+                        <span>${{ item.price }}</span>
+                      {% endif %}
+                    </strong>
+                  </h4>
+                </div>
+              </a>
             </div>
           </div>
           {% endfor %}
