@@ -16,15 +16,23 @@ LABEL_CHOICES = (
 
 
 class Item(models.Model):
-    title = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    title = models.CharField(max_length=100, verbose_name='Название')
+    price = models.DecimalField(max_digits=6,
+                                decimal_places=2,
+                                verbose_name='Цена')
     discount_price = models.DecimalField(max_digits=6,
                                          decimal_places=2,
                                          blank=True,
-                                         null=True)
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
-    label = models.CharField(choices=LABEL_CHOICES, max_length=1)
-    slug = models.SlugField()
+                                         null=True,
+                                         verbose_name='Цена со скидкой')
+    category = models.CharField(choices=CATEGORY_CHOICES,
+                                max_length=2,
+                                verbose_name='Категория')
+    label = models.CharField(choices=LABEL_CHOICES,
+                             max_length=1,
+                             verbose_name='Метка')
+    slug = models.SlugField(verbose_name='Идентификатор')
+    description = models.TextField(verbose_name='Описание')
 
     def __str__(self):
         return self.title
@@ -32,20 +40,37 @@ class Item(models.Model):
     def get_absolute_url(self):
         return reverse('core:product', kwargs={'slug': self.slug})
 
+    class Meta:
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
+
 
 class OrderItem(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item,
+                             on_delete=models.CASCADE,
+                             verbose_name='Товар')
 
     def __str__(self):
         return self.item
 
+    class Meta:
+        verbose_name = 'Товар в заказе'
+        verbose_name_plural = 'Товары в заказе'
+
 
 class Order(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    items = models.ManyToManyField(OrderItem)
-    start_date = models.DateTimeField(auto_now_add=True)
-    ordered_date = models.DateTimeField()
-    ordered = models.BooleanField(default=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE,
+                             verbose_name='Пользователь')
+    items = models.ManyToManyField(OrderItem, verbose_name='Товары')
+    start_date = models.DateTimeField(auto_now_add=True,
+                                      verbose_name='Дата начала заказа')
+    ordered_date = models.DateTimeField(verbose_name='Дата формирования заказа')
+    ordered = models.BooleanField(default=False, verbose_name='Заказ сделан')
 
     def __str__(self):
-        return self.user.username
+        return f'Заказ {self.user.username} {self.ordered_date}'
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
