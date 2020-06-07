@@ -33,6 +33,8 @@ class Item(models.Model):
                              verbose_name='Метка')
     slug = models.SlugField(verbose_name='Идентификатор')
     description = models.TextField(verbose_name='Описание')
+    quantity = models.IntegerField(default=1,
+                                   verbose_name='Количество на складе')
 
     def __str__(self):
         return self.title
