@@ -44,6 +44,9 @@ class Item(models.Model):
     def get_add_to_cart_url(self):
         return reverse('core:add-to-cart', kwargs={'slug': self.slug})
 
+    def get_remove_from_cart_url(self):
+        return reverse('core:remove-from-cart', kwargs={'slug': self.slug})
+
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
@@ -53,11 +56,8 @@ class OrderItem(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        verbose_name='Пользователь',
-        blank=True,
-        null=True
+        verbose_name='Пользователь'
     )
-    ordered = models.BooleanField(default=False, verbose_name='Заказ сделан')
     item = models.ForeignKey(
         Item, on_delete=models.CASCADE, verbose_name='Товар'
     )
