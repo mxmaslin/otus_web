@@ -58,6 +58,7 @@ class OrderItem(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Пользователь'
     )
+    ordered = models.BooleanField(default=False, verbose_name='Товар заказан')
     item = models.ForeignKey(
         Item, on_delete=models.CASCADE, verbose_name='Товар'
     )
@@ -67,6 +68,20 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f'{self.item.title}: {self.quantity}'
+
+    def get_total_item_price(self):
+        return self.quantity * self.item.price
+
+    def get_total_discount_item_price(self):
+        return self.quantity * self.item.discount_price
+
+    def get_amount_saved(self):
+        return self.get_total_item_price() - self.get_total_discount_item_price()
+
+    def get_final_price(self):
+        if self.item.discount_price:
+            return self.get_total_discount_item_price()
+        return self.get_total_item_price()
 
     class Meta:
         verbose_name = 'Товар в заказе'
@@ -85,6 +100,12 @@ class Order(models.Model):
     )
     ordered_date = models.DateTimeField(verbose_name='Дата формирования заказа')
     ordered = models.BooleanField(default=False, verbose_name='Заказ сделан')
+
+    def get_total(self):
+        total = 0
+        for order_item in self.items.all():
+            total += order_item.get_final_price()
+        return total
 
     def __str__(self):
         return f'Заказ {self.user.username} {self.ordered_date}'
