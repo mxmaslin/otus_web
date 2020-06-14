@@ -3,9 +3,9 @@ from django.db import models
 from django.shortcuts import reverse
 
 CATEGORY_CHOICES = (
-    ('S', 'Shirt'),
-    ('SW', 'Sport wear'),
-    ('OW', 'Outwear')
+    ('S', 'Футболки'),
+    ('SW', 'Спортивная одежда'),
+    ('OW', 'Верхняя одежда')
 )
 
 LABEL_CHOICES = (
