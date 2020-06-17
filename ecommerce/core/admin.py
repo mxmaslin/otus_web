@@ -15,26 +15,26 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = [
         'user',
         'ordered',
-        # 'being_delivered',
-        # 'received',
-        # 'refund_requested',
-        # 'refund_granted',
+        'being_delivered',
+        'received',
+        'refund_requested',
+        'refund_granted',
         'shipping_address',
         # 'payment',
-        # 'coupon'
+        'coupon'
     ]
     list_display_links = [
         'user',
         'shipping_address',
         # 'payment',
-        # 'coupon'
+        'coupon'
     ]
     list_filter = [
         'ordered',
-        # 'being_delivered',
-        # 'received',
-        # 'refund_requested',
-        # 'refund_granted'
+        'being_delivered',
+        'received',
+        'refund_requested',
+        'refund_granted'
     ]
     search_fields = [
         'user__username',

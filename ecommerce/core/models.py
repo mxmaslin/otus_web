@@ -126,6 +126,22 @@ class Order(models.Model):
         'Address', related_name='shipping_address', on_delete=models.SET_NULL,
         blank=True, null=True
     )
+    coupon = models.ForeignKey(
+        'Coupon', on_delete=models.SET_NULL, blank=True, null=True
+    )
+    being_delivered = models.BooleanField(default=False)
+    received = models.BooleanField(default=False)
+    refund_requested = models.BooleanField(default=False)
+    refund_granted = models.BooleanField(default=False)
+
+    '''
+    1. Товар добавлен в корзину
+    2. Оформление заказа
+    3. Платёж
+    4. Доставка
+    5. Получение
+    6. Возврат
+    '''
 
     def get_total(self):
         total = 0
