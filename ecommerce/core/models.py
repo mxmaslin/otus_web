@@ -95,12 +95,17 @@ class Order(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Пользователь'
     )
+    ref_code = models.CharField(max_length=20, blank=True, null=True)
     items = models.ManyToManyField(OrderItem, verbose_name='Товары')
     start_date = models.DateTimeField(
         auto_now_add=True, verbose_name='Дата начала заказа'
     )
     ordered_date = models.DateTimeField(verbose_name='Дата формирования заказа')
     ordered = models.BooleanField(default=False, verbose_name='Заказ сделан')
+    shipping_address = models.ForeignKey(
+        'Address', related_name='shipping_address', on_delete=models.SET_NULL,
+        blank=True, null=True
+    )
 
     def get_total(self):
         total = 0
