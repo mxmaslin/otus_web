@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 
-from .models import Item, OrderItem, Order, Address, Coupon
+from .models import Item, OrderItem, Order, Address, Coupon, Refund
 from .forms import CheckoutForm, CouponForm, RefundForm
 
 
@@ -64,10 +64,7 @@ def add_to_cart(request, slug):
 @login_required
 def remove_from_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
-    order_qs = Order.objects.filter(
-        user=request.user,
-        ordered=False
-    )
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
         if order.items.filter(item__slug=item.slug).exists():
@@ -91,10 +88,7 @@ def remove_from_cart(request, slug):
 @login_required
 def remove_single_item_from_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
-    order_qs = Order.objects.filter(
-        user=request.user,
-        ordered=False
-    )
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
         if order.items.filter(item__slug=item.slug).exists():
@@ -141,9 +135,7 @@ class CheckoutView(View):
                 default=True
             )
             if shipping_address_qs.exists():
-                context.update(
-                    {'shipping_address': shipping_address_qs[0]}
-                )
+                context.update({'shipping_address': shipping_address_qs[0]})
             return render(self.request, 'checkout-page.html', context)
         except ObjectDoesNotExist:
             messages.info(self.request, 'У вас нет активных заказов')
@@ -155,13 +147,13 @@ class CheckoutView(View):
             order = Order.objects.get(user=self.request.user, ordered=False)
             if form.is_valid():
                 use_default_shipping = form.cleaned_data.get(
-                    'use_default_shipping')
+                    'use_default_shipping'
+                )
                 if use_default_shipping:
                     address_qs = Address.objects.filter(
                         user=self.request.user,
                         default=True
                     )
-                    print('yay' * 100)
                     if address_qs.exists():
                         shipping_address = address_qs[0]
                         order.shipping_address = shipping_address
@@ -173,12 +165,9 @@ class CheckoutView(View):
                         )
                         return redirect('core:checkout')
                 else:
-                    street_address = form.cleaned_data.get(
-                        'street_address')
-                    house_number = form.cleaned_data.get(
-                        'house_number')
-                    apartment_number = form.cleaned_data.get(
-                        'apartment_number')
+                    street_address = form.cleaned_data.get('street_address')
+                    house_number = form.cleaned_data.get('house_number')
+                    apartment_number = form.cleaned_data.get('apartment_number')
                     shipping_zip = form.cleaned_data.get('shipping_zip')
                     if is_valid_form([
                         street_address,
@@ -194,20 +183,16 @@ class CheckoutView(View):
                             shipping_zip=shipping_zip
                         )
                         shipping_address.save()
-
                         order.shipping_address = shipping_address
                         order.save()
-
                         set_default_shipping = form.cleaned_data.get(
-                            'set_default_shipping')
+                            'set_default_shipping'
+                        )
                         if set_default_shipping:
                             shipping_address.default = True
                             shipping_address.save()
                     else:
-                        messages.info(
-                            self.request,
-                            'Пожалуйста, укажите адрес'
-                        )
+                        messages.info(self.request, 'Пожалуйста, укажите адрес')
                         return redirect('core:checkout')
 
                 payment_option = form.cleaned_data.get('payment_option')
@@ -248,3 +233,32 @@ class AddCouponView(View):
             except ObjectDoesNotExist:
                 messages.info(self.request, 'У вас нет активного заказа')
                 return redirect("core:checkout")
+
+
+class RequestRefundView(View):
+    def get(self, *args, **kwargs):
+        form = RefundForm()
+        context = {'form': form}
+        return render(self.request, "request-refund.html", context)
+
+    def post(self, *args, **kwargs):
+        form = RefundForm(self.request.POST)
+        if form.is_valid():
+            ref_code = form.cleaned_data.get('ref_code')
+            message = form.cleaned_data.get('message')
+            email = form.cleaned_data.get('email')
+            try:
+                order = Order.objects.get(ref_code=ref_code)
+                order.refund_requested = True
+                order.save()
+                refund = Refund()
+                refund.order = order
+                refund.reason = message
+                refund.email = email
+                refund.save()
+                messages.info(self.request, 'Запрос на возврат получен.')
+                return redirect("core:request-refund")
+
+            except ObjectDoesNotExist:
+                messages.info(self.request, 'Этот заказ не существует.')
+                return redirect("core:request-refund")
