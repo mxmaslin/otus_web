@@ -1,3 +1,5 @@
+{% load mathfilters %}
+
 <div class="col-md-12 mb-4">
     <h4 class="d-flex justify-content-between align-items-center mb-3">
     <span class="text-muted">Ваша корзина</span>
@@ -16,15 +18,21 @@
     {% if order.coupon %}
     <li class="list-group-item d-flex justify-content-between bg-light">
         <div class="text-success">
-        <h6 class="my-0">Promo code</h6>
+        <h6 class="my-0">Промокод</h6>
         <small>{{ order.coupon.code }}</small>
         </div>
-        <span class="text-success">-${{ order.coupon.amount }}</span>
+        <span class="text-success">-{{ order.coupon.amount }} руб.</span>
     </li>
     {% endif %}
     <li class="list-group-item d-flex justify-content-between">
         <span>Общая сумма</span>
-        <strong>{{ order.get_total }} руб.</strong>
+        <strong>
+            {% if order.get_total|sub:order.coupon.amount < 0 %}
+                0 руб.
+            {% else %}
+                {{ order.get_total|sub:order.coupon.amount }} руб.
+            {% endif %}
+        </strong>
     </li>
     </ul>
 
