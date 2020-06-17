@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
+from django.db.models.signals import post_save
 
 
 CATEGORY_CHOICES = (
@@ -14,6 +15,24 @@ LABEL_CHOICES = (
     ('S', 'secondary'),
     ('D', 'danger')
 )
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь'
+    )
+    one_click_purchasing = models.BooleanField(
+        default=False, verbose_name='Покупка в один клик'
+    )
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name = 'Профиль пользователя'
+        verbose_name_plural = 'Профили пользователей'
 
 
 class Item(models.Model):
@@ -35,6 +54,7 @@ class Item(models.Model):
     )
     slug = models.SlugField(verbose_name='Идентификатор')
     description = models.TextField(verbose_name='Описание')
+    image = models.ImageField(verbose_name='Изображение')
 
     def __str__(self):
         return self.title
@@ -123,7 +143,9 @@ class Order(models.Model):
 
 class Address(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь'
     )
     street_address = models.CharField(max_length=100, verbose_name='Улица')
     house_number = models.CharField(max_length=10, verbose_name='Дом, корпус')
@@ -137,3 +159,37 @@ class Address(models.Model):
     class Meta:
         verbose_name = 'Адрес'
         verbose_name_plural = 'Адреса'
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=15, verbose_name='Код')
+    amount = models.FloatField(verbose_name='Скидка')
+
+    def __str__(self):
+        return self.code
+
+    class Meta:
+        verbose_name = 'Купон'
+        verbose_name_plural = 'Купоны'
+
+
+class Refund(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Заказ')
+    reason = models.TextField(verbose_name='Причина')
+    accepted = models.BooleanField(default=False, verbose_name='Выполнен')
+    email = models.EmailField()
+
+    def __str__(self):
+        return f"{self.pk}"
+
+    class Meta:
+        verbose_name = 'Возврат'
+        verbose_name_plural = 'Возвраты'
+
+
+def userprofile_receiver(sender, instance, created, *args, **kwargs):
+    if created:
+        userprofile = UserProfile.objects.create(user=instance)
+
+
+post_save.connect(userprofile_receiver, sender=settings.AUTH_USER_MODEL)
