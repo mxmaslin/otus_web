@@ -118,4 +118,4 @@ def remove_single_item_from_cart(request, slug):
 
 
 def checkout(request):
-    return render(request, 'checkout.html')
+    return render(request, 'checkout-page.html')
