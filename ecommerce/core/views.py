@@ -6,7 +6,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 
-from .models import Item, OrderItem, Order
+from .models import Item, OrderItem, Order, Address
+from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
 
 
 class HomeView(ListView):
@@ -117,5 +118,103 @@ def remove_single_item_from_cart(request, slug):
         return redirect("core:product", slug=slug)
 
 
-def checkout(request):
-    return render(request, 'checkout-page.html')
+def is_valid_form(values):
+    valid = True
+    for field in values:
+        if field == '':
+            valid = False
+    return valid
+
+
+class CheckoutView(View):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            form = CheckoutForm()
+            context = {
+                'form': form,
+                'couponform': CouponForm(),
+                'order': order,
+                'DISPLAY_COUPON_FORM': True
+            }
+            shipping_address_qs = Address.objects.filter(
+                user=self.request.user,
+                default=True
+            )
+            if shipping_address_qs.exists():
+                context.update(
+                    {'shipping_address': shipping_address_qs[0]}
+                )
+            return render(self.request, 'checkout-page.html', context)
+        except ObjectDoesNotExist:
+            messages.info(self.request, 'У вас нет активных заказов')
+            return redirect("core:checkout")
+
+    def post(self, *args, **kwargs):
+        form = CheckoutForm(self.request.POST or None)
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            if form.is_valid():
+                use_default_shipping = form.cleaned_data.get(
+                    'use_default_shipping')
+                if use_default_shipping:
+                    address_qs = Address.objects.filter(
+                        user=self.request.user,
+                        default=True
+                    )
+                    if address_qs.exists():
+                        shipping_address = address_qs[0]
+                        order.shipping_address = shipping_address
+                        order.save()
+                    else:
+                        messages.info(
+                            self.request,
+                            'Адрес доставки по умолчанию недоступен'
+                        )
+                        return redirect('core:checkout')
+                else:
+                    street_address = form.cleaned_data.get(
+                        'street_address')
+                    house_number = form.cleaned_data.get(
+                        'house_number')
+                    apartment_number = form.cleaned_data.get(
+                        'apartment_number')
+                    shipping_zip = form.cleaned_data.get('shipping_zip')
+
+                    if is_valid_form([street_address, house_number, apartment_number]):
+                        shipping_address = Address(
+                            user=self.request.user,
+                            street_address=street_address,
+                            house_number=house_number,
+                            apartment_number=apartment_number,
+                            shipping_zip=shipping_zip
+                        )
+                        shipping_address.save()
+
+                        order.shipping_address = shipping_address
+                        order.save()
+
+                        set_default_shipping = form.cleaned_data.get(
+                            'set_default_shipping')
+                        if set_default_shipping:
+                            shipping_address.default = True
+                            shipping_address.save()
+                    else:
+                        messages.info(
+                            self.request,
+                            'Пожалуйста, укажите адрес'
+                        )
+
+                payment_option = form.cleaned_data.get('payment_option')
+                if payment_option == 'C':
+                    return redirect('core:payment', payment_option='credit_card')
+                elif payment_option == 'P':
+                    return redirect('core:payment', payment_option='paypal')
+                else:
+                    messages.warning(
+                        self.request, 'Выбран некорректный метод оплаты'
+                    )
+                    return redirect('core:checkout')
+        except ObjectDoesNotExist:
+            messages.warning(self.request, 'У вас нет активных заказов')
+            return redirect("core:order-summary")
