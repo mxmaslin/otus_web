@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 
-from .models import Item, OrderItem, Order, Address
+from .models import Item, OrderItem, Order, Address, Coupon
 from .forms import CheckoutForm, CouponForm, RefundForm
 
 
@@ -223,3 +223,29 @@ class CheckoutView(View):
         except ObjectDoesNotExist:
             messages.warning(self.request, 'У вас нет активных заказов')
             return redirect("core:order-summary")
+
+
+def get_coupon(request, code):
+    try:
+        coupon = Coupon.objects.get(code=code)
+        return coupon
+    except ObjectDoesNotExist:
+        messages.info(request, 'Купон не существует')
+        return redirect("core:checkout")
+
+
+class AddCouponView(View):
+    def post(self, *args, **kwargs):
+        form = CouponForm(self.request.POST or None)
+        if form.is_valid():
+            try:
+                code = form.cleaned_data.get('code')
+                order = Order.objects.get(
+                    user=self.request.user, ordered=False)
+                order.coupon = get_coupon(self.request, code)
+                order.save()
+                messages.success(self.request, 'Купон успешно добавлен')
+                return redirect("core:checkout")
+            except ObjectDoesNotExist:
+                messages.info(self.request, 'У вас нет активного заказа')
+                return redirect("core:checkout")
