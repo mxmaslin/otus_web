@@ -4,7 +4,7 @@ from django.shortcuts import reverse
 
 
 CATEGORY_CHOICES = (
-    ('S', 'Футболки'),
+    ('TS', 'Футболки'),
     ('SW', 'Спортивная одежда'),
     ('OW', 'Верхняя одежда')
 )
