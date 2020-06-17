@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 
 from .models import Item, OrderItem, Order, Address
-from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
+from .forms import CheckoutForm, CouponForm, RefundForm
 
 
 class HomeView(ListView):
@@ -119,11 +119,10 @@ def remove_single_item_from_cart(request, slug):
 
 
 def is_valid_form(values):
-    valid = True
     for field in values:
-        if field == '':
-            valid = False
-    return valid
+        if not field:
+            return False
+    return True
 
 
 class CheckoutView(View):
@@ -162,6 +161,7 @@ class CheckoutView(View):
                         user=self.request.user,
                         default=True
                     )
+                    print('yay' * 100)
                     if address_qs.exists():
                         shipping_address = address_qs[0]
                         order.shipping_address = shipping_address
@@ -180,8 +180,12 @@ class CheckoutView(View):
                     apartment_number = form.cleaned_data.get(
                         'apartment_number')
                     shipping_zip = form.cleaned_data.get('shipping_zip')
-
-                    if is_valid_form([street_address, house_number, apartment_number]):
+                    if is_valid_form([
+                        street_address,
+                        house_number,
+                        apartment_number,
+                        shipping_zip
+                    ]):
                         shipping_address = Address(
                             user=self.request.user,
                             street_address=street_address,
@@ -204,6 +208,7 @@ class CheckoutView(View):
                             self.request,
                             'Пожалуйста, укажите адрес'
                         )
+                        return redirect('core:checkout')
 
                 payment_option = form.cleaned_data.get('payment_option')
                 if payment_option == 'C':

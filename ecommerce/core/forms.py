@@ -9,8 +9,9 @@ PAYMENT_CHOICES = (
 
 class CheckoutForm(forms.Form):
     street_address = forms.CharField(required=False)
-    apartment_address = forms.CharField(required=False)
-    zip = forms.CharField(required=False)
+    house_number = forms.CharField(required=False)
+    apartment_number = forms.CharField(required=True)
+    shipping_zip = forms.CharField(required=False)
 
     payment_option = forms.ChoiceField(
         widget=forms.RadioSelect, choices=PAYMENT_CHOICES)
@@ -31,9 +32,3 @@ class RefundForm(forms.Form):
         widget=forms.Textarea(attrs={'rows': 4})
     )
     email = forms.EmailField()
-
-
-class PaymentForm(forms.Form):
-    stripeToken = forms.CharField(required=False)
-    save = forms.BooleanField(required=False)
-    use_default = forms.BooleanField(required=False)
