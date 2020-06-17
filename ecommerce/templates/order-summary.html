@@ -30,10 +30,10 @@
             </td>
             <td>
             {% if order_item.item.discount_price %}
-                ${{ order_item.get_total_discount_item_price }}
+                {{ order_item.get_total_discount_item_price }} р.
                 <span class="badge badge-primary">Сэкономлено {{ order_item.get_amount_saved }} рублей</span>
             {% else %}
-                ${{ order_item.get_total_item_price }}
+                {{ order_item.get_total_item_price }} р.
             {% endif %}
             <a style='color: red;' href="{% url 'core:remove-from-cart' order_item.item.slug %}">
                 <i class="fas fa-trash float-right"></i>
@@ -53,13 +53,13 @@
         {% if object.coupon %}
         <tr>
             <td colspan="4"><b>Купон</b></td>
-            <td><b>-${{ object.coupon.amount }}</b></td>
+            <td><b>-{{ object.coupon.amount }} р.</b></td>
         </tr>
         {% endif %}
         {% if object.get_total %}
         <tr>
             <td colspan="4"><b>Общая сумма</b></td>
-            <td><b>${{ object.get_total }}</b></td>
+            <td><b>{{ object.get_total }} р.</b></td>
         </tr>
         <tr>
             <td colspan="5">
