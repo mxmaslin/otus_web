@@ -75,7 +75,9 @@ class AddressAdmin(admin.ModelAdmin):
 
 @admin.register(Coupon)
 class CouponAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['code', 'amount', 'discarded']
+    list_filter = ['code', 'amount', 'discarded']
+    search_fields = ['code', 'amount', 'discarded']
 
 
 @admin.register(Refund)

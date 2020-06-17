@@ -147,6 +147,10 @@ class Order(models.Model):
         total = 0
         for order_item in self.items.all():
             total += order_item.get_final_price()
+        if self.coupon:
+            total -= self.coupon.amount
+        if total < 0:
+            total = 0
         return total
 
     def __str__(self):
@@ -180,6 +184,7 @@ class Address(models.Model):
 class Coupon(models.Model):
     code = models.CharField(max_length=15, verbose_name='Код')
     amount = models.FloatField(verbose_name='Скидка')
+    discarded = models.BooleanField(default=False)
 
     def __str__(self):
         return self.code
