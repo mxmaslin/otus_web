@@ -28,18 +28,16 @@
     </li>
     </ul>
 
-    {% comment %}
     {% if DISPLAY_COUPON_FORM %}
     <form class="card p-2" action="{% url 'core:add-coupon' %}" method="POST">
         {% csrf_token %}
         <div class="input-group">
             {{ couponform.code }}
             <div class="input-group-append">
-            <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
+            <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Использовать</button>
             </div>
         </div>
     </form>
     {% endif %}
-    {% endcomment %}
 
 </div>
