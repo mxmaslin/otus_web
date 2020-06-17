@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.yandex',
     'crispy_forms',
+    'django-countries',
     'core'
 ]
 
