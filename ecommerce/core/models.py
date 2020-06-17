@@ -1,3 +1,6 @@
+import random
+import string
+
 from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
@@ -15,6 +18,10 @@ LABEL_CHOICES = (
     ('S', 'secondary'),
     ('D', 'danger')
 )
+
+
+def create_ref_code():
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
 
 class UserProfile(models.Model):
