@@ -16,43 +16,35 @@
 
               <div class='hideable_shipping_form'>
                 <div class="md-form mb-5">
-                  <input type='text' placeholder='3-я улица Строителей' id='street_address' name='street_address' class='form-control' />
+                  <input type='text' placeholder='3-я улица Строителей'
+                         id='street_address' name='street_address'
+                         class='form-control' value="{{ default_address.street_address }}">
                   <label for="street_address" class="">Улица</label>
                 </div>
 
                 <div class="md-form mb-5">
-                  <input type='text' placeholder='Дом 25' id='house_number' name='house_number' class='form-control' />
+                  <input type='text' placeholder='Дом 25' id='house_number' name='house_number' class='form-control' value="{{ default_address.house_number }}">
                   <label for="house_number" class="">Дом, корпус</label>
                 </div>
 
                 <div class="md-form mb-5">
-                  <input type='text' placeholder='12' id='apartment_number' name='apartment_number' class='form-control' />
+                  <input type='text' placeholder='12' id='apartment_number' name='apartment_number' class='form-control' value="{{ default_address.apartment_number }}">
                   <label for="apartment_number" class="">Номер квартиры</label>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-4 col-md-6 mb-4">
-                    <label for="shipping_zip">Индекс</label>
-                    <input type='text' placeholder='Индекс' id='shipping_zip' name='shipping_zip' class='form-control' />
-                    <div class="invalid-feedback">
-                      Укажите индекс.
-                    </div>
+                    <label for="address_zip">Индекс</label>
+                    <input type='text' placeholder='Индекс' id='address_zip' name='address_zip' class='form-control' value="{{ default_address.address_zip }}">
+                    <div class="invalid-feedback">Укажите индекс.</div>
                   </div>
                 </div>
 
                 <div class="custom-control custom-checkbox">
-                  <input type="checkbox" class="custom-control-input" name="set_default_shipping" id="set_default_shipping">
-                  <label class="custom-control-label" for="set_default_shipping">Сохранить адрес</label>
+                  <input type="checkbox" class="custom-control-input" name="set_default_address" id="set_default_address" value="true">
+                  <label class="custom-control-label" for="set_default_address">Сохранить адрес</label>
                 </div>
-
               </div>
-
-              {% if default_shipping_address %}
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" name="use_default_shipping" id="use_default_shipping">
-                <label class="custom-control-label" for="use_default_shipping">Использовать сохранённый адрес доставки: {{ default_shipping_address.street_address|truncatechars:10 }}</label>
-              </div>
-              {% endif %}
 
               <hr>
 
