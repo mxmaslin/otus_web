@@ -8,10 +8,10 @@ PAYMENT_CHOICES = (
 
 
 class CheckoutForm(forms.Form):
-    street_address = forms.CharField(required=False)
-    house_number = forms.CharField(required=False)
-    apartment_number = forms.CharField(required=True)
-    shipping_zip = forms.CharField(required=False)
+    street_address = forms.CharField()
+    house_number = forms.CharField()
+    apartment_number = forms.CharField()
+    address_zip = forms.CharField(required=False)
 
     payment_option = forms.ChoiceField(
         widget=forms.RadioSelect, choices=PAYMENT_CHOICES)

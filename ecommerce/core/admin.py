@@ -60,7 +60,7 @@ class AddressAdmin(admin.ModelAdmin):
         'street_address',
         'house_number',
         'apartment_number',
-        'shipping_zip',
+        'address_zip',
         'default'
     ]
     list_filter = ['default']
@@ -69,7 +69,7 @@ class AddressAdmin(admin.ModelAdmin):
         'street_address',
         'house_number',
         'apartment_number',
-        'shipping_zip'
+        'address_zip'
     ]
 
 
