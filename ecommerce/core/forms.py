@@ -12,6 +12,7 @@ class CheckoutForm(forms.Form):
     house_number = forms.CharField()
     apartment_number = forms.CharField()
     address_zip = forms.CharField(required=False)
+    set_default_address = forms.BooleanField(required=False)
 
     payment_option = forms.ChoiceField(
         widget=forms.RadioSelect, choices=PAYMENT_CHOICES)
