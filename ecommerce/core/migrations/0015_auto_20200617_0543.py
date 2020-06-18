@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('street_address', models.CharField(max_length=100, verbose_name='Улица')),
                 ('house_number', models.CharField(max_length=10, verbose_name='Дом, корпус')),
                 ('apartment_number', models.CharField(max_length=10, verbose_name='Номер квартиры')),
-                ('shipping_zip', models.CharField(max_length=6)),
+                ('address_zip', models.CharField(max_length=6)),
                 ('default', models.BooleanField(default=False)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],

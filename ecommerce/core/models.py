@@ -177,8 +177,9 @@ class Address(models.Model):
     street_address = models.CharField(max_length=100, verbose_name='Улица')
     house_number = models.CharField(max_length=10, verbose_name='Дом, корпус')
     apartment_number = models.CharField(max_length=10, verbose_name='Номер квартиры')
-    shipping_zip = models.CharField(max_length=6)
+    address_zip = models.CharField(max_length=6, blank=True)
     default = models.BooleanField(default=False)
+    create_dt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.username
@@ -190,7 +191,9 @@ class Address(models.Model):
 
 class Coupon(models.Model):
     code = models.CharField(max_length=15, verbose_name='Код')
-    amount = models.FloatField(verbose_name='Скидка')
+    amount = models.DecimalField(
+        max_digits=6, decimal_places=2, verbose_name='Скидка'
+    )
     discarded = models.BooleanField(default=False)
 
     def __str__(self):
