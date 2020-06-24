@@ -31,11 +31,11 @@
             <p class="lead">
               {% if object.discount_price %}
               <span class="mr-1">
-                <del>${{ object.price }}</del>
+                <del>{{ object.price }} руб.</del>
               </span>
-              <span>${{ object.discount_price }}</span>
+              <span>{{ object.discount_price }} руб.</span>
               {% else %}
-              <span>${{ object.price }}</span>
+              <span>{{ object.price }} руб.</span>
               {% endif %}
             </p>
 

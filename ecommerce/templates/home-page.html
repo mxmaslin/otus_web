@@ -72,11 +72,11 @@
                     <strong>
                       {% if item.discount_price %}
                         <span class="mr-1">
-                          <del>${{ item.price }}</del>
+                          <del>{{ item.price }} руб.</del>
                         </span>
-                        <span>${{ item.discount_price }}</span>
+                        <span>{{ item.discount_price }} руб.</span>
                       {% else %}
-                        <span>${{ item.price }}</span>
+                        <span>{{ item.price }} руб.</span>
                       {% endif %}
                     </strong>
                   </h4>
