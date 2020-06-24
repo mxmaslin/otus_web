@@ -180,17 +180,7 @@ class CheckoutView(View):
                 else:
                     messages.info(self.request, 'Пожалуйста, укажите адрес')
                     return redirect('core:checkout')
-
-                payment_option = form.cleaned_data.get('payment_option')
-                if payment_option == 'C':
-                    return redirect('core:payment', payment_option='credit_card')
-                elif payment_option == 'P':
-                    return redirect('core:payment', payment_option='paypal')
-                else:
-                    messages.warning(
-                        self.request, 'Выбран некорректный метод оплаты'
-                    )
-                    return redirect('core:checkout')
+                return redirect('core:payment')
         except ObjectDoesNotExist:
             messages.warning(self.request, 'У вас нет активных заказов')
             return redirect("core:order-summary")
@@ -254,5 +244,5 @@ class RequestRefundView(View):
 
 
 @login_required
-def payment(request, payment_option):
+def payment(request):
     return render(request, 'payment-page.html', {})

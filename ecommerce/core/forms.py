@@ -1,21 +1,12 @@
 from django import forms
 
 
-PAYMENT_CHOICES = (
-    ('C', 'Кредитная карта'),
-    ('P', 'PayPal')
-)
-
-
 class CheckoutForm(forms.Form):
     street_address = forms.CharField()
     house_number = forms.CharField()
     apartment_number = forms.CharField()
     address_zip = forms.CharField(required=False)
     set_default_address = forms.BooleanField(required=False)
-
-    payment_option = forms.ChoiceField(
-        widget=forms.RadioSelect, choices=PAYMENT_CHOICES)
 
 
 class CouponForm(forms.Form):

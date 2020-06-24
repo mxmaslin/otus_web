@@ -18,8 +18,6 @@ app_name = 'core'
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('wear_category/<category>/', wear_category, name='wear-category'),
-    # path('wear_category/sportswear/', wear_category, name='sportswear'),
-    # path('wear_category/outwear/', wear_category, name='outwear'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('order-summary/', OrderSummaryView.as_view(), name='order-summary'),
     path('product/<slug>/', ItemDetailView.as_view(), name='product'),
@@ -30,5 +28,5 @@ urlpatterns = [
          name='remove-single-item-from-cart'),
     path('add-coupon/', AddCouponView.as_view(), name='add-coupon'),
     path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
-    path('payment/<payment_option>', payment, name='payment')
+    path('payment/', payment, name='payment')
 ]
