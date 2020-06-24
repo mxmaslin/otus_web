@@ -80,6 +80,8 @@ def remove_from_cart(request, slug):
             )[0]
             order.items.remove(order_item)
             order_item.delete()
+            if len(order.items.all()) < 1:
+                order.delete()
             messages.info(request, 'Этот товар был удалён из вашей корзины.')
             return redirect("core:order-summary")
         else:
@@ -107,6 +109,8 @@ def remove_single_item_from_cart(request, slug):
                 order_item.save()
             else:
                 order.items.remove(order_item)
+            if len(order.items.all()) < 1:
+                order.delete()
             messages.info(request, 'Количество этого товара было обновлено.')
             return redirect("core:order-summary")
         else:
@@ -208,8 +212,11 @@ class AddCouponView(View):
             try:
                 code = form.cleaned_data.get('code')
                 order = Order.objects.get(user=self.request.user, ordered=False)
-                order.coupon = get_coupon(self.request, code)
+                coupon = get_coupon(self.request, code)
+                order.coupon = coupon
                 order.save()
+                coupon.discarded = True
+                coupon.save()
                 messages.success(self.request, 'Купон успешно добавлен')
                 return redirect("core:checkout")
             except ObjectDoesNotExist:
