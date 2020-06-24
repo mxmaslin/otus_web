@@ -27,10 +27,14 @@
     <li class="list-group-item d-flex justify-content-between">
         <span>Общая сумма</span>
         <strong>
-            {% if order.get_total|sub:order.coupon.amount < 0 %}
-                0 руб.
+            {% if order.coupon %}
+                {% if order.get_total|sub:order.coupon.amount < 1 %}
+                    0 руб.
+                {% else %}
+                    {{ order.get_total|sub:order.coupon.amount }} руб.
+                {% endif %}
             {% else %}
-                {{ order.get_total|sub:order.coupon.amount }} руб.
+                {{ order.get_total }} руб.
             {% endif %}
         </strong>
     </li>
