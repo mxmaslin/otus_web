@@ -21,20 +21,18 @@
         <div class="collapse navbar-collapse" id="basicExampleNav">
 
           <!-- Links -->
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Все
-                <span class="sr-only">(current)</span>
-              </a>
+          <ul id="menu" class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Все</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Футболки</a>
+              <a class="nav-link" href="{% url 'core:wear-category' category='TS' %}">Футболки</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Спортивная одежда</a>
+              <a class="nav-link" href="{% url 'core:wear-category' category='SW' %}">Спортивная одежда</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Верхняя одежда</a>
+              <a class="nav-link" href="{% url 'core:wear-category' category='OW' %}">Верхняя одежда</a>
             </li>
 
           </ul>
@@ -129,5 +127,20 @@
 
     </div>
   </main>
+
+  <script   src="https://code.jquery.com/jquery-3.5.1.slim.min.js"   integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous">
+  </script>
+
+  <script>
+    $(function() {
+      var url = window.location.href;
+      $('#menu li a').each(function() {
+        if (url == (this.href)) {
+          $(this).closest('li').addClass('active');
+        }
+      })
+    })
+  </script>
+});
 
 {% endblock content %}

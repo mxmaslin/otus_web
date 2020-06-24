@@ -32,6 +32,11 @@ class OrderSummaryView(LoginRequiredMixin, View):
             return redirect('/')
 
 
+def wear_category(request, category):
+    wear = Item.objects.filter(category=category)
+    return render(request, 'home-page.html', {'object_list': wear})
+
+
 @login_required
 def add_to_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
