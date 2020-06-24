@@ -50,13 +50,13 @@
             </td>
         </tr>
         {% endfor %}
-        {% if object.coupon %}
+        {% if object.coupon and not object.coupon.discarded %}
         <tr>
             <td colspan="4"><b>Купон</b></td>
             <td><b>-{{ object.coupon.amount }} руб.</b></td>
         </tr>
         {% endif %}
-        {% if object.get_total %}
+        {% if object.items %}
         <tr>
             <td colspan="4"><b>Общая сумма</b></td>
             <td><b>{{ object.get_total }} руб.</b></td>
