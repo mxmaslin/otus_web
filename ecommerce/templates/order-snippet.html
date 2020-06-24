@@ -15,7 +15,7 @@
         <span class="text-muted">{{ order_item.get_final_price }} руб.</span>
     </li>
     {% endfor %}
-    {% if order.coupon %}
+    {% if order.coupon and not order.coupon.discarded %}
     <li class="list-group-item d-flex justify-content-between bg-light">
         <div class="text-success">
         <h6 class="my-0">Промокод</h6>
@@ -27,7 +27,7 @@
     <li class="list-group-item d-flex justify-content-between">
         <span>Общая сумма</span>
         <strong>
-            {% if order.coupon %}
+            {% if order.coupon and not order.coupon.discarded %}
                 {% if order.get_total|sub:order.coupon.amount < 1 %}
                     0 руб.
                 {% else %}

@@ -154,7 +154,7 @@ class Order(models.Model):
         total = 0
         for order_item in self.items.all():
             total += order_item.get_final_price()
-        if self.coupon:
+        if self.coupon and not self.coupon.discarded:
             total -= self.coupon.amount
         if total < 0:
             total = 0
