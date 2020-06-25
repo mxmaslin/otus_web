@@ -180,7 +180,7 @@ class CheckoutView(View):
                 else:
                     messages.info(self.request, 'Пожалуйста, укажите адрес')
                     return redirect('core:checkout')
-                return redirect('core:payment')
+                return redirect('core:payment', order_pk=order.pk)
         except ObjectDoesNotExist:
             messages.warning(self.request, 'У вас нет активных заказов')
             return redirect("core:order-summary")
@@ -244,5 +244,8 @@ class RequestRefundView(View):
 
 
 @login_required
-def payment(request):
+def payment(request, order_pk):
+    order = Order.objects.get(pk=order_pk)
+    order.ordered = True
+    order.save()
     return render(request, 'payment-page.html', {})

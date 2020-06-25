@@ -28,5 +28,5 @@ urlpatterns = [
          name='remove-single-item-from-cart'),
     path('add-coupon/', AddCouponView.as_view(), name='add-coupon'),
     path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
-    path('payment/', payment, name='payment')
+    path('payment/<order_pk>/', payment, name='payment')
 ]
