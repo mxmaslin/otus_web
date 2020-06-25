@@ -1,18 +1,19 @@
-# Django Project Boilerplate
+# Final project 
 
-This repository is a boilerplate Django project for quickly getting started.
+I've chosen the ecommerce site as Otus "Python web-developer" final project. 
 
-## Getting started
+To implement the project, I've used
 
-Steps:
+- [django_project_boilerplate](https://github.com/justdjango/django_project_boilerplate)
+- [django-allauth](https://github.com/pennersr/django-allauth) for signup/logging in stuff
+- [mdbootstrap](https://mdbootstrap.com/freebies/jquery/e-commerce/) templates theme 
 
-1. Clone/pull/download this repository
-2. Create a virtualenv with `virtualenv env` and install dependencies with `pip install -r requirements.txt`
-3. Configure your .env variables
-4. Rename your project with `python manage.py rename <yourprojectname> <newprojectname>`
+Instructions:
 
-This project includes:
-
-1. Settings modules for deploying with Azure
-2. Django commands for renaming your project and creating a superuser
-3. A cli tool for setting environment variables for deployment
+1. Install python requirements.
+2. Create superuser.
+3. Using admin interface, create items and discount coupons.
+4. Run `./manage runserver`.
+5. Browse items categories, choose items to purchase, proceed to checkout. 
+ 
+The application developed for [Web-разработчик на Python](https://otus.ru/lessons/webpython/) training course.
