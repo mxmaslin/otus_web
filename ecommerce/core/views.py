@@ -89,10 +89,9 @@ def remove_from_cart(request, slug):
                 item=item,
                 user=request.user,
                 ordered=False
-            )[0]
-            order.items.remove(order_item)
+            ).first()
             order_item.delete()
-            if len(order.items.all()) < 1:
+            if order.items.all().count() < 1:
                 order.delete()
             messages.info(request, 'Этот товар был удалён из вашей корзины.')
             return redirect("core:order-summary")
