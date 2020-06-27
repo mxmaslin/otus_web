@@ -23,7 +23,7 @@
           <!-- Links -->
           <ul id="menu" class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#">Все</a>
+              <a class="nav-link" href="{% url 'core:home' %}">Все</a>
             </li>
             {% for category, name in categories %}
               <li class="nav-item">
