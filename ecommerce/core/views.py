@@ -6,7 +6,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 
-from .models import Item, OrderItem, Order, Address, Coupon, Refund
+from .models import (
+    Item, OrderItem, Order, Address, Coupon, Refund, CATEGORY_CHOICES
+)
 from .forms import CheckoutForm, CouponForm, RefundForm
 
 
@@ -14,6 +16,11 @@ class HomeView(ListView):
     model = Item
     paginate_by = 10
     template_name = 'home-page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+        context.setdefault('categories', CATEGORY_CHOICES)
+        return context
 
 
 class ItemDetailView(DetailView):
@@ -34,7 +41,11 @@ class OrderSummaryView(LoginRequiredMixin, View):
 
 def wear_category(request, category):
     wear = Item.objects.filter(category=category)
-    return render(request, 'home-page.html', {'object_list': wear})
+    return render(
+        request,
+        'home-page.html',
+        {'object_list': wear, 'categories': CATEGORY_CHOICES}
+    )
 
 
 @login_required

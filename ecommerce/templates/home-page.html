@@ -25,15 +25,11 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Все</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'core:wear-category' category='TS' %}">Футболки</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'core:wear-category' category='SW' %}">Спортивная одежда</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'core:wear-category' category='OW' %}">Верхняя одежда</a>
-            </li>
+            {% for category, name in categories %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'core:wear-category' category=category %}">{{name}}</a>
+              </li>
+            {% endfor %}
 
           </ul>
           <!-- Links -->
