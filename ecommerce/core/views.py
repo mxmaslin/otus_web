@@ -157,7 +157,7 @@ class CheckoutView(View):
             if address_qs.exists():
                 context.update({'default_address': address_qs[0]})
             return render(self.request, 'checkout-page.html', context)
-        except ObjectDoesNotExist:
+        except Order.DoesNotExist:
             messages.info(self.request, 'У вас нет активных заказов')
             return redirect("core:checkout")
 
@@ -249,7 +249,7 @@ class RequestRefundView(View):
                 messages.info(self.request, 'Запрос на возврат получен.')
                 return redirect("core:request-refund")
 
-            except ObjectDoesNotExist:
+            except Order.DoesNotExist:
                 messages.info(self.request, 'Этот заказ не существует.')
                 return redirect("core:request-refund")
 
