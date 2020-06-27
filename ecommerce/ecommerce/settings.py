@@ -1,12 +1,28 @@
 import os
 import environ
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 env = environ.Env()
 environ.Env.read_env()
 
 DEBUG = env.bool('DEBUG')
 SECRET_KEY = env.str('SECRET_KEY')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+sentry_sdk.init(
+    dsn=env.str('SENTRY_DSN'),
+    integrations=[DjangoIntegration()],
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
+
+
+
+
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -20,9 +36,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.facebook',
-    # 'allauth.socialaccount.providers.google',
-    # 'allauth.socialaccount.providers.yandex',
     'crispy_forms',
     'mathfilters',
     'core'
