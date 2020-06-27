@@ -1,10 +1,11 @@
 from django.contrib import messages
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import F
+from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils import timezone
-from django.views.generic import ListView, DetailView, View
 
 from .models import (
     Item, OrderItem, Order, Address, Coupon, Refund, CATEGORY_CHOICES
@@ -60,7 +61,7 @@ def add_to_cart(request, slug):
     if order_qs.exists():
         order = order_qs[0]
         if order.items.filter(item__slug=item.slug).exists():
-            order_item.quantity += 1
+            order_item.quantity = F('quantity') + 1
             order_item.save()
             messages.info(request, 'Количество этого товара было обновлено.')
             return redirect("core:order-summary")
