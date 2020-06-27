@@ -1,6 +1,10 @@
 # Final project 
 
-I've chosen the ecommerce site as Otus "Python web-developer" final project. 
+I've chosen the ecommerce site for Otus "Python web-developer" final project.
+
+Site's owner (seller) can deploy items for sale, and discount coupons at `http://127.0.0.1:8000/admin/`. Prior to this actions, create a superuser using `./manage.py createsuperuser` command. 
+
+Site's visitor (buyer) can select items for purchase, filter them using items categories, apply discounts, and proceed to checkout. The project's entry point is `http://127.0.0.1:8000/`. For the sake of demonstration, create some items for sale as site's owner.
 
 To implement the project, I've used
 
