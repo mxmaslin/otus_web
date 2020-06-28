@@ -83,7 +83,7 @@ def remove_from_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
-        order = order_qs[0]
+        order = order_qs.first()
         if order.items.filter(item__slug=item.slug).exists():
             order_item = OrderItem.objects.filter(
                 item=item,
@@ -108,13 +108,13 @@ def remove_single_item_from_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
-        order = order_qs[0]
+        order = order_qs.first()
         if order.items.filter(item__slug=item.slug).exists():
             order_item = OrderItem.objects.filter(
                 item=item,
                 user=request.user,
                 ordered=False
-            )[0]
+            ).first()
             if order_item.quantity > 1:
                 order_item.quantity -= 1
                 order_item.save()
@@ -155,7 +155,7 @@ class CheckoutView(View):
                 default=True
             ).order_by('-create_dt')
             if address_qs.exists():
-                context.update({'default_address': address_qs[0]})
+                context.update({'default_address': address_qs.first()})
             return render(self.request, 'checkout-page.html', context)
         except Order.DoesNotExist:
             messages.info(self.request, 'У вас нет активных заказов')
@@ -192,6 +192,12 @@ class CheckoutView(View):
                     messages.info(self.request, 'Пожалуйста, укажите адрес')
                     return redirect('core:checkout')
                 return redirect('core:payment', order_pk=order.pk)
+            else:
+                messages.info(
+                    self.request, 'Пожалуйста, укажите требуемые данные'
+                )
+                return redirect('core:checkout')
+
         except ObjectDoesNotExist:
             messages.warning(self.request, 'У вас нет активных заказов')
             return redirect("core:order-summary")
