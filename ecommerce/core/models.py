@@ -20,10 +20,6 @@ LABEL_CHOICES = (
 )
 
 
-def create_ref_code():
-    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
-
-
 class UserProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -216,11 +212,3 @@ class Refund(models.Model):
     class Meta:
         verbose_name = 'Возврат'
         verbose_name_plural = 'Возвраты'
-
-
-def userprofile_receiver(sender, instance, created, *args, **kwargs):
-    if created:
-        userprofile = UserProfile.objects.create(user=instance)
-
-
-post_save.connect(userprofile_receiver, sender=settings.AUTH_USER_MODEL)
