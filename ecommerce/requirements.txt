@@ -9,3 +9,5 @@ django-crispy-forms==1.9.1
 Pillow==7.1.2
 django-environ==0.4.5
 sentry-sdk==0.15.1
+gunicorn
+django-heroku==0.3.1
