@@ -11,3 +11,11 @@ The repository contains code for [Web-разработчик на Python](https:
 - Make a [REST API for the Coursera-like site](https://github.com/mxmaslin/otus_web/tree/master/coursera/coursera_api)
 - [Cover the REST API by tests](https://github.com/mxmaslin/otus_web/tree/master/coursera/coursera_api_tested)
 - Create [GraphQL schema for the Coursera-like site](https://github.com/mxmaslin/otus_web/tree/master/coursera/coursera_graphql)
+- Implement using [webpack for assembling Coursera-like site](https://github.com/mxmaslin/otus_web/tree/master/coursera/coursera_webpack) frontend
+- Implement [react based frontend for Coursera-like site](https://github.com/mxmaslin/otus_web/tree/master/coursera/coursera_react4)
+- Write [tests for Coursera-like site frontend]()
+- [Dockerize Coursera-like site frontend]()
+- Final project: [ecommerce site](https://github.com/mxmaslin/otus_web/tree/master/ecommerce)
+
+
+ 
