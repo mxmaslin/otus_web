@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Все курсы{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+<div class="container">
+  <h2>Список курсов</h2>
+  <ul>
+  {% for course in courses %}
+    <li><a href="{% url 'courses:course-detail' pk=course.pk %}">{{ course }}</a></li>
+  {% endfor %}
+  </ul>
+</div>
+{% include 'footer.html' %}
+{% endblock %}
