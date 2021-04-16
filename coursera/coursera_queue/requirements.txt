@@ -2,6 +2,6 @@ Django==2.2.9
 django-configurations==2.2
 django-environ==0.4.5
 python-dotenv==0.10.5
-django_debug_toolbar==2.2
+django_debug_toolbar==2.2.1
 Celery==4.4.0
 redis==3.4.1
